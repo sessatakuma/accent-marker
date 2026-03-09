@@ -216,6 +216,10 @@ rt {
     border-bottom: 1px solid var(--color-border);
 }
 
+.theme-switch-label {
+    margin-left: 0.2rem;
+}
+
 .switch {
     position: relative;
     display: inline-block;
@@ -239,7 +243,7 @@ rt {
     background-color: #ccc;
     transition: 0.4s;
     border-radius: 32px;
-    width: 32px;
+    width: 30px;
 }
 
 /* TODO: revisit to clean up css, use variables to maintain slider */
@@ -265,7 +269,7 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-    transform: translateX(12px);
+    transform: translateX(10px);
 }
 
 .menu-item {

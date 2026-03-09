@@ -217,6 +217,7 @@ rt {
 }
 
 .theme-switch-label {
+    flex-shrink: 0;
     margin-left: 0.2rem;
 }
 

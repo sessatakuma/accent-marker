@@ -206,7 +206,7 @@ rt {
 /* Switch Styling */
 .theme-switch-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     padding: 0.5rem 0.75rem;
@@ -277,7 +277,7 @@ input:checked + .slider:before {
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0.5rem;
     font-weight: 500;
     font-size: 0.9rem;

@@ -69,11 +69,10 @@ ruby > rt {
 }
 
 .kana-shell-editable .kana-accent-hitbox {
-    left: 0;
-    right: 0;
+    left: -1px;
+    right: -1px;
     top: var(--kana-accent-hitbox-top-ruby);
     height: var(--kana-accent-hitbox-height-ruby);
-    border-radius: 999px;
 }
 
 .kana-shell:focus-within::before,

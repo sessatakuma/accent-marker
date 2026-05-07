@@ -69,26 +69,7 @@ ruby > rt {
     border: none;
     background: transparent;
     border-radius: var(--radius-sm);
-    opacity: 0;
-    transition: opacity 0.2s ease;
     z-index: 2;
-}
-
-.kana-accent-hitbox::after {
-    content: '';
-    position: absolute;
-    left: 1px;
-    right: 1px;
-    top: 50%;
-    height: 2px;
-    transform: translateY(-50%);
-    border-radius: 999px;
-    background-color: var(--accent-color);
-}
-
-.kana-edit-shell:hover .kana-accent-hitbox,
-.kana-accent-hitbox:focus-visible {
-    opacity: 1;
 }
 
 .kana-edit-shell > .kana {

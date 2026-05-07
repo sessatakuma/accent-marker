@@ -92,14 +92,16 @@ export default function Kana({
 
     return (
         <span className='kana-shell kana-shell-editable'>
-            <button
-                type='button'
-                className='kana-accent-hitbox'
-                onClick={changeAccent}
-                onMouseDown={handleAccentMouseDown}
-                aria-label='アクセントを切り替え'
-                title='アクセントを切り替え'
-            />
+            <span className='kana-accent-lane' aria-hidden='true'>
+                <button
+                    type='button'
+                    className='kana-accent-hitbox kana-accent-hitbox-ruby'
+                    onClick={changeAccent}
+                    onMouseDown={handleAccentMouseDown}
+                    aria-label='アクセントを切り替え'
+                    title='アクセントを切り替え'
+                />
+            </span>
             <span
                 ref={textRef}
                 className={`kana ${accent ? `accent-${accentName[accent]}` : ''} furigana`}

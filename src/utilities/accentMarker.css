@@ -82,6 +82,10 @@ ruby > rt {
     background-color: var(--kana-edit-hover-bg);
 }
 
+.kana-shell-editable:has(.kana-accent-hitbox:hover) > .kana {
+    background-color: transparent;
+}
+
 .kana-surface-control {
     position: relative;
 }

@@ -74,12 +74,14 @@ ruby > rt {
 }
 
 .kana-text-editable {
-    min-width: 0.75em;
-    padding: 0 2px;
     border-radius: var(--radius-sm);
     transition:
         background-color 0.2s ease,
         box-shadow 0.2s ease;
+}
+
+.kana-text-editable:empty {
+    min-width: 0.75em;
 }
 
 .kana-unit.is-editable:hover .kana-text-editable,

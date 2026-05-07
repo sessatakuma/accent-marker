@@ -1,44 +1,108 @@
-/* accent options */
 :root {
-    --accent-color: var(--color-accent-red); /* Map to red accent from global palette */
+    --accent-color: var(--color-accent-red);
     --accent-width: 2px;
+    --accent-drop-height: 0.4rem;
+    --accent-gap-surface: calc(0.5em + 0.25rem);
+    --accent-gap-ruby: 0.25rem;
+    --accent-hitbox-height: 0.875rem;
+    --kana-edit-hover-bg: color-mix(in srgb, var(--color-accent-red) 8%, transparent);
+    --kana-edit-focus-bg: color-mix(in srgb, var(--color-accent-red) 14%, transparent);
 }
 
-/* prevent layout disorder in safari */
 ruby > rt {
     height: 1em;
 }
 
-/* accent definition */
-[class*='accent'] {
-    /* height matching w/ rt */
-    padding-top: calc(0.5em + 0.25rem) !important;
-
-    /* no need for rt */
-    &:is(.main-content ruby > rt [class*='accent']) {
-        padding-top: calc(0em + 0.25rem) !important;
-    }
-
-    border: 0 solid var(--accent-color) !important;
-    border-top-width: var(--accent-width) !important;
-}
-
-/* trailing drop for all accent-drop marks */
-.accent-drop {
+.kana-unit {
     position: relative;
+    display: inline-block;
+    border-radius: var(--radius-sm);
 }
 
-.accent-drop::after {
+.kana-visual {
+    position: relative;
+    display: inline-block;
+    border-top: 0 solid var(--accent-color);
+}
+
+.kana-unit[data-accent='flat'] .kana-visual,
+.kana-unit[data-accent='drop'] .kana-visual {
+    border-top-width: var(--accent-width);
+    padding-top: var(--accent-gap-surface);
+}
+
+.kana-unit[data-ruby='true'][data-accent='flat'] .kana-visual,
+.kana-unit[data-ruby='true'][data-accent='drop'] .kana-visual {
+    padding-top: var(--accent-gap-ruby);
+}
+
+.kana-unit[data-accent='drop'] .kana-visual::after {
     content: '';
     position: absolute;
-    display: block;
-    right: 0;
     top: 0;
-    height: 0.4rem;
+    right: 0;
+    height: var(--accent-drop-height);
     border-left: solid var(--accent-color) var(--accent-width);
 }
 
-/* prevent trailing drop sticking to the right */
-.accent-drop:last-child {
+.kana-unit[data-accent='drop']:last-child {
     margin-right: 1px;
+}
+
+.kana-text {
+    display: inline-block;
+}
+
+.kana-accent-toggle {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    border: none;
+    background: transparent;
+    border-radius: inherit;
+    color: inherit;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 1;
+}
+
+.kana-unit.is-editable .kana-accent-toggle {
+    inset: 0 auto auto 0;
+    height: var(--accent-hitbox-height);
+    min-width: 100%;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.kana-text-editable {
+    min-width: 0.75em;
+    padding: 0 2px;
+    border-radius: var(--radius-sm);
+    transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.kana-unit.is-editable:hover .kana-text-editable,
+.kana-text-editable:focus {
+    background-color: var(--kana-edit-hover-bg);
+}
+
+.kana-text-editable:focus {
+    background-color: var(--kana-edit-focus-bg);
+}
+
+.kana-unit.is-editable:hover .kana-accent-toggle,
+.kana-accent-toggle:focus-visible {
+    opacity: 1;
+}
+
+.kana-unit.is-editable .kana-accent-toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    height: 2px;
+    border-radius: 999px;
+    background-color: var(--accent-color);
 }

@@ -1,63 +1,101 @@
-import { useState, KeyboardEvent, FocusEvent, MouseEvent } from 'react';
+import { useRef, type KeyboardEvent, type MouseEvent } from 'react';
 
 import { placeholder } from 'utilities/placeholder';
+import type { AccentValueType } from 'utilities/types';
 
 interface KanaProps {
     text: string;
-    accent: number;
-    onUpdate?: (text: string, accent: number) => void;
+    accent: AccentValueType;
+    onUpdate?: (text: string, accent: AccentValueType) => void;
     editable?: boolean;
+    onFocusChange?: (isFocused: boolean) => void;
 }
 
-// an inline element marked w/ accent, changes type on click
-export default function Kana({ text, accent, onUpdate, editable = false }: KanaProps) {
-    // if editable, set firstClick to true
-    // this is to block the first click from changing the accent type
-    const [firstClick, setFirstClick] = useState(editable);
-    const accentName = ['none', 'flat', 'drop'];
+const accentName = ['none', 'flat', 'drop'] as const;
 
-    const changeType = (e: MouseEvent<HTMLSpanElement>): void => {
-        const target = e.target as HTMLSpanElement;
-        // if it's the first click that will start an edit, don't change type
-        onUpdate?.(target.innerText, (accent + 1 - (firstClick ? 1 : 0)) % 3);
-        // it isn't the first click anymore till finish editing
-        setFirstClick(false);
+export default function Kana({
+    text,
+    accent,
+    onUpdate,
+    editable = false,
+    onFocusChange,
+}: KanaProps) {
+    const textRef = useRef<HTMLSpanElement>(null);
+
+    const getCurrentText = (): string => {
+        const currentText = textRef.current?.innerText ?? text;
+        const trimmed = currentText.trim();
+
+        if (!editable) {
+            return currentText;
+        }
+
+        return trimmed.length === 0 ? placeholder : currentText;
     };
 
-    const finishEditing = (e: FocusEvent<HTMLSpanElement>): void => {
+    const commit = (nextAccent: AccentValueType): void => {
+        onUpdate?.(getCurrentText(), nextAccent);
+    };
+
+    const changeType = (event: MouseEvent<HTMLButtonElement>): void => {
+        event.preventDefault();
+        event.stopPropagation();
+        commit(((accent + 1) % 3) as AccentValueType);
+    };
+
+    const finishEditing = (): void => {
         if (!editable) return;
-        const target = e.target as HTMLSpanElement;
-        onUpdate?.(target.innerText, accent);
-        // note that if the Kana isn't editable, firstClick will never be ture
-        setFirstClick(true);
+        commit(accent);
+        onFocusChange?.(false);
     };
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLSpanElement>): void => {
-        const target = e.target as HTMLSpanElement;
-        if (e.key === 'Backspace') {
-            if (target.innerText.length <= 1) target.innerText = placeholder;
-            // leave a placeholder space, this need to be handled here instead of Result.tsx, to prevent empty furigana causing weird mouse position
+    const handleFocus = (): void => {
+        onFocusChange?.(true);
+    };
+
+    const handleKeyDown = (event: KeyboardEvent<HTMLSpanElement>): void => {
+        if ((event.metaKey || event.ctrlKey) && ['z', 'y'].includes(event.key.toLowerCase())) {
+            return;
         }
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            if (target.innerText.length == 0) target.innerText = placeholder;
-            target.blur(); // trigger onBlur and save
+
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            textRef.current?.blur();
         }
+    };
+
+    const handleMouseDown = (event: MouseEvent<HTMLButtonElement>): void => {
+        if (!editable) return;
+        event.preventDefault();
     };
 
     return (
-        // receive accent class only when type is non-zero
         <span
-            className={`kana ${accent ? `accent-${accentName[accent]}` : ''} ${
-                editable ? 'furigana' : ''
-            }`}
-            onClick={changeType}
-            contentEditable={editable}
-            suppressContentEditableWarning
-            onBlur={finishEditing}
-            onKeyDown={handleKeyDown}
+            className={`kana-unit ${editable ? 'is-editable' : ''}`}
+            data-accent={accentName[accent]}
+            data-ruby={editable ? 'true' : 'false'}
         >
-            {text}
+            <button
+                type='button'
+                className='kana-accent-toggle'
+                onClick={changeType}
+                onMouseDown={handleMouseDown}
+                aria-label='Toggle accent'
+                title='アクセントを切り替え'
+            />
+            <span className='kana-visual'>
+                <span
+                    ref={textRef}
+                    className={`kana-text ${editable ? 'kana-text-editable' : ''}`}
+                    contentEditable={editable}
+                    suppressContentEditableWarning
+                    onBlur={finishEditing}
+                    onFocus={handleFocus}
+                    onKeyDown={handleKeyDown}
+                >
+                    {text}
+                </span>
+            </span>
         </span>
     );
 }

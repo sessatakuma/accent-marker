@@ -36,6 +36,8 @@
     --color-text-dark-secondary: #9CA3AF; /* Gray 400 */
     --color-border-dark: #4B5563; /* Gray 600 */
     --color-text-menu-fixed: #374151; /* Gray 700 - Fixed dark text for white menus */
+    --color-switch-track: #D1D5DB;
+    --color-switch-thumb: #FFFFFF;
 
     /* Semantic / Feedback */
     --color-feedback-success: var(--color-accent-green);

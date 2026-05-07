@@ -10,9 +10,8 @@ ruby > rt {
 }
 
 [class*='accent'] {
-    border-top-width: var(--accent-width);
     border: none;
-    border-top: 0 solid var(--accent-color);
+    border-top: solid var(--accent-color) var(--accent-width);
     padding-top: calc(0.5em + 0.25rem) !important;
 
     &:is(.main-content ruby > rt [class*='accent']) {

@@ -1,0 +1,30 @@
+const UPSTREAM_URL = 'https://api.sessatakuma.dev/api/MarkAccent/';
+
+export default async function handler(request, response) {
+    if (request.method !== 'POST') {
+        response.setHeader('Allow', 'POST');
+        return response.status(405).json({ error: 'Method Not Allowed' });
+    }
+
+    const apiKey = process.env.MARK_ACCENT_API_KEY;
+    if (!apiKey) {
+        return response.status(500).json({ error: 'MARK_ACCENT_API_KEY is not configured' });
+    }
+
+    try {
+        const upstreamResponse = await fetch(UPSTREAM_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-API-KEY': apiKey,
+            },
+            body: JSON.stringify(request.body ?? {}),
+        });
+
+        const data = await upstreamResponse.json();
+        return response.status(upstreamResponse.status).json(data);
+    } catch (error) {
+        console.error('MarkAccent proxy failed:', error);
+        return response.status(502).json({ error: 'Upstream request failed' });
+    }
+}

@@ -17,10 +17,10 @@ bun i
 
 ## Set up dev server
 
-Add a `.env` file in the root directory with our API key:
+Add a `.env` file in the root directory with the server-side API key:
 
 ```
-VITE_X_API_KEY=<our_api_key>
+MARK_ACCENT_API_KEY=<our_api_key>
 ```
 
 Then start the development server:
@@ -28,3 +28,11 @@ Then start the development server:
 ```bash
 bun dev
 ```
+
+## Deploy on Vercel
+
+1. Import the repository into Vercel.
+2. Add `MARK_ACCENT_API_KEY` as an environment variable in the Vercel project settings.
+3. Deploy with the default Vite build settings.
+
+The frontend calls `/api/mark-accent`, and Vercel forwards the request server-side so the API key is not exposed to the browser.

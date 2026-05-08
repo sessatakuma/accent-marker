@@ -1,7 +1,7 @@
 .result-container-inner {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
     padding: 1.5rem;
     border-radius: var(--radius-lg);
     transition:
@@ -19,7 +19,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 0.5rem;
-    margin-top: auto;
+    margin-top: 1rem;
     padding-top: 1rem;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .result-content {
-    flex: 1;
+    flex: none;
     position: relative;
     padding: 0;
 }

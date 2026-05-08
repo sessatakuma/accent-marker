@@ -25,10 +25,6 @@
     min-height: 500px;
 }
 
-.result-panel-stack .result-panel {
-    height: 100%;
-}
-
 .result-panel-hint {
     position: absolute;
     top: calc(100% + 0.75rem);

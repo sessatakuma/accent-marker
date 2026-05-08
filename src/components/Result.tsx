@@ -44,6 +44,7 @@ interface ResultProps {
 }
 
 type FeedbackType = 'success' | 'warning';
+const EXPORT_PADDING_PX = 32;
 
 function getSurfaceSegments(word: Word): string[] {
     return isKana(word.surface) && Array.isArray(word.accent)
@@ -73,6 +74,7 @@ function buildMarkdownExport(words: Word[]): string {
             const surfaceSegments = getSurfaceSegments(word);
             const kanaAccents = isKana(word.surface) && Array.isArray(word.accent) ? word.accent : null;
             const baseMarkup = escapeHtml(word.surface);
+            const baseMarkup = escapeHtml(word.surface);
 
             const readingMarkup = (kanaAccents
                 ? surfaceSegments.map((segment, index) =>
@@ -91,6 +93,7 @@ function buildMarkdownExport(words: Word[]): string {
         .join('');
 
     return `<style>${markdownExportStyles.trim()}</style><div class="accent-marker">${rubyMarkup}</div>`;
+    
 }
 
 const Result = forwardRef<HTMLDivElement, ResultProps>(
@@ -129,8 +132,20 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
             if (resultRef.current === null || isEmpty) return;
 
             const bgColor = isDarkResult ? '#1F2937' : '#FFFFFF';
+            const element = resultRef.current;
+            const width = element.offsetWidth + EXPORT_PADDING_PX * 2;
+            const height = element.offsetHeight + EXPORT_PADDING_PX * 2;
             const { toPng } = await preloadExportModules();
-            toPng(resultRef.current, { backgroundColor: bgColor, pixelRatio: 2 })
+            toPng(element, {
+                backgroundColor: bgColor,
+                pixelRatio: 2,
+                width,
+                height,
+                style: {
+                    boxSizing: 'border-box',
+                    padding: `${EXPORT_PADDING_PX}px`,
+                },
+            })
                 .then(dataUrl => {
                     const link = document.createElement('a');
                     link.download = 'accented-text.png';
@@ -147,9 +162,8 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
 
             const bgColor = isDarkResult ? '#1F2937' : '#FFFFFF';
             const element = resultRef.current;
-            const padding = 40;
-            const width = element.offsetWidth + padding;
-            const height = element.offsetHeight + padding;
+            const width = element.offsetWidth + EXPORT_PADDING_PX * 2;
+            const height = element.offsetHeight + EXPORT_PADDING_PX * 2;
             const { toPng, jsPDF } = await preloadExportModules();
 
             toPng(element, {
@@ -158,8 +172,8 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                 width,
                 height,
                 style: {
-                    padding: '20px',
                     boxSizing: 'border-box',
+                    padding: `${EXPORT_PADDING_PX}px`,
                 },
             })
                 .then(imgData => {

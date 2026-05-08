@@ -90,7 +90,7 @@ function buildMarkdownExport(words: Word[]): string {
         })
         .join('');
 
-    return `<style>${markdownExportStyles.trim()}</style><div class="a">${rubyMarkup}</div>`;
+    return `<style>${markdownExportStyles.trim()}</style><div class="accent-marker">${rubyMarkup}</div>`;
 }
 
 const Result = forwardRef<HTMLDivElement, ResultProps>(

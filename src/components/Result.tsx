@@ -2,7 +2,7 @@ import { useState, useEffect, forwardRef, useRef } from 'react';
 
 import Kana from 'components/Kana';
 import SkeletonLoader from 'components/SkeletonLoader';
-import { Copy, Image as ImageIcon, ArrowDownToLine, CodeXml, Moon } from 'lucide-react';
+import { Copy, Image as ImageIcon, ArrowDownToLine, CodeXml, Moon, Sun } from 'lucide-react';
 import {
     cloneWords,
     getAccentArray,
@@ -564,31 +564,47 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                                         role='menu'
                                         aria-labelledby='save-menu-trigger'
                                     >
-                                        <button
-                                            className='menu-item'
-                                            onClick={() => {
-                                                downloadImage();
-                                                setIsMenuOpen(false);
-                                            }}
-                                            role='menuitem'
-                                            type='button'
-                                        >
-                                            <ImageIcon size={16} />
-                                            <span>画像</span>
-                                        </button>
-                                        <div className='theme-switch-container'>
-                                            <Moon size={16} className='theme-switch-label' />
-                                            <label className='switch'>
-                                                <input
-                                                    type='checkbox'
-                                                    checked={isDarkResult}
-                                                    onChange={() =>
-                                                        setIsDarkResult(prev => !prev)
-                                                    }
-                                                    aria-label='結果プレビューをダークテーマに切り替え'
-                                                />
-                                                <span className='slider'></span>
-                                            </label>
+                                        <div className='menu-inline-row'>
+                                            <button
+                                                className='menu-item menu-item-inline'
+                                                onClick={() => {
+                                                    downloadImage();
+                                                    setIsMenuOpen(false);
+                                                }}
+                                                role='menuitem'
+                                                type='button'
+                                            >
+                                                <ImageIcon size={16} />
+                                                <span>画像</span>
+                                            </button>
+                                            <div
+                                                className='theme-pill'
+                                                role='group'
+                                                aria-label='画像テーマ'
+                                            >
+                                                <button
+                                                    type='button'
+                                                    className={`theme-pill-button ${
+                                                        !isDarkResult ? 'active' : ''
+                                                    }`}
+                                                    onClick={() => setIsDarkResult(false)}
+                                                    aria-pressed={!isDarkResult}
+                                                    aria-label='画像テーマをライトに切り替え'
+                                                >
+                                                    <Sun size={14} />
+                                                </button>
+                                                <button
+                                                    type='button'
+                                                    className={`theme-pill-button ${
+                                                        isDarkResult ? 'active' : ''
+                                                    }`}
+                                                    onClick={() => setIsDarkResult(true)}
+                                                    aria-pressed={isDarkResult}
+                                                    aria-label='画像テーマをダークに切り替え'
+                                                >
+                                                    <Moon size={14} />
+                                                </button>
+                                            </div>
                                         </div>
                                         <div className='menu-divider'></div>
                                         <button

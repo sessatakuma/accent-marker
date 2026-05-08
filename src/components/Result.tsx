@@ -277,36 +277,46 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                         const kanaWord = isKana(word.surface);
                         const kanaAccents = Array.isArray(word.accent) ? word.accent : null;
 
+                        if (kanaWord && kanaAccents) {
+                            return (
+                                <span key={`${wordIndex}-${word.surface}`}>
+                                    {surfaceSegments.map((segment, charIndex) => (
+                                        <ruby key={`${wordIndex}-${charIndex}`}>
+                                            <span>{segment}</span>
+                                            <rt>
+                                                <Kana
+                                                    text={segment}
+                                                    ghost
+                                                    accent={kanaAccents[charIndex] ?? AccentValue.None}
+                                                    onUpdate={(_ignore, newAccent) =>
+                                                        updateKana(wordIndex, charIndex, newAccent)
+                                                    }
+                                                />
+                                            </rt>
+                                        </ruby>
+                                    ))}
+                                </span>
+                            );
+                        }
+
                         return (
                             <ruby key={`${wordIndex}-${word.surface}`}>
                                 {surfaceSegments.map((segment, charIndex) => (
                                     <span key={`${wordIndex}-${charIndex}`}>{segment}</span>
                                 ))}
                                 <rt>
-                                    {kanaWord && kanaAccents
-                                        ? surfaceSegments.map((segment, charIndex) => (
-                                              <Kana
-                                                  key={`${wordIndex}-${charIndex}`}
-                                                  text={segment}
-                                                  ghost
-                                                  accent={kanaAccents[charIndex] ?? AccentValue.None}
-                                                  onUpdate={(_ignore, newAccent) =>
-                                                      updateKana(wordIndex, charIndex, newAccent)
-                                                  }
-                                              />
-                                          ))
-                                        : word.furigana.map((char, charIndex) => (
-                                              <Kana
-                                                  key={`${wordIndex}-${charIndex}`}
-                                                  editable
-                                                  text={char.text === placeholder ? '' : char.text}
-                                                  accent={char.accent}
-                                                  onUpdate={(newText, newAccent) =>
-                                                      updateFurigana(wordIndex, charIndex, newText, newAccent)
-                                                  }
-                                                  onFocusChange={onEditingChange}
-                                              />
-                                          ))}
+                                    {word.furigana.map((char, charIndex) => (
+                                        <Kana
+                                            key={`${wordIndex}-${charIndex}`}
+                                            editable
+                                            text={char.text === placeholder ? '' : char.text}
+                                            accent={char.accent}
+                                            onUpdate={(newText, newAccent) =>
+                                                updateFurigana(wordIndex, charIndex, newText, newAccent)
+                                            }
+                                            onFocusChange={onEditingChange}
+                                        />
+                                    ))}
                                 </rt>
                             </ruby>
                         );

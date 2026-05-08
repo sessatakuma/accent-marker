@@ -2,6 +2,7 @@
     --accent-color: var(--color-accent-red);
     --accent-width: 2px;
     --kana-accent-lane-height: 1em;
+    --kana-accent-gap: 2px;
     --kana-accent-hitbox-height: 0.5rem;
     --kana-accent-hitbox-overlap: 0.125rem;
     --kana-drop-height: 0.4rem;
@@ -26,6 +27,7 @@ ruby > rt {
     position: relative;
     display: inline-grid;
     grid-template-rows: var(--kana-accent-lane-height) auto;
+    row-gap: var(--kana-accent-gap);
     align-items: start;
     min-width: max-content;
 }
@@ -140,6 +142,7 @@ ruby > rt {
 
 .result-area-hide-accent .kana-shell {
     grid-template-rows: 0 auto;
+    row-gap: 0;
 }
 
 .result-area-hide-accent .kana-accent-lane {

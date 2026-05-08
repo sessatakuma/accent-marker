@@ -21,8 +21,10 @@ export default function Main() {
     const [futureWords, setFutureWords] = useState<Word[][]>([]);
     const [isEditing, setIsEditing] = useState(false);
     const [statusMessage, setStatusMessage] = useState<string>('');
+    const [syncedPanelMinHeight, setSyncedPanelMinHeight] = useState(500);
 
     const debouncedParagraph = useDebounce(paragraph, 800);
+    const inputPanelRef = useRef<HTMLElement>(null);
     const resultRef = useRef<HTMLDivElement>(null);
     const wordsRef = useRef(words);
     const lastAnalyzedParagraphRef = useRef<string | null>(null);
@@ -30,6 +32,26 @@ export default function Main() {
     useEffect(() => {
         wordsRef.current = words;
     }, [words]);
+
+    useEffect(() => {
+        const panel = inputPanelRef.current;
+
+        if (!panel) return;
+
+        const syncHeight = (): void => {
+            setSyncedPanelMinHeight(Math.max(500, Math.ceil(panel.getBoundingClientRect().height)));
+        };
+
+        syncHeight();
+
+        const observer = new ResizeObserver(() => {
+            syncHeight();
+        });
+
+        observer.observe(panel);
+
+        return () => observer.disconnect();
+    }, []);
 
     const replaceWords = useCallback((nextWords: Word[]): void => {
         setWords(nextWords);
@@ -179,7 +201,7 @@ export default function Main() {
                     {statusMessage}
                 </p>
                 <div className='two-col-layout' aria-label='入力と解析結果'>
-                    <section className='input-panel' aria-label='入力'>
+                    <section className='input-panel' aria-label='入力' ref={inputPanelRef}>
                         <Input
                             paragraph={paragraph}
                             setParagraph={setParagraph}
@@ -187,7 +209,10 @@ export default function Main() {
                         />
                     </section>
 
-                    <div className='result-panel-stack'>
+                    <div
+                        className='result-panel-stack'
+                        style={{ minHeight: `${syncedPanelMinHeight}px` }}
+                    >
                         <section className='result-panel' aria-label='結果' aria-busy={isLoading}>
                             <Result
                                 words={words}

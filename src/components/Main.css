@@ -22,7 +22,13 @@
 
 .result-panel-stack {
     position: relative;
+    display: flex;
+    flex-direction: column;
     min-height: 500px;
+}
+
+.result-panel-stack .result-panel {
+    flex: 1;
 }
 
 .result-panel-hint {

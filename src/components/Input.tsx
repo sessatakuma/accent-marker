@@ -54,6 +54,7 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
                 id='accent-input'
                 ref={textareaRef}
                 className='input-area'
+                autoFocus
                 value={paragraph}
                 onChange={e => setParagraph(e.target.value)}
                 placeholder='文章を入力...'

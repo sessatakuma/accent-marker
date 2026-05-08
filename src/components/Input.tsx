@@ -1,4 +1,4 @@
-import { useRef, useEffect, Dispatch, SetStateAction } from 'react';
+import { useRef, useEffect, useState, Dispatch, SetStateAction } from 'react';
 
 import { Dices, Clipboard } from 'lucide-react';
 
@@ -12,6 +12,8 @@ interface InputProps {
 
 export default function Input({ paragraph, setParagraph, isLoading }: InputProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [isKeyboardModality, setIsKeyboardModality] = useState(false);
+    const [isTextareaFocused, setIsTextareaFocused] = useState(false);
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -22,6 +24,24 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
             textareaRef.current.style.height = `${scrollHeight}px`;
         }
     }, [paragraph]);
+
+    useEffect(() => {
+        const handleKeyDown = (): void => {
+            setIsKeyboardModality(true);
+        };
+
+        const handlePointerDown = (): void => {
+            setIsKeyboardModality(false);
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('pointerdown', handlePointerDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('pointerdown', handlePointerDown);
+        };
+    }, []);
 
     const generateRandomParagraph = (): void => {
         const examples = [
@@ -53,10 +73,12 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
             <textarea
                 id='accent-input'
                 ref={textareaRef}
-                className='input-area'
+                className={`input-area${isTextareaFocused && isKeyboardModality ? ' input-area-keyboard-focus' : ''}`}
                 autoFocus
                 value={paragraph}
                 onChange={e => setParagraph(e.target.value)}
+                onFocus={() => setIsTextareaFocused(true)}
+                onBlur={() => setIsTextareaFocused(false)}
                 placeholder='文章を入力...'
                 aria-describedby='input-shortcuts'
                 aria-controls='accent-result-output'

@@ -1,4 +1,10 @@
-import { useRef, type FocusEvent, type KeyboardEvent, type MouseEvent } from 'react';
+import {
+    useRef,
+    type CompositionEvent,
+    type FocusEvent,
+    type KeyboardEvent,
+    type MouseEvent,
+} from 'react';
 
 import { placeholder } from 'utilities/placeholder';
 
@@ -24,6 +30,8 @@ export default function Kana({
     onFocusChange,
 }: KanaProps) {
     const textRef = useRef<HTMLSpanElement>(null);
+    const isComposingRef = useRef(false);
+    const shouldCommitAfterCompositionRef = useRef(false);
 
     const getCurrentText = (): string => {
         const currentText = textRef.current?.innerText ?? text;
@@ -32,6 +40,11 @@ export default function Kana({
         }
 
         return currentText.trim().length === 0 ? placeholder : currentText;
+    };
+
+    const commitText = (nextText: string): void => {
+        onUpdate?.(nextText, accent);
+        onFocusChange?.(false);
     };
 
     const changeAccent = (event: MouseEvent<HTMLButtonElement>): void => {
@@ -48,9 +61,12 @@ export default function Kana({
 
     const finishEditing = (event: FocusEvent<HTMLSpanElement>): void => {
         if (!editable) return;
-        const target = event.target as HTMLSpanElement;
-        onUpdate?.(target.innerText, accent);
-        onFocusChange?.(false);
+        if (isComposingRef.current) {
+            shouldCommitAfterCompositionRef.current = true;
+            return;
+        }
+
+        commitText((event.target as HTMLSpanElement).innerText);
     };
 
     const handleFocus = (): void => {
@@ -59,6 +75,10 @@ export default function Kana({
 
     const handleKeyDown = (event: KeyboardEvent<HTMLSpanElement>): void => {
         const target = event.target as HTMLSpanElement;
+        if (event.nativeEvent.isComposing || isComposingRef.current || event.key === 'Process') {
+            return;
+        }
+
         if ((event.metaKey || event.ctrlKey) && ['z', 'y'].includes(event.key.toLowerCase())) {
             return;
         }
@@ -71,6 +91,20 @@ export default function Kana({
             event.preventDefault();
             if (target.innerText.length === 0) target.innerText = placeholder;
             target.blur();
+        }
+    };
+
+    const handleCompositionStart = (): void => {
+        isComposingRef.current = true;
+        shouldCommitAfterCompositionRef.current = false;
+    };
+
+    const handleCompositionEnd = (event: CompositionEvent<HTMLSpanElement>): void => {
+        isComposingRef.current = false;
+
+        if (shouldCommitAfterCompositionRef.current) {
+            shouldCommitAfterCompositionRef.current = false;
+            commitText(event.currentTarget.innerText);
         }
     };
 
@@ -98,11 +132,17 @@ export default function Kana({
                 contentEditable={editable || undefined}
                 suppressContentEditableWarning
                 onBlur={finishEditing}
+                onCompositionEnd={handleCompositionEnd}
+                onCompositionStart={handleCompositionStart}
                 onFocus={handleFocus}
                 onKeyDown={handleKeyDown}
                 role={editable ? 'textbox' : undefined}
                 aria-label={editable ? 'ふりがなを編集' : undefined}
                 aria-multiline={editable || undefined}
+                autoCapitalize='off'
+                autoCorrect='off'
+                inputMode='text'
+                spellCheck={false}
             >
                 {text}
             </span>

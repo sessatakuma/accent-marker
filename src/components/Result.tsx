@@ -281,8 +281,8 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                             return (
                                 <span key={`${wordIndex}-${word.surface}`}>
                                     {surfaceSegments.map((segment, charIndex) => (
-                                        <ruby key={`${wordIndex}-${charIndex}`}>
-                                            <span>{segment}</span>
+                                        <ruby key={`${wordIndex}-${charIndex}`} className='kana-only-ruby'>
+                                            <span className='kana-only-base'>{segment}</span>
                                             <rt>
                                                 <Kana
                                                     text={segment}

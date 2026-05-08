@@ -118,6 +118,14 @@ ruby > rt {
     z-index: -1;
 }
 
+.kana-shell[data-editable='true'] > .kana-text {
+    cursor: pointer;
+}
+
+.kana-shell[data-editable='true'] > .kana-text:focus {
+    outline: none;
+}
+
 .kana-shell[data-editable='true'] > .kana-text:hover::before {
     background-color: var(--kana-edit-hover-bg);
 }

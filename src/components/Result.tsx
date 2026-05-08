@@ -375,7 +375,7 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                                 </div>
                             )}
                             <label className='accent-toggle' htmlFor='show-accent-toggle'>
-                                <span className='accent-toggle-label'>アクセント表示</span>
+                                <span className='accent-toggle-label'>アクセント</span>
                                 <span className='switch'>
                                     <input
                                         id='show-accent-toggle'

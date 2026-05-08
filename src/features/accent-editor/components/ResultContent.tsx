@@ -1,0 +1,123 @@
+import Kana from 'components/Kana';
+import SkeletonLoader from 'components/SkeletonLoader';
+import isKana from 'utilities/isKana';
+import { placeholder } from 'utilities/placeholder';
+import { splitKanaSyllables } from 'utilities/kanaUtils';
+
+import { AccentValue, type AccentValueType, type Word } from '../domain/types';
+
+function getSurfaceSegments(word: Word): string[] {
+    return isKana(word.surface) && Array.isArray(word.accent)
+        ? splitKanaSyllables(word.surface)
+        : [...word.surface];
+}
+
+interface ResultContentProps {
+    deleteBackwardAcrossFurigana: (wordIndex: number, textIndex: number, currentText: string) => boolean;
+    isLoading: boolean;
+    onEditingChange: (isEditing: boolean) => void;
+    resultRef: React.RefObject<HTMLParagraphElement | null>;
+    showAccent: boolean;
+    updateFurigana: (
+        wordIndex: number,
+        textIndex: number,
+        newFurigana: string,
+        newAccent: AccentValueType,
+    ) => void;
+    updateKana: (wordIndex: number, textIndex: number, newAccent: AccentValueType) => void;
+    words: Word[];
+}
+
+export default function ResultContent({
+    deleteBackwardAcrossFurigana,
+    isLoading,
+    onEditingChange,
+    resultRef,
+    showAccent,
+    updateFurigana,
+    updateKana,
+    words,
+}: ResultContentProps) {
+    if (isLoading) {
+        return <SkeletonLoader lines={5} />;
+    }
+
+    if (words.length === 0) {
+        return (
+            <div className='empty-state' role='status' aria-live='polite'>
+                <p>結果</p>
+            </div>
+        );
+    }
+
+    return (
+        <div
+            id='accent-result-output'
+            className={`result-area ${showAccent ? '' : 'result-area-hide-accent'}`.trim()}
+            ref={resultRef}
+            role='region'
+            aria-live='polite'
+            aria-label='アクセント解析結果'
+            lang='ja'
+        >
+            {words.map((word, wordIndex) => {
+                const surfaceSegments = getSurfaceSegments(word);
+                const kanaWord = isKana(word.surface);
+                const kanaAccents = Array.isArray(word.accent) ? word.accent : null;
+
+                if (kanaWord && kanaAccents) {
+                    return (
+                        <span key={`${wordIndex}-${word.surface}`}>
+                            {surfaceSegments.map((segment, charIndex) => (
+                                <ruby key={`${wordIndex}-${charIndex}`} className='kana-only-ruby'>
+                                    <span className='kana-only-base'>{segment}</span>
+                                    <rt>
+                                        <Kana
+                                            text={segment}
+                                            ghost
+                                            accent={kanaAccents[charIndex] ?? AccentValue.None}
+                                            onUpdate={(_ignore, newAccent) =>
+                                                updateKana(wordIndex, charIndex, newAccent)
+                                            }
+                                        />
+                                    </rt>
+                                </ruby>
+                            ))}
+                        </span>
+                    );
+                }
+
+                return (
+                    <ruby key={`${wordIndex}-${word.surface}`}>
+                        {surfaceSegments.map((segment, charIndex) => (
+                            <span key={`${wordIndex}-${charIndex}`}>{segment}</span>
+                        ))}
+                        <rt>
+                            {word.furigana.map((char, charIndex) => (
+                                <Kana
+                                    key={`${wordIndex}-${charIndex}`}
+                                    editable
+                                    text={char.text === placeholder ? '' : char.text}
+                                    accent={char.accent}
+                                    textIndex={charIndex}
+                                    wordIndex={wordIndex}
+                                    onBackspaceAtStart={currentText =>
+                                        deleteBackwardAcrossFurigana(
+                                            wordIndex,
+                                            charIndex,
+                                            currentText,
+                                        )
+                                    }
+                                    onUpdate={(newText, newAccent) =>
+                                        updateFurigana(wordIndex, charIndex, newText, newAccent)
+                                    }
+                                    onFocusChange={onEditingChange}
+                                />
+                            ))}
+                        </rt>
+                    </ruby>
+                );
+            })}
+        </div>
+    );
+}

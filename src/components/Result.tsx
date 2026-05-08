@@ -143,6 +143,7 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                 height,
                 style: {
                     boxSizing: 'border-box',
+                    margin: '0',
                     padding: `${EXPORT_PADDING_PX}px`,
                 },
             })
@@ -173,6 +174,7 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                 height,
                 style: {
                     boxSizing: 'border-box',
+                    margin: '0',
                     padding: `${EXPORT_PADDING_PX}px`,
                 },
             })

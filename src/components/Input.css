@@ -5,18 +5,6 @@
     flex: 1; /* Take up available space in panel */
 }
 
-.input-header {
-    padding: 24px 24px 0;
-}
-
-.input-description {
-    font-size: 1rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-    margin-top: 4px;
-    margin-bottom: 0.5rem;
-}
-
 .input-area {
     width: 100%;
     flex: 1;

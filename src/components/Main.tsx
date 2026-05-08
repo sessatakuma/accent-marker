@@ -179,11 +179,7 @@ export default function Main() {
                     {statusMessage}
                 </p>
                 <div className='two-col-layout' aria-label='入力と解析結果'>
-                    <section
-                        className='input-panel'
-                        aria-labelledby='input-panel-title'
-                        aria-describedby='input-panel-description'
-                    >
+                    <section className='input-panel' aria-label='入力'>
                         <Input
                             paragraph={paragraph}
                             setParagraph={setParagraph}
@@ -191,11 +187,7 @@ export default function Main() {
                         />
                     </section>
 
-                    <section
-                        className='result-panel'
-                        aria-labelledby='result-panel-title'
-                        aria-busy={isLoading}
-                    >
+                    <section className='result-panel' aria-label='結果' aria-busy={isLoading}>
                         <Result
                             words={words}
                             updateWords={updateWords}

@@ -47,15 +47,6 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
 
     return (
         <div className='input-section'>
-            <div className='input-header'>
-                <h2 id='input-panel-title' className='panel-title'>
-                    入力
-                </h2>
-                <p id='input-panel-description' className='input-description'>
-                    日本語の文章を入力すると、ふりがなとアクセント候補を下に反映します。
-                </p>
-            </div>
-
             <label className='visually-hidden' htmlFor='accent-input'>
                 解析する日本語テキスト
             </label>
@@ -66,7 +57,7 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
                 value={paragraph}
                 onChange={e => setParagraph(e.target.value)}
                 placeholder='文章を入力...'
-                aria-describedby='input-panel-description input-shortcuts'
+                aria-describedby='input-shortcuts'
                 aria-controls='accent-result-output'
                 aria-busy={isLoading}
                 lang='ja'

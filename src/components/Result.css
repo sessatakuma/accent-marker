@@ -9,10 +9,6 @@
         color 0.2s ease;
 }
 
-.result-header {
-    margin-bottom: 24px;
-}
-
 .result-container-inner.dark-result {
     background-color: var(--color-bg-dark-panel);
     color: var(--color-text-dark-primary);

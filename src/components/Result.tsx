@@ -379,14 +379,9 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                 }`}
                 ref={ref}
             >
-                <div className='result-header'>
-                    <h2 id='result-panel-title' className='panel-title'>
-                        結果
-                    </h2>
-                    <p className='visually-hidden' id='result-panel-description' aria-live='polite'>
-                        {statusMessage}
-                    </p>
-                </div>
+                <p className='visually-hidden' aria-live='polite'>
+                    {statusMessage}
+                </p>
                 <div className='result-content'>{content}</div>
 
                 {!isEmpty && (

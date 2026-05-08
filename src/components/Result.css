@@ -10,8 +10,9 @@
 }
 
 .result-container-inner.dark-result {
-    background-color: var(--color-bg-dark-panel);
-    color: var(--color-text-dark-primary);
+    --accent-color: var(--color-text-dark-primary);
+    --kana-edit-hover-bg: color-mix(in srgb, var(--color-text-dark-primary) 10%, transparent);
+    --kana-edit-focus-bg: color-mix(in srgb, var(--color-text-dark-primary) 14%, transparent);
 }
 
 .result-actions {
@@ -61,15 +62,6 @@
     outline-offset: 2px;
 }
 
-.result-container-inner.dark-result .action-button {
-    color: var(--color-text-dark-secondary);
-}
-
-.result-container-inner.dark-result .action-button:hover {
-    background-color: var(--color-bg-dark-hover);
-    color: var(--color-text-dark-primary);
-}
-
 .theme-toggle.active {
     color: var(--color-accent-green);
     background-color: var(--color-accent-green-light);
@@ -109,6 +101,11 @@
     transition:
         background-color 0.2s ease,
         color 0.2s ease;
+}
+
+.result-container-inner.dark-result .result-area {
+    background-color: var(--color-bg-dark-panel);
+    color: var(--color-text-dark-primary);
 }
 
 ruby {
@@ -349,33 +346,6 @@ input:checked + .slider:before {
 .theme-pill-button:hover {
     background-color: var(--color-bg-secondary-hover);
     color: var(--color-text-primary);
-}
-
-.result-container-inner.dark-result .menu-item:hover {
-    background-color: var(--color-bg-dark-hover);
-    color: var(--color-text-dark-primary);
-}
-
-.result-container-inner.dark-result .theme-pill-button {
-    color: var(--color-text-dark-secondary);
-}
-
-.result-container-inner.dark-result .theme-pill-button:hover {
-    background-color: var(--color-bg-dark-hover);
-    color: var(--color-text-dark-primary);
-}
-
-.result-container-inner.dark-result .accent-toggle {
-    color: var(--color-text-dark-secondary);
-}
-
-.result-container-inner.dark-result .accent-toggle:hover {
-    background-color: var(--color-bg-dark-hover);
-    color: var(--color-text-dark-primary);
-}
-
-.result-container-inner.dark-result .empty-state {
-    color: var(--color-text-dark-secondary);
 }
 
 .result-container-inner.dark-result rt {

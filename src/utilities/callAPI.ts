@@ -24,13 +24,11 @@ interface ProcessedWord {
 }
 
 export async function fetchFuriganaFromAPI(text: string): Promise<ProcessedWord[]> {
-    const apiKey = import.meta.env.VITE_X_API_KEY;
     try {
-        const response = await fetch('https://api.sessatakuma.dev/api/MarkAccent/', {
+        const response = await fetch('/api/mark-accent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-API-KEY': apiKey,
             },
             body: JSON.stringify({ text }),
         });

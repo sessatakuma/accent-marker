@@ -1,47 +1,35 @@
-.accent-markdown-export {
-    --accent-markdown-color: #aa6666;
-    --accent-markdown-line-width: 0.2rem;
-    --accent-markdown-reading-gap: 0.2em;
-    --accent-markdown-drop-height: 0.55em;
+.accent-markdown {
+    --accent-color: #aa6666;
+    --accent-line-width: 0.2rem;
+    --accent-reading-gap: 0.2em;
+    --accent-drop-height: 0.55em;
 }
 
-.accent-markdown-export__content {
+.accent-markdown p {
     margin: 0 0 1rem;
     line-height: 2.5;
 }
 
-.accent-markdown-export__ruby {
-    display: ruby;
-}
-
-.accent-markdown-export__ruby rt,
-.accent-markdown-export__reading {
+.accent-reading {
     min-height: 1em;
     color: inherit;
 }
 
-.accent-markdown-export__base {
-    display: inline-block;
-}
-
-.accent-markdown-export__syllable {
+.accent-high,
+.accent-drop {
     position: relative;
     display: inline-block;
-    padding-top: var(--accent-markdown-reading-gap);
+    padding-top: var(--accent-reading-gap);
+    border-top: var(--accent-line-width) solid var(--accent-color);
     font-style: normal;
     font-weight: 400;
 }
 
-.accent-markdown-export__syllable--high,
-.accent-markdown-export__syllable--drop {
-    border-top: var(--accent-markdown-line-width) solid var(--accent-markdown-color);
-}
-
-.accent-markdown-export__syllable--drop::after {
+.accent-drop::after {
     content: '';
     position: absolute;
     right: 0;
-    top: var(--accent-markdown-line-width);
-    height: var(--accent-markdown-drop-height);
-    border-right: var(--accent-markdown-line-width) solid var(--accent-markdown-color);
+    top: var(--accent-line-width);
+    height: var(--accent-drop-height);
+    border-right: var(--accent-line-width) solid var(--accent-color);
 }

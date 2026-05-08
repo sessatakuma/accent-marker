@@ -61,13 +61,15 @@ function escapeHtml(value: string): string {
 }
 
 function getMarkdownAccentClass(accent: AccentValueType): string {
-    if (accent === AccentValue.High) return 'accent-markdown-export__syllable--high';
-    if (accent === AccentValue.Drop) return 'accent-markdown-export__syllable--drop';
-    return 'accent-markdown-export__syllable--plain';
+    if (accent === AccentValue.High) return 'accent-high';
+    if (accent === AccentValue.Drop) return 'accent-drop';
+    return '';
 }
 
 function renderMarkdownSyllable(text: string, accent: AccentValueType): string {
-    return `<span class="accent-markdown-export__syllable ${getMarkdownAccentClass(accent)}">${escapeHtml(text)}</span>`;
+    const escapedText = escapeHtml(text);
+    const accentClassName = getMarkdownAccentClass(accent);
+    return accentClassName ? `<span class="${accentClassName}">${escapedText}</span>` : escapedText;
 }
 
 function buildMarkdownExport(words: Word[]): string {
@@ -75,12 +77,7 @@ function buildMarkdownExport(words: Word[]): string {
         .map(word => {
             const surfaceSegments = getSurfaceSegments(word);
             const kanaAccents = isKana(word.surface) && Array.isArray(word.accent) ? word.accent : null;
-            const baseMarkup = surfaceSegments
-                .map(
-                    segment =>
-                        `<span class="accent-markdown-export__base">${escapeHtml(segment)}</span>`,
-                )
-                .join('');
+            const baseMarkup = escapeHtml(word.surface);
 
             const readingMarkup = (kanaAccents
                 ? surfaceSegments.map((segment, index) =>
@@ -94,14 +91,7 @@ function buildMarkdownExport(words: Word[]): string {
                   )
             ).join('');
 
-            const rubyClassNames = [
-                'accent-markdown-export__ruby',
-                kanaAccents ? 'accent-markdown-export__ruby--kana-only' : '',
-            ]
-                .filter(Boolean)
-                .join(' ');
-
-            return `<ruby class="${rubyClassNames}">${baseMarkup}<rt class="accent-markdown-export__reading">${readingMarkup}</rt></ruby>`;
+            return `<ruby>${baseMarkup}<rt class="accent-reading">${readingMarkup}</rt></ruby>`;
         })
         .join('');
 
@@ -109,8 +99,8 @@ function buildMarkdownExport(words: Word[]): string {
 ${markdownExportStyles.trim()}
 </style>
 
-<div class="accent-markdown-export">
-  <p class="accent-markdown-export__content">${rubyMarkup}</p>
+<div class="accent-markdown">
+  <p>${rubyMarkup}</p>
 </div>
 `;
 }

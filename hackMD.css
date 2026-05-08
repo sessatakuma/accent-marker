@@ -1,189 +1,47 @@
-/* accent options */
-:root {
-    --color: #a66;
-    --width: .2rem;
+.accent-markdown-export {
+    --accent-markdown-color: #aa6666;
+    --accent-markdown-line-width: 0.2rem;
+    --accent-markdown-reading-gap: 0.2em;
+    --accent-markdown-drop-height: 0.55em;
 }
 
-/* frick safari */
-ruby > rt {
-    height: 1em;
-}
-
-/* nuke all the original css */
-.alert.accent-tool {
-    all: unset !important;
-}
-
-/* enhance readability */
-.accent-tool p {
+.accent-markdown-export__content {
+    margin: 0 0 1rem;
     line-height: 2.5;
-    margin-bottom: 16px !important;
 }
 
-/* accent definition */
-:is(i, b) span {        
-    /* height matching w/ rt */
-    padding-top: .5em;
-    
-    &:is(ruby > rt :is(i, b) span) {
-        /* no need for rt */
-        padding-top: 0 !important; 
-    }
-    
-    /* disable non-italic <i> */
-    &:not(em span) {
-        font-style: normal;
-    }
-    
-    &:not(
-        :is(
-            h1, h2, h3, 
-            h4, h5, h6, 
-            strong
-        ) span
-    ) {
-        /* 
-            * disable non-header 
-            * and non-bold <b> 
-            */
-        font-weight: normal;
-    }
-    
-    border: 
-        0
-        solid 
-        var(--color);
-    
-    border-top-width:  
-        var(--width);
-}    
+.accent-markdown-export__ruby {
+    display: ruby;
+}
 
-/* trailing drop for kana */
-b span::after {
-    /* apply invisible volume */
-    content: '';
+.accent-markdown-export__ruby rt,
+.accent-markdown-export__reading {
+    min-height: 1em;
+    color: inherit;
+}
+
+.accent-markdown-export__base {
     display: inline-block;
-    color: transparent;
-    pointer-events: none;
-    
-    /* 
-        * match the height of rt's 
-        * and their borders 
-        */
-    height: 
-        calc(
-            .5em + 
-            2 * var(--width)
-        );
-    
-    /* match the height of its parent */
-    translate: 
-        0 
-        calc(
-            -1em - 
-            -2 * var(--width)
-        );
-    
-    border-left: 
-        solid 
-        var(--color) 
-        var(--width);
 }
 
-/* 
-    * trailing drop 
-    * for furikana 
-    */
-rt b span {
-    border-right-width: var(--width);
-    
-    &::after {
-        display: none;
-    }
+.accent-markdown-export__syllable {
+    position: relative;
+    display: inline-block;
+    padding-top: var(--accent-markdown-reading-gap);
+    font-style: normal;
+    font-weight: 400;
 }
 
-/* 
-    * prevent trailing drop 
-    * sticking to the right 
-    */
-b span:last-child {
-    margin-right: 1px;
+.accent-markdown-export__syllable--high,
+.accent-markdown-export__syllable--drop {
+    border-top: var(--accent-markdown-line-width) solid var(--accent-markdown-color);
 }
 
-/* collision box for debugging */
-
-/*
-span {
-        background: #0e04;
-}
-
-:is(i, b) span {
-    background: #00e4;        
-}
-
-ruby > rt :is(i, b) span {
-    background: #e004;
-}
-*/
-
-/* usage */
-
-/*
-    * <i>: 
-    *     apply accent
-    * <b>:
-    *     apply accent w/ trailing drop
-    * e.g.: 
-    *     {花|は<b>な</b>}が
-    *     {咲|<i>さ</i>}<i>いた</i>
-    */
-
-ruby > rt .emoji[alt=':tropical_fish:'] {
-    animation: 
-        fish-spin
-        .25s 
-        linear 
-        infinite;
-}
-
-ruby:has(
-    rt .emoji[alt=':tropical_fish:']
-) > span {
-    background: linear-gradient(
-        90deg,
-        rgb(255, 0, 0) 0%,
-        rgb(255, 154, 0) 10%,
-        rgb(208, 222, 33) 20%,
-        rgb(79, 220, 74) 30%,
-        rgb(63, 218, 216) 40%,
-        rgb(47, 201, 226) 50%,
-        rgb(28, 127, 238) 60%,
-        rgb(95, 21, 242) 70%,
-        rgb(186, 12, 248) 80%,
-        rgb(251, 7, 217) 90%,
-        rgb(255, 0, 0) 100%
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200% auto;
-            
-    animation: 
-        color-change .75s linear infinite;
-}
-
-@keyframes fish-spin {
-    0%   { translate: 0      0;      }
-    25%  { translate: -.25em -.5em;  }
-    50%  { translate: 0      -.75em; }
-    75%  { translate: +.25em -.5em;  }
-    100% { transform: rotateY(1turn);}
-}
-
-@keyframes color-change {
-    to {
-        background-position: 
-            200% 
-            center;         
-    }
+.accent-markdown-export__syllable--drop::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: var(--accent-markdown-line-width);
+    height: var(--accent-markdown-drop-height);
+    border-right: var(--accent-markdown-line-width) solid var(--accent-markdown-color);
 }

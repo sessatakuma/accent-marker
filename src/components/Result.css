@@ -190,7 +190,7 @@ rt {
     position: absolute;
     bottom: 100%;
     right: 0;
-    width: 100px;
+    min-width: 132px;
     background-color: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
@@ -215,7 +215,11 @@ rt {
     gap: 0.5rem;
     cursor: default;
     color: var(--color-text-secondary);
-    border-bottom: 1px solid var(--color-border);
+}
+
+.menu-divider {
+    border-top: 1px solid var(--color-border);
+    margin: 0.25rem 0;
 }
 
 .switch {
@@ -272,6 +276,7 @@ input:checked + .slider:before {
     background-color: transparent;
     border: none;
     color: var(--color-text-secondary);
+    width: 100%;
     padding: 0.5rem 0.75rem;
     border-radius: var(--radius-md);
     transition: all 0.2s ease;
@@ -287,6 +292,11 @@ input:checked + .slider:before {
     background-color: var(--color-bg-secondary-hover);
     color: var(--color-text-primary);
     border-color: var(--color-text-secondary);
+}
+
+.result-container-inner.dark-result .menu-item:hover {
+    background-color: var(--color-bg-dark-hover);
+    color: var(--color-text-dark-primary);
 }
 
 .result-container-inner.dark-result .empty-state {

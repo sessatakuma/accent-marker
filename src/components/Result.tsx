@@ -15,6 +15,7 @@ import { placeholder } from 'utilities/placeholder';
 import { AccentValue, type AccentValueType, type Word } from 'utilities/types';
 
 import 'components/Result.css';
+import markdownExportStyles from '../../hackMD.css?raw';
 
 const preloadExportModules = (() => {
     type ExportModules = {
@@ -50,6 +51,70 @@ function getSurfaceSegments(word: Word): string[] {
         : [...word.surface];
 }
 
+function escapeHtml(value: string): string {
+    return value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+}
+
+function getMarkdownAccentClass(accent: AccentValueType): string {
+    if (accent === AccentValue.High) return 'accent-markdown-export__syllable--high';
+    if (accent === AccentValue.Drop) return 'accent-markdown-export__syllable--drop';
+    return 'accent-markdown-export__syllable--plain';
+}
+
+function renderMarkdownSyllable(text: string, accent: AccentValueType): string {
+    return `<span class="accent-markdown-export__syllable ${getMarkdownAccentClass(accent)}">${escapeHtml(text)}</span>`;
+}
+
+function buildMarkdownExport(words: Word[]): string {
+    const rubyMarkup = words
+        .map(word => {
+            const surfaceSegments = getSurfaceSegments(word);
+            const kanaAccents = isKana(word.surface) && Array.isArray(word.accent) ? word.accent : null;
+            const baseMarkup = surfaceSegments
+                .map(
+                    segment =>
+                        `<span class="accent-markdown-export__base">${escapeHtml(segment)}</span>`,
+                )
+                .join('');
+
+            const readingMarkup = (kanaAccents
+                ? surfaceSegments.map((segment, index) =>
+                      renderMarkdownSyllable(segment, kanaAccents[index] ?? AccentValue.None),
+                  )
+                : word.furigana.map(item =>
+                      renderMarkdownSyllable(
+                          item.text === placeholder ? '' : item.text,
+                          item.accent,
+                      ),
+                  )
+            ).join('');
+
+            const rubyClassNames = [
+                'accent-markdown-export__ruby',
+                kanaAccents ? 'accent-markdown-export__ruby--kana-only' : '',
+            ]
+                .filter(Boolean)
+                .join(' ');
+
+            return `<ruby class="${rubyClassNames}">${baseMarkup}<rt class="accent-markdown-export__reading">${readingMarkup}</rt></ruby>`;
+        })
+        .join('');
+
+    return `<style>
+${markdownExportStyles.trim()}
+</style>
+
+<div class="accent-markdown-export">
+  <p class="accent-markdown-export__content">${rubyMarkup}</p>
+</div>
+`;
+}
+
 const Result = forwardRef<HTMLDivElement, ResultProps>(
     ({ words, updateWords, isLoading, onEditingChange }, ref) => {
         const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
@@ -68,44 +133,18 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
             }, 2000);
         };
 
-        const copyResult = (): void => {
+        const downloadMarkdown = (): void => {
             if (isEmpty) return;
 
-            const content = words
-                .map(word => {
-                    if (isKana(word.surface) && Array.isArray(word.accent)) {
-                        const accentArray = word.accent;
-                        return getSurfaceSegments(word)
-                            .map((segment, index) => {
-                                const accent = accentArray[index] ?? AccentValue.None;
-                                if (accent === AccentValue.High) return `<i>${segment}</i>`;
-                                if (accent === AccentValue.Drop) return `<b>${segment}</b>`;
-                                return segment;
-                            })
-                            .join('');
-                    }
-
-                    const furigana = word.furigana
-                        .map(item => {
-                            if (item.accent === AccentValue.High) return `<i>${item.text}</i>`;
-                            if (item.accent === AccentValue.Drop) return `<b>${item.text}</b>`;
-                            return item.text;
-                        })
-                        .join('');
-
-                    return `{${word.surface}|${furigana}}`;
-                })
-                .join('')
-                .replace(/<\/b><b>/g, '')
-                .replace(/<\/i><i>/g, '');
-
-            navigator.clipboard
-                .writeText(content)
-                .then(() => showFeedback('HackMD形式でコピーしました！', 'success'))
-                .catch(err => {
-                    console.error('コピー失敗', err);
-                    showFeedback('コピーに失敗しました', 'warning');
-                });
+            const markdownDocument = buildMarkdownExport(words);
+            const blob = new Blob([markdownDocument], { type: 'text/markdown;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = 'accented-text.md';
+            link.href = url;
+            link.click();
+            window.setTimeout(() => URL.revokeObjectURL(url), 0);
+            showFeedback('Markdownを書き出しました！', 'success');
         };
 
         const downloadImage = async (): Promise<void> => {
@@ -368,13 +407,6 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                             >
                                 <Copy size={18} />
                             </button>
-                            <button
-                                className='action-button'
-                                onClick={copyResult}
-                                title='HackMD形式でコピー (カスタムレンダリング用)'
-                            >
-                                <CodeXml size={18} />
-                            </button>
                         </div>
 
                         <div className='save-menu-container'>
@@ -421,6 +453,16 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                                     >
                                         <FileText size={16} />
                                         <span>PDF</span>
+                                    </button>
+                                    <button
+                                        className='menu-item'
+                                        onClick={() => {
+                                            downloadMarkdown();
+                                            setIsMenuOpen(false);
+                                        }}
+                                    >
+                                        <CodeXml size={16} />
+                                        <span>Markdown</span>
                                     </button>
                                 </div>
                             )}

@@ -382,7 +382,14 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                 <p className='visually-hidden' aria-live='polite'>
                     {statusMessage}
                 </p>
-                <div className='result-content'>{content}</div>
+                <div className='result-content'>
+                    {content}
+                    {!isEmpty && (
+                        <p className='result-hint' aria-hidden='true'>
+                            ふりがな・アクセントをクリックして編集
+                        </p>
+                    )}
+                </div>
 
                 {!isEmpty && (
                     <div className='result-actions' aria-label='結果の操作'>

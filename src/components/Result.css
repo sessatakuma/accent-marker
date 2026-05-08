@@ -81,6 +81,16 @@
     padding: 0;
 }
 
+.result-hint {
+    margin-top: 0.75rem;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
 .empty-state {
     display: flex;
     justify-content: flex-start;
@@ -346,6 +356,10 @@ input:checked + .slider:before {
 }
 
 .result-container-inner.dark-result .empty-state {
+    color: var(--color-text-dark-secondary);
+}
+
+.result-container-inner.dark-result .result-hint {
     color: var(--color-text-dark-secondary);
 }
 

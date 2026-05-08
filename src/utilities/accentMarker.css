@@ -83,11 +83,13 @@ ruby > rt {
     z-index: 1;
 }
 
-.kana-shell[data-empty='true']:not([data-editable='true']) > .kana-text {
+.kana-shell[data-ghost='true'] > .kana-text {
     display: block;
+    visibility: hidden;
     block-size: 0;
     line-height: 0;
     overflow: hidden;
+    white-space: pre;
 }
 
 .kana-shell[data-editable='true'] > .kana-text::before {

@@ -284,10 +284,11 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                                 ))}
                                 <rt>
                                     {kanaWord && kanaAccents
-                                        ? surfaceSegments.map((_segment, charIndex) => (
+                                        ? surfaceSegments.map((segment, charIndex) => (
                                               <Kana
                                                   key={`${wordIndex}-${charIndex}`}
-                                                  text=''
+                                                  text={segment}
+                                                  ghost
                                                   accent={kanaAccents[charIndex] ?? AccentValue.None}
                                                   onUpdate={(_ignore, newAccent) =>
                                                       updateKana(wordIndex, charIndex, newAccent)

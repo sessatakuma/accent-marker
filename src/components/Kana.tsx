@@ -8,6 +8,7 @@ interface KanaProps {
     accent: AccentValueType;
     onUpdate?: (text: string, accent: AccentValueType) => void;
     editable?: boolean;
+    ghost?: boolean;
     onFocusChange?: (isFocused: boolean) => void;
 }
 
@@ -18,6 +19,7 @@ export default function Kana({
     accent,
     onUpdate,
     editable = false,
+    ghost = false,
     onFocusChange,
 }: KanaProps) {
     const textRef = useRef<HTMLSpanElement>(null);
@@ -77,6 +79,7 @@ export default function Kana({
             data-accent={accentName[accent]}
             data-editable={editable || undefined}
             data-empty={text.length === 0 || undefined}
+            data-ghost={ghost || undefined}
         >
             <span className='kana-accent-lane' aria-hidden='true'>
                 <button

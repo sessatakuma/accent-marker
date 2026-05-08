@@ -72,7 +72,6 @@ function buildMarkdownExport(words: Word[]): string {
             const surfaceSegments = getSurfaceSegments(word);
             const kanaAccents = isKana(word.surface) && Array.isArray(word.accent) ? word.accent : null;
             const baseMarkup = escapeHtml(word.surface);
-            const baseMarkup = escapeHtml(word.surface);
 
             const readingMarkup = (kanaAccents
                 ? surfaceSegments.map((segment, index) =>
@@ -91,7 +90,6 @@ function buildMarkdownExport(words: Word[]): string {
         .join('');
 
     return `<style>${markdownExportStyles.trim()}</style><div class="accent-marker">${rubyMarkup}</div>`;
-    
 }
 
 const Result = forwardRef<HTMLDivElement, ResultProps>(

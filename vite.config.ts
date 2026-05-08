@@ -1,8 +1,12 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
 
+const DEFAULT_DEV_MARK_ACCENT_PROXY_TARGET = 'https://accent-marker.hsichen.dev';
+
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
+    const devMarkAccentProxyTarget =
+        env.VITE_MARK_ACCENT_API_URL?.trim() || DEFAULT_DEV_MARK_ACCENT_PROXY_TARGET;
 
     return {
         plugins: [react()],
@@ -17,12 +21,8 @@ export default defineConfig(({ mode }) => {
             open: true,
             proxy: {
                 '/api/mark-accent': {
-                    target: 'https://api.sessatakuma.dev',
+                    target: devMarkAccentProxyTarget,
                     changeOrigin: true,
-                    rewrite: path => path.replace('/api/mark-accent', '/api/MarkAccent/'),
-                    headers: env.MARK_ACCENT_API_KEY
-                        ? { 'X-API-KEY': env.MARK_ACCENT_API_KEY }
-                        : undefined,
                 },
             },
         },

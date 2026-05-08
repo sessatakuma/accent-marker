@@ -20,6 +20,29 @@
     min-height: 60vh;
 }
 
+.result-panel-stack {
+    position: relative;
+    min-height: 500px;
+}
+
+.result-panel-stack .result-panel {
+    height: 100%;
+}
+
+.result-panel-hint {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+}
+
 @media (min-width: 1024px) {
     .two-col-layout {
         grid-template-columns: 1fr 1fr;

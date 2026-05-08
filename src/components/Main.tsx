@@ -187,20 +187,27 @@ export default function Main() {
                         />
                     </section>
 
-                    <section className='result-panel' aria-label='結果' aria-busy={isLoading}>
-                        <Result
-                            words={words}
-                            updateWords={updateWords}
-                            ref={resultRef}
-                            isLoading={isLoading}
-                            canUndo={pastWords.length > 0}
-                            canRedo={futureWords.length > 0}
-                            onUndo={undoWords}
-                            onRedo={redoWords}
-                            onEditingChange={setIsEditing}
-                            statusMessage={statusMessage}
-                        />
-                    </section>
+                    <div className='result-panel-stack'>
+                        <section className='result-panel' aria-label='結果' aria-busy={isLoading}>
+                            <Result
+                                words={words}
+                                updateWords={updateWords}
+                                ref={resultRef}
+                                isLoading={isLoading}
+                                canUndo={pastWords.length > 0}
+                                canRedo={futureWords.length > 0}
+                                onUndo={undoWords}
+                                onRedo={redoWords}
+                                onEditingChange={setIsEditing}
+                                statusMessage={statusMessage}
+                            />
+                        </section>
+                        {!isLoading && words.length > 0 && (
+                            <p className='result-panel-hint' aria-hidden='true'>
+                                ふりがな・アクセントをクリックして編集
+                            </p>
+                        )}
+                    </div>
                 </div>
             </main>
         </div>

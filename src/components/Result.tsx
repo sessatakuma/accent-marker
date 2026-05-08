@@ -98,6 +98,7 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
         const [feedbackType, setFeedbackType] = useState<FeedbackType>('success');
         const [isDarkResult, setIsDarkResult] = useState(false);
         const [isMenuOpen, setIsMenuOpen] = useState(false);
+        const [showAccent, setShowAccent] = useState(true);
 
         const resultRef = useRef<HTMLParagraphElement>(null);
         const isEmpty = !words || words.length === 0;
@@ -274,7 +275,10 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
             );
         } else {
             content = (
-                <p className='result-area' ref={resultRef}>
+                <p
+                    className={`result-area ${showAccent ? '' : 'result-area-hide-accent'}`.trim()}
+                    ref={resultRef}
+                >
                     {words.map((word, wordIndex) => {
                         const surfaceSegments = getSurfaceSegments(word);
                         const kanaWord = isKana(word.surface);
@@ -355,6 +359,21 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                                     {copyFeedback}
                                 </div>
                             )}
+                            <label className='accent-toggle' htmlFor='show-accent-toggle'>
+                                <span className='accent-toggle-label'>show accent</span>
+                                <span className='switch'>
+                                    <input
+                                        id='show-accent-toggle'
+                                        type='checkbox'
+                                        checked={showAccent}
+                                        onChange={() => setShowAccent(prev => !prev)}
+                                    />
+                                    <span className='slider'></span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div className='action-group-right'>
                             <button
                                 className='action-button'
                                 onClick={copyPlainText}
@@ -362,55 +381,55 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                             >
                                 <Copy size={18} />
                             </button>
-                        </div>
 
-                        <div className='save-menu-container'>
-                            <button
-                                className={`action-button save-menu-trigger ${
-                                    isMenuOpen ? 'active' : ''
-                                }`}
-                                onClick={() => setIsMenuOpen(prev => !prev)}
-                                title='保存オプション'
-                            >
-                                <ArrowDownToLine size={18} />
-                            </button>
+                            <div className='save-menu-container'>
+                                <button
+                                    className={`action-button save-menu-trigger ${
+                                        isMenuOpen ? 'active' : ''
+                                    }`}
+                                    onClick={() => setIsMenuOpen(prev => !prev)}
+                                    title='保存オプション'
+                                >
+                                    <ArrowDownToLine size={18} />
+                                </button>
 
-                            {isMenuOpen && (
-                                <div className='save-menu-dropdown'>
-                                    <div className='theme-switch-container'>
-                                        <Moon size={16} className='theme-switch-label' />
-                                        <label className='switch'>
-                                            <input
-                                                type='checkbox'
-                                                checked={isDarkResult}
-                                                onChange={() => setIsDarkResult(prev => !prev)}
-                                            />
-                                            <span className='slider'></span>
-                                        </label>
+                                {isMenuOpen && (
+                                    <div className='save-menu-dropdown'>
+                                        <div className='theme-switch-container'>
+                                            <Moon size={16} className='theme-switch-label' />
+                                            <label className='switch'>
+                                                <input
+                                                    type='checkbox'
+                                                    checked={isDarkResult}
+                                                    onChange={() => setIsDarkResult(prev => !prev)}
+                                                />
+                                                <span className='slider'></span>
+                                            </label>
+                                        </div>
+                                        <div className='menu-divider'></div>
+                                        <button
+                                            className='menu-item'
+                                            onClick={() => {
+                                                downloadImage();
+                                                setIsMenuOpen(false);
+                                            }}
+                                        >
+                                            <ImageIcon size={16} />
+                                            <span>画像</span>
+                                        </button>
+                                        <button
+                                            className='menu-item'
+                                            onClick={() => {
+                                                downloadMarkdown();
+                                                setIsMenuOpen(false);
+                                            }}
+                                        >
+                                            <CodeXml size={16} />
+                                            <span>Markdown</span>
+                                        </button>
                                     </div>
-                                    <div className='menu-divider'></div>
-                                    <button
-                                        className='menu-item'
-                                        onClick={() => {
-                                            downloadImage();
-                                            setIsMenuOpen(false);
-                                        }}
-                                    >
-                                        <ImageIcon size={16} />
-                                        <span>画像</span>
-                                    </button>
-                                    <button
-                                        className='menu-item'
-                                        onClick={() => {
-                                            downloadMarkdown();
-                                            setIsMenuOpen(false);
-                                        }}
-                                    >
-                                        <CodeXml size={16} />
-                                        <span>Markdown</span>
-                                    </button>
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
                     </div>
                 )}

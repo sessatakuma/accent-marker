@@ -129,3 +129,11 @@ ruby > rt {
 .kana-shell[data-editable='true']:has(.kana-accent-hitbox:focus-visible) > .kana-text::before {
     background-color: transparent;
 }
+
+.result-area-hide-accent .kana-shell {
+    grid-template-rows: 0 auto;
+}
+
+.result-area-hide-accent .kana-accent-lane {
+    display: none;
+}

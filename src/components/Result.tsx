@@ -60,16 +60,11 @@ function escapeHtml(value: string): string {
         .replaceAll("'", '&#39;');
 }
 
-function getMarkdownAccentClass(accent: AccentValueType): string {
-    if (accent === AccentValue.High) return 'accent-high';
-    if (accent === AccentValue.Drop) return 'accent-drop';
-    return '';
-}
-
 function renderMarkdownSyllable(text: string, accent: AccentValueType): string {
     const escapedText = escapeHtml(text);
-    const accentClassName = getMarkdownAccentClass(accent);
-    return accentClassName ? `<span class="${accentClassName}">${escapedText}</span>` : escapedText;
+    if (accent === AccentValue.High) return `<i>${escapedText}</i>`;
+    if (accent === AccentValue.Drop) return `<b>${escapedText}</b>`;
+    return escapedText;
 }
 
 function buildMarkdownExport(words: Word[]): string {
@@ -91,18 +86,11 @@ function buildMarkdownExport(words: Word[]): string {
                   )
             ).join('');
 
-            return `<ruby>${baseMarkup}<rt class="accent-reading">${readingMarkup}</rt></ruby>`;
+            return `<ruby>${baseMarkup}<rt>${readingMarkup}</rt></ruby>`;
         })
         .join('');
 
-    return `<style>
-${markdownExportStyles.trim()}
-</style>
-
-<div class="accent-markdown">
-  <p>${rubyMarkup}</p>
-</div>
-`;
+    return `<style>${markdownExportStyles.trim()}</style><div class="a">${rubyMarkup}</div>`;
 }
 
 const Result = forwardRef<HTMLDivElement, ResultProps>(

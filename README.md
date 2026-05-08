@@ -31,6 +31,8 @@ You can optionally override the direct upstream host too:
 MARK_ACCENT_UPSTREAM_URL=https://api.sessatakuma.dev/api/MarkAccent/
 ```
 
+Do not set `MARK_ACCENT_UPSTREAM_URL` to this app's own `/api/mark-accent` URL. That makes the proxy call itself recursively.
+
 Without a local API key, the proxy falls back to the public host:
 
 ```text
@@ -55,5 +57,7 @@ bun dev
 2. Add `MARK_ACCENT_API_KEY` as an environment variable in the Vercel project settings.
 3. Optionally add `MARK_ACCENT_UPSTREAM_URL` if the direct upstream API host changes.
 4. Deploy with the default Vite build settings.
+
+`MARK_ACCENT_UPSTREAM_URL` must point to the real upstream API, not this app's `/api/mark-accent` route.
 
 In production, the frontend calls `/api/mark-accent`, and Vercel forwards the request server-side so the API key is not exposed to the browser.

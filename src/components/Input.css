@@ -22,6 +22,10 @@
     font-family: inherit; /* Ensure font matches */
 }
 
+.input-area:focus {
+    outline: none;
+}
+
 .input-area:focus-visible {
     outline: 2px solid var(--color-accent-green);
     outline-offset: -2px;

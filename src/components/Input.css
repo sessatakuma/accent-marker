@@ -2,8 +2,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    position: relative;
     flex: 1; /* Take up available space in panel */
 }
 
@@ -16,6 +14,7 @@
 
 .input-area {
     width: 100%;
+    flex: 1;
     padding: 1.5rem;
     background-color: transparent;
     border: none;
@@ -35,13 +34,12 @@
 }
 
 .input-actions {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
     display: flex;
+    justify-content: flex-end;
     gap: 0.75rem;
     align-items: center;
-    z-index: 10;
+    margin-top: auto;
+    padding: 0 1.5rem 1.5rem;
 }
 
 .generate-button {

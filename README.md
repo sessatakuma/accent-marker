@@ -17,16 +17,16 @@ bun i
 
 ## Set up dev server
 
-Local development calls the public API directly. By default it uses:
+Local development uses the Vite dev server as a same-origin proxy for `/api/mark-accent`. By default it forwards to:
 
 ```text
-https://accent-marker.hsichen.dev/api/mark-accent
+https://accent-marker.hsichen.dev
 ```
 
-If you need to point the app at a different public API host, add this to `.env`:
+If you need to point dev at a different public API host, add this to `.env`:
 
 ```bash
-VITE_MARK_ACCENT_API_URL=https://accent-marker.sessatakuma.dev/api/mark-accent
+VITE_MARK_ACCENT_API_URL=https://accent-marker.sessatakuma.dev
 ```
 
 Then start the development server:

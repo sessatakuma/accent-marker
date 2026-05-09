@@ -92,14 +92,14 @@
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    background-color: color-mix(in srgb, var(--color-bg-secondary) 72%, transparent);
+    background-color: color-mix(in srgb, var(--color-bg-secondary) 46%, transparent);
     color: var(--color-text-secondary);
     z-index: 2;
     pointer-events: none;
 }
 
 .result-container-inner.dark-result .result-status-overlay {
-    background-color: color-mix(in srgb, var(--color-bg-dark-panel) 72%, transparent);
+    background-color: color-mix(in srgb, var(--color-bg-dark-panel) 46%, transparent);
     color: var(--color-text-dark-secondary);
 }
 

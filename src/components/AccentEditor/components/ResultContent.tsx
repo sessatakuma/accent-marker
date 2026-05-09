@@ -113,18 +113,24 @@ export default function ResultContent({
                                         >
                                             {segment}
                                         </span>
-                                        <rt
-                                            className={isAccentVisible ? 'result-rt-visible' : 'result-rt-pending'}
-                                        >
-                                            <Kana
-                                                text={segment}
-                                                ghost
-                                                accent={kanaAccents[charIndex] ?? AccentValue.None}
-                                                accentVisible={isAccentVisible}
-                                                onUpdate={(_ignore, newAccent) =>
-                                                    updateKana(wordIndex, charIndex, newAccent)
+                                        <rt>
+                                            <span
+                                                className={
+                                                    isAccentVisible
+                                                        ? 'result-rt-visible'
+                                                        : 'result-rt-pending'
                                                 }
-                                            />
+                                            >
+                                                <Kana
+                                                    text={segment}
+                                                    ghost
+                                                    accent={kanaAccents[charIndex] ?? AccentValue.None}
+                                                    accentVisible={isAccentVisible}
+                                                    onUpdate={(_ignore, newAccent) =>
+                                                        updateKana(wordIndex, charIndex, newAccent)
+                                                    }
+                                                />
+                                            </span>
                                         </rt>
                                     </ruby>
                                 );

@@ -2,9 +2,7 @@
     --skeleton-padding-block: 16px;
     --skeleton-padding-inline: 16px;
     --skeleton-radius: 16px;
-    --skeleton-header-gap: 12px;
     --skeleton-line-gap: 8px;
-    --skeleton-chip-height: 28px;
     --skeleton-glow: color-mix(in srgb, var(--color-accent-red) 12%, transparent);
     --skeleton-ink: color-mix(in srgb, var(--color-accent-red) 78%, var(--color-text-primary));
     --skeleton-muted: color-mix(in srgb, var(--color-text-secondary) 58%, transparent);
@@ -20,35 +18,6 @@
         radial-gradient(circle at top right, var(--skeleton-glow), transparent 44%),
         linear-gradient(180deg, color-mix(in srgb, var(--color-bg-secondary) 84%, white), transparent);
     overflow: hidden;
-}
-
-.skeleton-header {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--skeleton-header-gap);
-}
-
-.skeleton-chip {
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--skeleton-chip-height);
-    padding: 0 12px;
-    border: 1px solid color-mix(in srgb, var(--color-accent-red) 20%, transparent);
-    border-radius: 999px;
-    color: var(--skeleton-ink);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
-
-.skeleton-pulse-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: var(--color-accent-red);
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent-red) 28%, transparent);
-    animation: skeletonPulse 1.6s ease-out infinite;
 }
 
 .skeleton-script {
@@ -114,33 +83,11 @@
     display: none;
 }
 
-.skeleton-caption {
-    color: var(--color-text-secondary);
-    font-size: 0.8125rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
 @keyframes skeletonSweep {
     from {
         background-position: 200% 0, 0 0;
     }
     to {
         background-position: -20% 0, 0 0;
-    }
-}
-
-@keyframes skeletonPulse {
-    0% {
-        box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent-red) 28%, transparent);
-        opacity: 1;
-    }
-    70% {
-        box-shadow: 0 0 0 12px color-mix(in srgb, var(--color-accent-red) 0%, transparent);
-        opacity: 0.6;
-    }
-    100% {
-        box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent-red) 0%, transparent);
-        opacity: 1;
     }
 }

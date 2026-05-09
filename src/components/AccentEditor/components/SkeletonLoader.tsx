@@ -6,10 +6,6 @@ interface SkeletonLoaderProps {
     revealedCharacterCount: number;
 }
 
-function getPlaceholderLines() {
-    return ['解析を整えています', 'ふりがなを並べています', 'アクセントを描いています'];
-}
-
 function renderLine(line: string, startIndex: number) {
     let characterIndex = startIndex;
 
@@ -35,16 +31,11 @@ export default function SkeletonLoader({
     paragraph,
     revealedCharacterCount,
 }: SkeletonLoaderProps) {
-    const sourceLines = paragraph.trim().length > 0 ? paragraph.split('\n') : getPlaceholderLines();
+    const sourceLines = paragraph.split('\n');
     let characterOffset = 0;
 
     return (
         <div className={`skeleton-container ${className}`.trim()} aria-hidden='true'>
-            <div className='skeleton-header'>
-                <span className='skeleton-chip'>composing</span>
-                <span className='skeleton-pulse-dot'></span>
-            </div>
-
             <div className='skeleton-script' role='presentation'>
                 {sourceLines.map((line, lineIndex) => {
                     const tokens = renderLine(line || '　', characterOffset);
@@ -70,8 +61,6 @@ export default function SkeletonLoader({
                     );
                 })}
             </div>
-
-            <div className='skeleton-caption'>surface first, pitch accents next</div>
         </div>
     );
 }

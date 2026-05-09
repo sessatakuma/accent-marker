@@ -131,6 +131,34 @@ rt {
     color: var(--color-text-secondary);
 }
 
+.furigana-group {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-end;
+    isolation: isolate;
+}
+
+.furigana-group::before {
+    content: '';
+    position: absolute;
+    inset: -0.125rem -0.125rem -0.0625rem;
+    border-radius: calc(var(--radius-sm) + 2px);
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.furigana-group:has(.kana-text:hover)::before,
+.furigana-group:has(.kana-accent-hitbox:hover)::before {
+    background-color: var(--kana-edit-hover-bg);
+}
+
+.furigana-group:focus-within::before,
+.furigana-group:has(.kana-accent-hitbox:focus-visible)::before {
+    background-color: var(--kana-edit-focus-bg);
+}
+
 .dark-theme .result-area {
     background-color: var(--color-bg-dark-panel);
     color: var(--color-text-dark-primary);

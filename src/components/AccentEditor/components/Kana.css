@@ -105,36 +105,12 @@ ruby > rt {
     white-space: pre;
 }
 
-.kana-shell[data-editable='true'] > .kana-text::before {
-    content: '';
-    position: absolute;
-    inset: 0.1em -1px 0;
-    border-radius: var(--radius-sm);
-    background-color: transparent;
-    transition: background-color 0.2s ease;
-    pointer-events: none;
-    z-index: -1;
-}
-
 .kana-shell[data-editable='true'] > .kana-text {
     cursor: pointer;
 }
 
 .kana-shell[data-editable='true'] > .kana-text:focus {
     outline: none;
-}
-
-.kana-shell[data-editable='true'] > .kana-text:hover::before {
-    background-color: var(--kana-edit-hover-bg);
-}
-
-.kana-shell[data-editable='true']:focus-within > .kana-text::before {
-    background-color: var(--kana-edit-focus-bg);
-}
-
-.kana-shell[data-editable='true']:has(.kana-accent-hitbox:hover) > .kana-text::before,
-.kana-shell[data-editable='true']:has(.kana-accent-hitbox:focus-visible) > .kana-text::before {
-    background-color: transparent;
 }
 
 .result-area-hide-accent .kana-shell {

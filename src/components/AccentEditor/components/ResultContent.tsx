@@ -97,6 +97,7 @@ export default function ResultContent({
                             <span key={`${wordIndex}-${charIndex}`}>{segment}</span>
                         ))}
                         <rt>
+                            <span className='furigana-group'>
                             {word.furigana.map((char, charIndex) => (
                                 <Kana
                                     key={`${wordIndex}-${charIndex}`}
@@ -124,6 +125,7 @@ export default function ResultContent({
                                     }
                                 />
                             ))}
+                            </span>
                         </rt>
                     </ruby>
                 );

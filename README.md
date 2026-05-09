@@ -1,63 +1,42 @@
-# Accent-Web
+# Accent Marker
 
-This is a tool that aims to provide Japanese learners a tool to add furigana and accent marks to articles.
+A web tool for automatic Japanese furigana and accent markings to plain text, to help Japanese learners to improve their speaking and reading skills.
 
-## Features
+<img src="docs/images/demo.png" alt="Accent Marker demo" />
 
-- Adds furigana and accent marks automatically to Japanese plain text, which can also be edited manually
-- The formatted text can be copied as plain text, exported as Markdown with an embedded accent-rendering stylesheet, or downloaded as `.pdf` or `.png`
+## What It Does
 
-## Installation
+- Analyzes Japanese text and renders furigana with pitch-accent markings automatically
+- Lets you click the generated result to adjust furigana and accent output manually
+- Supports plain-text copy, Markdown export, and image download for study notes
 
-Install all packages with [bun](https://bun.com/):
+## How It Works
+
+1. Paste or generate a Japanese sentence.
+2. Let the app analyze and mark the text.
+3. Tweak furigana or accent presentation directly in the result panel if needed.
+4. Export the formatted output in the format you need.
+
+## Quick Start (Internal Development)
+
+Install dependencies with [bun](https://bun.com/):
 
 ```bash
 bun i
 ```
 
-## Set up dev server
+Start the local dev server:
+
+```bash
+bun dev
+```
+
+## Local API Setup (Internal Development)
 
 Local development and `vite preview` use a same-origin proxy for `/api/mark-accent`.
 
 If you have an API key, add it to `.env` and requests will go directly to the real upstream API:
 
 ```bash
-MARK_ACCENT_API_KEY=<our_api_key>
+MARK_ACCENT_API_KEY=<your_api_key>
 ```
-
-You can optionally override the direct upstream host too:
-
-```bash
-MARK_ACCENT_UPSTREAM_URL=https://api.sessatakuma.dev/api/MarkAccent/
-```
-
-Do not set `MARK_ACCENT_UPSTREAM_URL` to this app's own `/api/mark-accent` URL. That makes the proxy call itself recursively.
-
-Without a local API key, the proxy falls back to the public host:
-
-```text
-https://accent-marker.hsichen.dev
-```
-
-If you need to point dev at a different public API host, add this to `.env`:
-
-```bash
-VITE_MARK_ACCENT_API_URL=https://accent-marker.sessatakuma.dev
-```
-
-Then start the development server:
-
-```bash
-bun dev
-```
-
-## Deploy on Vercel
-
-1. Import the repository into Vercel.
-2. Add `MARK_ACCENT_API_KEY` as an environment variable in the Vercel project settings.
-3. Optionally add `MARK_ACCENT_UPSTREAM_URL` if the direct upstream API host changes.
-4. Deploy with the default Vite build settings.
-
-`MARK_ACCENT_UPSTREAM_URL` must point to the real upstream API, not this app's `/api/mark-accent` route.
-
-In production, the frontend calls `/api/mark-accent`, and Vercel forwards the request server-side so the API key is not exposed to the browser.

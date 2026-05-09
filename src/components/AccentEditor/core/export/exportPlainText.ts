@@ -1,5 +1,5 @@
-import { getAccentArray, getAccentNumberFromArray, getReadingFromFurigana } from '../word/accent';
 import { placeholder } from '../../constant/placeholder';
+import { getAccentArray, getAccentNumberFromArray, getReadingFromFurigana } from '../word/accent';
 
 import type { Word } from '../word/accentTypes';
 

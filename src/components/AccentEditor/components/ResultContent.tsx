@@ -1,7 +1,6 @@
 import { placeholder } from '../constant/placeholder';
 import isKana from '../core/kana/isKana';
 import { splitKanaSyllables } from '../core/kana/kanaUtils';
-
 import { AccentValue, type AccentValueType, type Word } from '../core/word/accentTypes';
 
 import Kana from './Kana';

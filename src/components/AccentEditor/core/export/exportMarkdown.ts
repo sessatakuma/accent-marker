@@ -1,7 +1,6 @@
+import { placeholder } from '../../constant/placeholder';
 import isKana from '../kana/isKana';
 import { splitKanaSyllables } from '../kana/kanaUtils';
-
-import { placeholder } from '../../constant/placeholder';
 import { AccentValue, type AccentValueType, type Word } from '../word/accentTypes';
 
 import markdownExportStyles from './markdownExport.css?raw';

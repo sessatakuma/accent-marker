@@ -1,8 +1,7 @@
-import markdownExportStyles from '../../hackMD.css?raw';
-
 import { AccentValue, type AccentValueType, type Word } from './accentTypes';
 import isKana from './isKana';
 import { splitKanaSyllables } from './kanaUtils';
+import markdownExportStyles from './markdownExport.css?raw';
 import { placeholder } from './placeholder';
 
 function getSurfaceSegments(word: Word): string[] {

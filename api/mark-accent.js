@@ -1,7 +1,7 @@
 import {
     DEFAULT_MARK_ACCENT_UPSTREAM_URL,
     isMarkAccentProxyLoop,
-} from '../config/mark-accent.js';
+} from '../proxy.config.js';
 
 export default async function handler(request, response) {
     if (request.method !== 'POST') {

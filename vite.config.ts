@@ -6,7 +6,7 @@ import {
     DEFAULT_MARK_ACCENT_UPSTREAM_URL,
     MARK_ACCENT_PROXY_PATH,
     normalizeMarkAccentUrl,
-} from './config/mark-accent.js';
+} from './proxy.config.js';
 
 interface MarkAccentProxyOptions {
     apiKey?: string;
@@ -116,11 +116,8 @@ export default defineConfig(({ mode }) => {
         ],
         resolve: {
             alias: {
-                app: '/src/app',
                 components: '/src/components',
-                features: '/src/features',
-                shared: '/src/shared',
-                utilities: '/src/utilities',
+                hooks: '/src/hooks',
             },
         },
         server: {

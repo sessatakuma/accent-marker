@@ -12,11 +12,7 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
-        "isolatedModules": true,
-        "baseUrl": ".",
-        "paths": {
-            "components/*": ["./src/components/*"]
-        }
+        "isolatedModules": true
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "dist"]

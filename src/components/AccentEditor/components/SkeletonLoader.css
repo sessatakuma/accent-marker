@@ -32,18 +32,11 @@
 
 .skeleton-glyph {
     position: relative;
-    display: inline-block;
-    min-width: 1ch;
+    display: inline;
     color: var(--skeleton-muted);
     transition:
         color 0.26s ease,
-        opacity 0.26s ease,
-        transform 0.3s ease,
-        filter 0.3s ease;
-}
-
-.skeleton-glyph-space {
-    min-width: 0.5ch;
+        opacity 0.26s ease;
 }
 
 .skeleton-glyph-visible {
@@ -59,9 +52,9 @@
 .skeleton-glyph-pending::before {
     content: '';
     position: absolute;
-    right: 0.08em;
+    left: 0;
+    right: 0;
     bottom: 0.65em;
-    left: 0.08em;
     height: 0.75em;
     border-radius: 8px;
     background:

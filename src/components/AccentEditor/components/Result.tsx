@@ -118,24 +118,24 @@ export default function Result({
             <p className='visually-hidden' aria-live='polite'>
                 {statusMessage}
             </p>
-            <div className='result-content'>
-                {overlayPhase !== 'hidden' && (
-                    <div
-                        className={`result-status-overlay result-status-overlay-${overlayPhase}`}
-                        aria-hidden='true'
-                    >
-                        <span className='result-status-label'>
-                            {overlayPhase === 'done' ? '分析完了！' : '分析中'}
+            {overlayPhase !== 'hidden' && (
+                <div
+                    className={`result-status-overlay result-status-overlay-${overlayPhase}`}
+                    aria-hidden='true'
+                >
+                    <span className='result-status-label'>
+                        {overlayPhase === 'done' ? '分析完了！' : '分析中'}
+                    </span>
+                    {overlayPhase === 'loading' && (
+                        <span className='result-status-dots'>
+                            <span className='result-status-dot'></span>
+                            <span className='result-status-dot'></span>
+                            <span className='result-status-dot'></span>
                         </span>
-                        {overlayPhase === 'loading' && (
-                            <span className='result-status-dots'>
-                                <span className='result-status-dot'></span>
-                                <span className='result-status-dot'></span>
-                                <span className='result-status-dot'></span>
-                            </span>
-                        )}
-                    </div>
-                )}
+                    )}
+                </div>
+            )}
+            <div className='result-content'>
                 <ResultContent
                     deleteBackwardAcrossFurigana={deleteBackwardAcrossFurigana}
                     deleteForwardAcrossFurigana={deleteForwardAcrossFurigana}

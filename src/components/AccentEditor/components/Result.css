@@ -1,9 +1,11 @@
 .result-container-inner {
+    position: relative;
     display: flex;
     flex-direction: column;
     min-height: 100%;
     padding: 1.5rem;
     border-radius: var(--radius-lg);
+    overflow: hidden;
     transition:
         background-color 0.2s ease,
         color 0.2s ease;
@@ -94,7 +96,6 @@
     color: var(--color-text-secondary);
     z-index: 2;
     pointer-events: none;
-    backdrop-filter: blur(8px);
 }
 
 .result-container-inner.dark-result .result-status-overlay {

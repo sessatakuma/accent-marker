@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 const LOADING_CHARACTER_INTERVAL_MS = 22;
 const FURIGANA_REVEAL_INTERVAL_MS = 40;
@@ -75,6 +75,29 @@ export function useResultReveal({
 
         return () => window.clearInterval(intervalId);
     }, [isLoading, paragraph]);
+
+    useLayoutEffect(() => {
+        if (isLoading || words.length === 0) {
+            return;
+        }
+
+        const furiganaUnits = words.reduce((count, word) => count + word.furigana.length, 0);
+        const accentUnits = words.reduce((count, word) => {
+            if (Array.isArray(word.accent)) {
+                return count + word.accent.length;
+            }
+
+            return count + word.furigana.length;
+        }, 0);
+
+        if (furiganaUnits === 0 && accentUnits === 0) {
+            return;
+        }
+
+        setIsPresenting(true);
+        setRevealedFuriganaUnits(0);
+        setRevealedAccentUnits(0);
+    }, [analysisVersion, isLoading, words]);
 
     useEffect(() => {
         if (isLoading || words.length === 0) {

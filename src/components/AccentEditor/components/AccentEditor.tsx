@@ -12,11 +12,8 @@ import './AccentEditor.css';
 export default function AccentEditor() {
     const [paragraph, setParagraph] = useState('');
     const [isEditing, setIsEditing] = useState(false);
-    const resultRef = useRef<HTMLDivElement>(null);
     const { minHeight, panelRef } = useSyncedPanelHeight<HTMLElement>();
     const {
-        canRedo,
-        canUndo,
         redoWords,
         replaceWords,
         undoWords,
@@ -66,12 +63,7 @@ export default function AccentEditor() {
                         <Result
                             words={words}
                             updateWords={updateWords}
-                            ref={resultRef}
                             isLoading={isLoading}
-                            canUndo={canUndo}
-                            canRedo={canRedo}
-                            onUndo={undoWords}
-                            onRedo={redoWords}
                             onEditingChange={setIsEditing}
                             statusMessage={statusMessage}
                         />

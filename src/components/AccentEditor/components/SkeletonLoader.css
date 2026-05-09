@@ -48,32 +48,3 @@
     color: transparent;
     opacity: 1;
 }
-
-.skeleton-glyph-pending::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0.65em;
-    height: 0.75em;
-    border-radius: 8px;
-    background:
-        linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-bg-secondary) 70%, transparent), transparent),
-        var(--skeleton-mask);
-    background-size: 200% 100%, 100% 100%;
-    background-position: 200% 0, 0 0;
-    animation: skeletonSweep 1.8s linear infinite;
-}
-
-.skeleton-glyph-space.skeleton-glyph-pending::before {
-    display: none;
-}
-
-@keyframes skeletonSweep {
-    from {
-        background-position: 200% 0, 0 0;
-    }
-    to {
-        background-position: -20% 0, 0 0;
-    }
-}

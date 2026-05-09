@@ -13,6 +13,7 @@ function getSurfaceSegments(word: Word): string[] {
 }
 
 interface ResultContentProps {
+    accentPhaseActive: boolean;
     deleteBackwardAcrossFurigana: (wordIndex: number, textIndex: number, currentText: string) => boolean;
     deleteForwardAcrossFurigana: (wordIndex: number, textIndex: number, currentText: string) => boolean;
     isLoading: boolean;
@@ -37,6 +38,7 @@ interface ResultContentProps {
 }
 
 export default function ResultContent({
+    accentPhaseActive,
     deleteBackwardAcrossFurigana,
     deleteForwardAcrossFurigana,
     isLoading,
@@ -71,9 +73,6 @@ export default function ResultContent({
         );
     }
 
-    const totalFuriganaUnits = words.reduce((count, word) => count + word.furigana.length, 0);
-    const canRevealAccent = revealedFuriganaUnits >= totalFuriganaUnits;
-    const isAccentRevealActive = revealedAccentUnits > 0 || (canRevealAccent && !isPresenting);
     let furiganaRevealIndex = 0;
     let accentRevealIndex = 0;
 
@@ -97,7 +96,7 @@ export default function ResultContent({
                         <span key={`${wordIndex}-${word.surface}`}>
                             {surfaceSegments.map((segment, charIndex) => {
                                 const isAccentVisible =
-                                    canRevealAccent && accentRevealIndex < revealedAccentUnits;
+                                    accentPhaseActive && accentRevealIndex < revealedAccentUnits;
                                 accentRevealIndex += 1;
 
                                 return (
@@ -105,7 +104,7 @@ export default function ResultContent({
                                         <span className='kana-only-base'>{segment}</span>
                                         <rt>
                                             <Kana
-                                                accentPhaseActive={isAccentRevealActive}
+                                                accentPhaseActive={accentPhaseActive}
                                                 text={segment}
                                                 ghost
                                                 accent={kanaAccents[charIndex] ?? AccentValue.None}
@@ -133,7 +132,7 @@ export default function ResultContent({
                                 {word.furigana.map((char, charIndex) => {
                                     const isFuriganaVisible = furiganaRevealIndex < revealedFuriganaUnits;
                                     const isAccentVisible =
-                                        canRevealAccent && accentRevealIndex < revealedAccentUnits;
+                                        accentPhaseActive && accentRevealIndex < revealedAccentUnits;
 
                                     furiganaRevealIndex += 1;
                                     accentRevealIndex += 1;
@@ -142,7 +141,7 @@ export default function ResultContent({
                                         <Kana
                                             key={`${wordIndex}-${charIndex}`}
                                             accent={char.accent}
-                                            accentPhaseActive={isAccentRevealActive}
+                                            accentPhaseActive={accentPhaseActive}
                                             accentVisible={isAccentVisible}
                                             editable
                                             interactive={!isPresenting}

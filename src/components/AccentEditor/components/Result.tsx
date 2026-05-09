@@ -10,6 +10,7 @@ import ResultContent from './ResultContent';
 import './Result.css';
 
 interface ResultProps {
+    accentPhaseActive: boolean;
     isPresenting: boolean;
     words: Word[];
     paragraph: string;
@@ -23,6 +24,7 @@ interface ResultProps {
 }
 
 export default function Result({
+    accentPhaseActive,
     isPresenting,
     paragraph,
     revealedAccentUnits,
@@ -79,6 +81,7 @@ export default function Result({
             </p>
             <div className='result-content'>
                 <ResultContent
+                    accentPhaseActive={accentPhaseActive}
                     deleteBackwardAcrossFurigana={deleteBackwardAcrossFurigana}
                     deleteForwardAcrossFurigana={deleteForwardAcrossFurigana}
                     isLoading={isLoading}

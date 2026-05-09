@@ -45,7 +45,7 @@ function getRevealTotals(
 
 interface RevealState {
     analysisVersion: number;
-    isPresenting: boolean;
+    phase: 'idle' | 'furigana' | 'accent' | 'complete';
     revealedAccentUnits: number;
     revealedFuriganaUnits: number;
 }
@@ -68,7 +68,7 @@ export function useResultReveal({
     const [revealedLoadingCharacters, setRevealedLoadingCharacters] = useState(0);
     const [revealState, setRevealState] = useState<RevealState>({
         analysisVersion,
-        isPresenting: false,
+        phase: 'idle',
         revealedAccentUnits: 0,
         revealedFuriganaUnits: 0,
     });
@@ -123,7 +123,7 @@ export function useResultReveal({
 
         setRevealState({
             analysisVersion,
-            isPresenting: true,
+            phase: 'furigana',
             revealedAccentUnits: 0,
             revealedFuriganaUnits: 0,
         });
@@ -134,7 +134,7 @@ export function useResultReveal({
             if (!isLoading && words.length === 0) {
                 setRevealState(currentState => ({
                     ...currentState,
-                    isPresenting: false,
+                    phase: 'idle',
                     revealedAccentUnits: 0,
                     revealedFuriganaUnits: 0,
                 }));
@@ -145,7 +145,7 @@ export function useResultReveal({
         if (furiganaUnits === 0 && accentUnits === 0) {
             setRevealState(currentState => ({
                 ...currentState,
-                isPresenting: false,
+                phase: 'idle',
                 revealedAccentUnits: 0,
                 revealedFuriganaUnits: 0,
             }));
@@ -162,7 +162,7 @@ export function useResultReveal({
                 ? currentState
                 : {
                       ...currentState,
-                      isPresenting: true,
+                      phase: 'furigana',
                       revealedAccentUnits: 0,
                       revealedFuriganaUnits: 0,
                   },
@@ -180,6 +180,7 @@ export function useResultReveal({
                             ? currentState
                             : {
                                   ...currentState,
+                                  phase: 'furigana',
                                   revealedFuriganaUnits: index,
                               },
                     );
@@ -189,6 +190,18 @@ export function useResultReveal({
 
         if (accentUnits > 0) {
             elapsedMs += PHASE_GAP_MS;
+            timeoutIds.push(
+                window.setTimeout(() => {
+                    setRevealState(currentState =>
+                        currentState.analysisVersion !== analysisVersion
+                            ? currentState
+                            : {
+                                  ...currentState,
+                                  phase: 'accent',
+                              },
+                    );
+                }, elapsedMs),
+            );
         }
 
         for (let index = 1; index <= accentUnits; index += 1) {
@@ -200,6 +213,7 @@ export function useResultReveal({
                             ? currentState
                             : {
                                   ...currentState,
+                                  phase: 'accent',
                                   revealedAccentUnits: index,
                               },
                     );
@@ -214,7 +228,7 @@ export function useResultReveal({
                         ? currentState
                         : {
                               ...currentState,
-                              isPresenting: false,
+                              phase: 'complete',
                               revealedAccentUnits: accentUnits,
                               revealedFuriganaUnits: furiganaUnits,
                           },
@@ -226,7 +240,7 @@ export function useResultReveal({
     }, [accentUnits, analysisVersion, furiganaUnits, isLoading, words.length]);
 
     useEffect(() => {
-        if (isLoading || revealState.isPresenting) {
+        if (isLoading || revealState.phase === 'furigana' || revealState.phase === 'accent') {
             return;
         }
 
@@ -245,10 +259,13 @@ export function useResultReveal({
                 revealedFuriganaUnits: furiganaUnits,
             };
         });
-    }, [accentUnits, analysisVersion, furiganaUnits, isLoading, revealState.isPresenting]);
+    }, [accentUnits, analysisVersion, furiganaUnits, isLoading, revealState.phase]);
+
+    const revealPhase = isStaleRevealState ? 'furigana' : revealState.phase;
 
     return {
-        isPresenting: isStaleRevealState || revealState.isPresenting,
+        accentPhaseActive: revealPhase === 'accent' || revealPhase === 'complete',
+        isPresenting: revealPhase === 'furigana' || revealPhase === 'accent',
         revealedAccentUnits: isStaleRevealState ? 0 : revealState.revealedAccentUnits,
         revealedFuriganaUnits: isStaleRevealState ? 0 : revealState.revealedFuriganaUnits,
         revealedLoadingCharacters,

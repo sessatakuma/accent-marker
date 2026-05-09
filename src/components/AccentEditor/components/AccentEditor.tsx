@@ -28,6 +28,7 @@ export default function AccentEditor() {
         replaceWords,
     });
     const {
+        accentPhaseActive,
         isPresenting,
         revealedAccentUnits,
         revealedFuriganaUnits,
@@ -59,6 +60,7 @@ export default function AccentEditor() {
                 <div className='result-panel-stack' style={{ minHeight: `${minHeight}px` }}>
                     <section className='result-panel' aria-label='結果' aria-busy={isBusy}>
                         <Result
+                            accentPhaseActive={accentPhaseActive}
                             isPresenting={isPresenting}
                             paragraph={paragraph}
                             revealedAccentUnits={revealedAccentUnits}

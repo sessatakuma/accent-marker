@@ -1,6 +1,8 @@
-import { useRef, useEffect, useState, Dispatch, SetStateAction } from 'react';
+import { useRef, useState, type Dispatch, type SetStateAction } from 'react';
 
 import { Dices, Clipboard } from 'lucide-react';
+import { useAutoResizeTextarea } from 'hooks/useAutoResizeTextarea';
+import { useInputModality } from 'hooks/useInputModality';
 
 import './Input.css';
 
@@ -12,36 +14,10 @@ interface InputProps {
 
 export default function Input({ paragraph, setParagraph, isLoading }: InputProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const [isKeyboardModality, setIsKeyboardModality] = useState(false);
     const [isTextareaFocused, setIsTextareaFocused] = useState(false);
+    const isKeyboardModality = useInputModality();
 
-    useEffect(() => {
-        if (textareaRef.current) {
-            // Reset height to auto to correctly calculate scrollHeight for shrinking
-            textareaRef.current.style.height = 'auto';
-            // Set new height based on scroll height, but keep it at least 100% of parent if needed (handled by minHeight in style prop)
-            const scrollHeight = textareaRef.current.scrollHeight;
-            textareaRef.current.style.height = `${scrollHeight}px`;
-        }
-    }, [paragraph]);
-
-    useEffect(() => {
-        const handleKeyDown = (): void => {
-            setIsKeyboardModality(true);
-        };
-
-        const handlePointerDown = (): void => {
-            setIsKeyboardModality(false);
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('pointerdown', handlePointerDown);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('pointerdown', handlePointerDown);
-        };
-    }, []);
+    useAutoResizeTextarea(textareaRef, paragraph);
 
     const generateRandomParagraph = (): void => {
         const examples = [

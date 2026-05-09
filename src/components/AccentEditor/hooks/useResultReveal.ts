@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const LOADING_CHARACTER_INTERVAL_MS = 22;
 const FURIGANA_REVEAL_INTERVAL_MS = 40;
@@ -39,10 +39,13 @@ export function useResultReveal({
         furigana: Array<unknown>;
     }>;
 }) {
+    const preparedAnalysisVersionRef = useRef(analysisVersion);
     const [revealedLoadingCharacters, setRevealedLoadingCharacters] = useState(0);
     const [revealedFuriganaUnits, setRevealedFuriganaUnits] = useState(0);
     const [revealedAccentUnits, setRevealedAccentUnits] = useState(0);
     const [isPresenting, setIsPresenting] = useState(false);
+    const shouldMaskNewAnalysis =
+        !isLoading && words.length > 0 && analysisVersion !== preparedAnalysisVersionRef.current;
 
     useEffect(() => {
         if (paragraph.trim() === '') {
@@ -80,6 +83,8 @@ export function useResultReveal({
         if (isLoading || words.length === 0) {
             return;
         }
+
+        preparedAnalysisVersionRef.current = analysisVersion;
 
         const furiganaUnits = words.reduce((count, word) => count + word.furigana.length, 0);
         const accentUnits = words.reduce((count, word) => {
@@ -158,9 +163,9 @@ export function useResultReveal({
     }, [analysisVersion, isLoading, words]);
 
     return {
-        isPresenting,
-        revealedAccentUnits,
-        revealedFuriganaUnits,
+        isPresenting: shouldMaskNewAnalysis || isPresenting,
+        revealedAccentUnits: shouldMaskNewAnalysis ? 0 : revealedAccentUnits,
+        revealedFuriganaUnits: shouldMaskNewAnalysis ? 0 : revealedFuriganaUnits,
         revealedLoadingCharacters,
     };
 }

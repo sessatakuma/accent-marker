@@ -14,6 +14,7 @@ import type { AccentValueType } from '../core/word/accentTypes';
 import './Kana.css';
 
 interface KanaProps {
+    accentPhaseActive?: boolean;
     accentVisible?: boolean;
     text: string;
     textVisible?: boolean;
@@ -34,6 +35,7 @@ interface KanaProps {
 const accentName = ['none', 'flat', 'drop'] as const;
 
 function Kana({
+    accentPhaseActive = true,
     accentVisible = true,
     text,
     textVisible = true,
@@ -216,23 +218,26 @@ function Kana({
         <span
             className='kana-shell'
             data-accent={accentName[accent]}
+            data-accent-phase-active={accentPhaseActive || undefined}
             data-accent-visible={accentVisible || undefined}
             data-editable={editable || undefined}
             data-empty={text.length === 0 || undefined}
             data-ghost={ghost || undefined}
             data-interactive={interactive || undefined}
         >
-            <span className='kana-accent-lane' aria-hidden='true'>
-                <button
-                    type='button'
-                    className='kana-accent-hitbox'
-                    disabled={!interactive}
-                    onClick={changeAccent}
-                    onMouseDown={handleAccentMouseDown}
-                    aria-label='アクセントを切り替え'
-                    title='アクセントを切り替え'
-                />
-            </span>
+            {accentPhaseActive ? (
+                <span className='kana-accent-lane' aria-hidden='true'>
+                    <button
+                        type='button'
+                        className='kana-accent-hitbox'
+                        disabled={!interactive}
+                        onClick={changeAccent}
+                        onMouseDown={handleAccentMouseDown}
+                        aria-label='アクセントを切り替え'
+                        title='アクセントを切り替え'
+                    />
+                </span>
+            ) : null}
             <span
                 ref={setTextNodeRef}
                 className={`kana-text ${editable ? 'furigana' : ''}`}
@@ -263,6 +268,7 @@ function Kana({
 
 function areKanaPropsEqual(previous: KanaProps, next: KanaProps): boolean {
     return (
+        previous.accentPhaseActive === next.accentPhaseActive &&
         previous.accent === next.accent &&
         previous.accentVisible === next.accentVisible &&
         previous.editable === next.editable &&

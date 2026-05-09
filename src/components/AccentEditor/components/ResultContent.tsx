@@ -104,6 +104,7 @@ export default function ResultContent({
                                         <span className='kana-only-base'>{segment}</span>
                                         <rt>
                                             <Kana
+                                                accentPhaseActive={canRevealAccent}
                                                 text={segment}
                                                 ghost
                                                 accent={kanaAccents[charIndex] ?? AccentValue.None}
@@ -140,6 +141,7 @@ export default function ResultContent({
                                         <Kana
                                             key={`${wordIndex}-${charIndex}`}
                                             accent={char.accent}
+                                            accentPhaseActive={canRevealAccent}
                                             accentVisible={isAccentVisible}
                                             editable
                                             interactive={!isPresenting}

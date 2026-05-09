@@ -117,7 +117,6 @@ export default defineConfig(({ mode }) => {
         resolve: {
             alias: {
                 components: '/src/components',
-                hooks: '/src/hooks',
             },
         },
         server: {

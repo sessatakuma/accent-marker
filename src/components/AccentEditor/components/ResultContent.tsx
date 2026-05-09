@@ -98,33 +98,33 @@ export default function ResultContent({
                         ))}
                         <rt>
                             <span className='furigana-group'>
-                            {word.furigana.map((char, charIndex) => (
-                                <Kana
-                                    key={`${wordIndex}-${charIndex}`}
-                                    editable
-                                    text={char.text === placeholder ? '' : char.text}
-                                    accent={char.accent}
-                                    textIndex={charIndex}
-                                    wordIndex={wordIndex}
-                                    onBackspaceAtStart={currentText =>
-                                        deleteBackwardAcrossFurigana(
-                                            wordIndex,
-                                            charIndex,
-                                            currentText,
-                                        )
-                                    }
-                                    onArrowAtEdge={direction =>
-                                        moveFocusAcrossFurigana(wordIndex, charIndex, direction)
-                                    }
-                                    onUpdate={(newText, newAccent) =>
-                                        updateFurigana(wordIndex, charIndex, newText, newAccent)
-                                    }
-                                    onFocusChange={onEditingChange}
-                                    registerTextRef={node =>
-                                        registerEditableKana(wordIndex, charIndex, node)
-                                    }
-                                />
-                            ))}
+                                {word.furigana.map((char, charIndex) => (
+                                    <Kana
+                                        key={`${wordIndex}-${charIndex}`}
+                                        editable
+                                        text={char.text === placeholder ? '' : char.text}
+                                        accent={char.accent}
+                                        textIndex={charIndex}
+                                        wordIndex={wordIndex}
+                                        onBackspaceAtStart={currentText =>
+                                            deleteBackwardAcrossFurigana(
+                                                wordIndex,
+                                                charIndex,
+                                                currentText,
+                                            )
+                                        }
+                                        onArrowAtEdge={direction =>
+                                            moveFocusAcrossFurigana(wordIndex, charIndex, direction)
+                                        }
+                                        onUpdate={(newText, newAccent) =>
+                                            updateFurigana(wordIndex, charIndex, newText, newAccent)
+                                        }
+                                        onFocusChange={onEditingChange}
+                                        registerTextRef={node =>
+                                            registerEditableKana(wordIndex, charIndex, node)
+                                        }
+                                    />
+                                ))}
                             </span>
                         </rt>
                     </ruby>

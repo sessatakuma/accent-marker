@@ -63,6 +63,18 @@ function Kana({
     const getSanitizedText = (): string =>
         (textRef.current?.innerText ?? text).replaceAll(placeholder, '').trim();
 
+    const setCaretPosition = (element: HTMLSpanElement, placement: 'start' | 'end'): void => {
+        const selection = window.getSelection();
+        if (!selection) return;
+
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        range.collapse(placement === 'start');
+        selection.removeAllRanges();
+        selection.addRange(range);
+        element.focus();
+    };
+
     const isCaretAtStart = (element: HTMLSpanElement): boolean => {
         const selection = window.getSelection();
         if (!selection || !selection.isCollapsed || selection.rangeCount === 0) {
@@ -111,6 +123,19 @@ function Kana({
 
     const handleFocus = (): void => {
         onFocusChange?.(true);
+    };
+
+    const handleMouseDown = (event: MouseEvent<HTMLSpanElement>): void => {
+        if (!editable || event.button !== 0 || event.metaKey || event.ctrlKey || event.altKey) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const target = event.currentTarget;
+        const { left, width } = target.getBoundingClientRect();
+        const placement = event.clientX <= left + width / 2 ? 'start' : 'end';
+        setCaretPosition(target, placement);
     };
 
     const handleKeyDown = (event: KeyboardEvent<HTMLSpanElement>): void => {
@@ -199,6 +224,7 @@ function Kana({
                 onCompositionStart={handleCompositionStart}
                 onFocus={handleFocus}
                 onKeyDown={handleKeyDown}
+                onMouseDown={handleMouseDown}
                 role={editable ? 'textbox' : undefined}
                 aria-label={editable ? 'ふりがなを編集' : undefined}
                 aria-multiline={editable || undefined}

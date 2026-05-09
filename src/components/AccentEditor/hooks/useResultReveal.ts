@@ -1,15 +1,28 @@
 import { useEffect, useState } from 'react';
 
 const LOADING_CHARACTER_INTERVAL_MS = 22;
+const FURIGANA_REVEAL_INTERVAL_MS = 40;
+const ACCENT_REVEAL_INTERVAL_MS = 36;
+const PHASE_GAP_MS = 80;
 
 export function useResultReveal({
+    analysisVersion,
     isLoading,
     paragraph,
+    words,
 }: {
+    analysisVersion: number;
     isLoading: boolean;
     paragraph: string;
+    words: Array<{
+        accent: number | number[];
+        furigana: Array<unknown>;
+    }>;
 }) {
     const [revealedLoadingCharacters, setRevealedLoadingCharacters] = useState(0);
+    const [revealedFuriganaUnits, setRevealedFuriganaUnits] = useState(0);
+    const [revealedAccentUnits, setRevealedAccentUnits] = useState(0);
+    const [isPresenting, setIsPresenting] = useState(false);
 
     useEffect(() => {
         if (paragraph.trim() === '') {
@@ -43,7 +56,68 @@ export function useResultReveal({
         return () => window.clearInterval(intervalId);
     }, [isLoading, paragraph]);
 
+    useEffect(() => {
+        if (isLoading || words.length === 0) {
+            if (!isLoading && words.length === 0) {
+                setIsPresenting(false);
+                setRevealedFuriganaUnits(0);
+                setRevealedAccentUnits(0);
+            }
+            return;
+        }
+
+        const furiganaUnits = words.reduce((count, word) => count + word.furigana.length, 0);
+        const accentUnits = words.reduce((count, word) => {
+            if (Array.isArray(word.accent)) {
+                return count + word.accent.length;
+            }
+
+            return count + word.furigana.length;
+        }, 0);
+
+        if (furiganaUnits === 0 && accentUnits === 0) {
+            setIsPresenting(false);
+            setRevealedFuriganaUnits(0);
+            setRevealedAccentUnits(0);
+            return;
+        }
+
+        setIsPresenting(true);
+        setRevealedFuriganaUnits(0);
+        setRevealedAccentUnits(0);
+
+        let elapsedMs = 0;
+        const timeoutIds: number[] = [];
+
+        for (let index = 1; index <= furiganaUnits; index += 1) {
+            elapsedMs += FURIGANA_REVEAL_INTERVAL_MS;
+            timeoutIds.push(window.setTimeout(() => setRevealedFuriganaUnits(index), elapsedMs));
+        }
+
+        if (accentUnits > 0) {
+            elapsedMs += PHASE_GAP_MS;
+        }
+
+        for (let index = 1; index <= accentUnits; index += 1) {
+            elapsedMs += ACCENT_REVEAL_INTERVAL_MS;
+            timeoutIds.push(window.setTimeout(() => setRevealedAccentUnits(index), elapsedMs));
+        }
+
+        timeoutIds.push(
+            window.setTimeout(() => {
+                setIsPresenting(false);
+                setRevealedFuriganaUnits(furiganaUnits);
+                setRevealedAccentUnits(accentUnits);
+            }, elapsedMs + PHASE_GAP_MS),
+        );
+
+        return () => timeoutIds.forEach(timeoutId => window.clearTimeout(timeoutId));
+    }, [analysisVersion, isLoading, words]);
+
     return {
+        isPresenting,
+        revealedAccentUnits,
+        revealedFuriganaUnits,
         revealedLoadingCharacters,
     };
 }

@@ -10,8 +10,11 @@ import ResultContent from './ResultContent';
 import './Result.css';
 
 interface ResultProps {
+    isPresenting: boolean;
     words: Word[];
     paragraph: string;
+    revealedAccentUnits: number;
+    revealedFuriganaUnits: number;
     revealedLoadingCharacters: number;
     updateWords: (updater: Word[] | ((current: Word[]) => Word[])) => void;
     isLoading: boolean;
@@ -20,7 +23,10 @@ interface ResultProps {
 }
 
 export default function Result({
+    isPresenting,
     paragraph,
+    revealedAccentUnits,
+    revealedFuriganaUnits,
     revealedLoadingCharacters,
     words,
     updateWords,
@@ -76,10 +82,13 @@ export default function Result({
                     deleteBackwardAcrossFurigana={deleteBackwardAcrossFurigana}
                     deleteForwardAcrossFurigana={deleteForwardAcrossFurigana}
                     isLoading={isLoading}
+                    isPresenting={isPresenting}
                     moveFocusAcrossFurigana={moveFocusAcrossFurigana}
                     onEditingChange={onEditingChange}
                     paragraph={paragraph}
                     registerEditableKana={registerEditableKana}
+                    revealedAccentUnits={revealedAccentUnits}
+                    revealedFuriganaUnits={revealedFuriganaUnits}
                     revealedLoadingCharacters={revealedLoadingCharacters}
                     resultRef={resultRef}
                     showAccent={showAccent}

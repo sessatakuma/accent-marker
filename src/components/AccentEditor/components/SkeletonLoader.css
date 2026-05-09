@@ -3,10 +3,9 @@
     --skeleton-padding-inline: 16px;
     --skeleton-radius: 16px;
     --skeleton-line-gap: 8px;
-    --skeleton-glow: color-mix(in srgb, var(--color-accent-red) 12%, transparent);
-    --skeleton-ink: color-mix(in srgb, var(--color-accent-red) 78%, var(--color-text-primary));
-    --skeleton-muted: color-mix(in srgb, var(--color-text-secondary) 58%, transparent);
-    --skeleton-mask: color-mix(in srgb, var(--color-border) 68%, transparent);
+    --skeleton-ink: var(--color-text-primary);
+    --skeleton-muted: var(--color-text-secondary);
+    --skeleton-mask: var(--color-border);
 
     position: relative;
     display: grid;
@@ -14,9 +13,7 @@
     width: 100%;
     padding: var(--skeleton-padding-block) var(--skeleton-padding-inline);
     border-radius: var(--skeleton-radius);
-    background:
-        radial-gradient(circle at top right, var(--skeleton-glow), transparent 44%),
-        linear-gradient(180deg, color-mix(in srgb, var(--color-bg-secondary) 84%, white), transparent);
+    background-color: transparent;
     overflow: hidden;
 }
 
@@ -52,15 +49,11 @@
 .skeleton-glyph-visible {
     color: var(--skeleton-ink);
     opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
 }
 
 .skeleton-glyph-pending {
     color: transparent;
     opacity: 1;
-    transform: translateY(2px);
-    filter: blur(2px);
 }
 
 .skeleton-glyph-pending::before {
@@ -72,7 +65,7 @@
     height: 0.75em;
     border-radius: 8px;
     background:
-        linear-gradient(90deg, transparent, color-mix(in srgb, white 60%, transparent), transparent),
+        linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-bg-secondary) 70%, transparent), transparent),
         var(--skeleton-mask);
     background-size: 200% 100%, 100% 100%;
     background-position: 200% 0, 0 0;

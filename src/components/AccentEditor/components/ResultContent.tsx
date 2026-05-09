@@ -16,10 +16,13 @@ interface ResultContentProps {
     deleteBackwardAcrossFurigana: (wordIndex: number, textIndex: number, currentText: string) => boolean;
     deleteForwardAcrossFurigana: (wordIndex: number, textIndex: number, currentText: string) => boolean;
     isLoading: boolean;
+    isPresenting: boolean;
     moveFocusAcrossFurigana: (wordIndex: number, textIndex: number, direction: 'previous' | 'next') => boolean;
     onEditingChange: (isEditing: boolean) => void;
     paragraph: string;
     registerEditableKana: (wordIndex: number, textIndex: number, node: HTMLSpanElement | null) => void;
+    revealedAccentUnits: number;
+    revealedFuriganaUnits: number;
     revealedLoadingCharacters: number;
     resultRef: React.RefObject<HTMLParagraphElement | null>;
     showAccent: boolean;
@@ -37,10 +40,13 @@ export default function ResultContent({
     deleteBackwardAcrossFurigana,
     deleteForwardAcrossFurigana,
     isLoading,
+    isPresenting,
     moveFocusAcrossFurigana,
     onEditingChange,
     paragraph,
     registerEditableKana,
+    revealedAccentUnits,
+    revealedFuriganaUnits,
     revealedLoadingCharacters,
     resultRef,
     showAccent,
@@ -65,6 +71,9 @@ export default function ResultContent({
         );
     }
 
+    let furiganaRevealIndex = 0;
+    let accentRevealIndex = 0;
+
     return (
         <div
             id='accent-result-output'
@@ -83,21 +92,28 @@ export default function ResultContent({
                 if (kanaWord && kanaAccents) {
                     return (
                         <span key={`${wordIndex}-${word.surface}`}>
-                            {surfaceSegments.map((segment, charIndex) => (
-                                <ruby key={`${wordIndex}-${charIndex}`} className='kana-only-ruby'>
-                                    <span className='kana-only-base'>{segment}</span>
-                                    <rt>
-                                        <Kana
-                                            text={segment}
-                                            ghost
-                                            accent={kanaAccents[charIndex] ?? AccentValue.None}
-                                            onUpdate={(_ignore, newAccent) =>
-                                                updateKana(wordIndex, charIndex, newAccent)
-                                            }
-                                        />
-                                    </rt>
-                                </ruby>
-                            ))}
+                            {surfaceSegments.map((segment, charIndex) => {
+                                const isAccentVisible = accentRevealIndex < revealedAccentUnits;
+                                accentRevealIndex += 1;
+
+                                return (
+                                    <ruby key={`${wordIndex}-${charIndex}`} className='kana-only-ruby'>
+                                        <span className='kana-only-base'>{segment}</span>
+                                        <rt>
+                                            <Kana
+                                                text={segment}
+                                                ghost
+                                                accent={kanaAccents[charIndex] ?? AccentValue.None}
+                                                accentVisible={isAccentVisible}
+                                                interactive={!isPresenting}
+                                                onUpdate={(_ignore, newAccent) =>
+                                                    updateKana(wordIndex, charIndex, newAccent)
+                                                }
+                                            />
+                                        </rt>
+                                    </ruby>
+                                );
+                            })}
                         </span>
                     );
                 }
@@ -109,32 +125,43 @@ export default function ResultContent({
                         ))}
                         <rt>
                             <span className='furigana-group'>
-                                {word.furigana.map((char, charIndex) => (
-                                    <Kana
-                                        key={`${wordIndex}-${charIndex}`}
-                                        accent={char.accent}
-                                        editable
-                                        text={char.text === placeholder ? '' : char.text}
-                                        textIndex={charIndex}
-                                        wordIndex={wordIndex}
-                                        onBackspaceAtStart={currentText =>
-                                            deleteBackwardAcrossFurigana(wordIndex, charIndex, currentText)
-                                        }
-                                        onDeleteAtStart={currentText =>
-                                            deleteForwardAcrossFurigana(wordIndex, charIndex, currentText)
-                                        }
-                                        onArrowAtEdge={direction =>
-                                            moveFocusAcrossFurigana(wordIndex, charIndex, direction)
-                                        }
-                                        onUpdate={(newText, newAccent) =>
-                                            updateFurigana(wordIndex, charIndex, newText, newAccent)
-                                        }
-                                        onFocusChange={onEditingChange}
-                                        registerTextRef={node =>
-                                            registerEditableKana(wordIndex, charIndex, node)
-                                        }
-                                    />
-                                ))}
+                                {word.furigana.map((char, charIndex) => {
+                                    const isFuriganaVisible = furiganaRevealIndex < revealedFuriganaUnits;
+                                    const isAccentVisible = accentRevealIndex < revealedAccentUnits;
+
+                                    furiganaRevealIndex += 1;
+                                    accentRevealIndex += 1;
+
+                                    return (
+                                        <Kana
+                                            key={`${wordIndex}-${charIndex}`}
+                                            accent={char.accent}
+                                            accentVisible={isAccentVisible}
+                                            editable
+                                            interactive={!isPresenting}
+                                            text={char.text === placeholder ? '' : char.text}
+                                            textIndex={charIndex}
+                                            textVisible={isFuriganaVisible}
+                                            wordIndex={wordIndex}
+                                            onBackspaceAtStart={currentText =>
+                                                deleteBackwardAcrossFurigana(wordIndex, charIndex, currentText)
+                                            }
+                                            onDeleteAtStart={currentText =>
+                                                deleteForwardAcrossFurigana(wordIndex, charIndex, currentText)
+                                            }
+                                            onArrowAtEdge={direction =>
+                                                moveFocusAcrossFurigana(wordIndex, charIndex, direction)
+                                            }
+                                            onUpdate={(newText, newAccent) =>
+                                                updateFurigana(wordIndex, charIndex, newText, newAccent)
+                                            }
+                                            onFocusChange={onEditingChange}
+                                            registerTextRef={node =>
+                                                registerEditableKana(wordIndex, charIndex, node)
+                                            }
+                                        />
+                                    );
+                                })}
                             </span>
                         </rt>
                     </ruby>

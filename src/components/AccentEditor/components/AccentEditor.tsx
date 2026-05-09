@@ -22,14 +22,21 @@ export default function AccentEditor() {
         updateWords,
         words,
     } = useWordHistory();
-    const { isLoading, statusMessage } = useAccentAnalysis({
+    const { analysisVersion, isLoading, statusMessage } = useAccentAnalysis({
         isEditing,
         paragraph,
         replaceWords,
     });
-    const { revealedLoadingCharacters } = useResultReveal({
+    const {
+        isPresenting,
+        revealedAccentUnits,
+        revealedFuriganaUnits,
+        revealedLoadingCharacters,
+    } = useResultReveal({
+        analysisVersion,
         isLoading,
         paragraph,
+        words,
     });
     useHistoryKeyboardShortcuts({
         onRedo: redoWords,
@@ -50,7 +57,10 @@ export default function AccentEditor() {
                 <div className='result-panel-stack' style={{ minHeight: `${minHeight}px` }}>
                     <section className='result-panel' aria-label='結果' aria-busy={isLoading}>
                         <Result
+                            isPresenting={isPresenting}
                             paragraph={paragraph}
+                            revealedAccentUnits={revealedAccentUnits}
+                            revealedFuriganaUnits={revealedFuriganaUnits}
                             revealedLoadingCharacters={revealedLoadingCharacters}
                             words={words}
                             updateWords={updateWords}

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { useAccentAnalysis } from '../hooks/useAccentAnalysis';
+import { useHistoryKeyboardShortcuts } from '../hooks/useHistoryKeyboardShortcuts';
 import { useSyncedPanelHeight } from '../hooks/useSyncedPanelHeight';
 import { useWordHistory } from '../hooks/useWordHistory';
 
@@ -25,27 +26,10 @@ export default function AccentEditor() {
         paragraph,
         replaceWords,
     });
-
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent): void => {
-            const modifier = event.metaKey || event.ctrlKey;
-            if (!modifier) return;
-
-            const key = event.key.toLowerCase();
-            if (key === 'z' && !event.shiftKey) {
-                event.preventDefault();
-                undoWords();
-            }
-
-            if (key === 'y' || (key === 'z' && event.shiftKey)) {
-                event.preventDefault();
-                redoWords();
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [redoWords, undoWords]);
+    useHistoryKeyboardShortcuts({
+        onRedo: redoWords,
+        onUndo: undoWords,
+    });
 
     return (
         <main id='main-content' className='main-content'>

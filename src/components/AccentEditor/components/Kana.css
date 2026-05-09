@@ -48,6 +48,7 @@ ruby > rt {
     height: var(--kana-accent-lane-height);
     pointer-events: none;
     opacity: 0;
+    visibility: hidden;
 }
 
 .kana-accent-hitbox {
@@ -84,8 +85,8 @@ ruby > rt {
     background-color: var(--kana-edit-focus-bg);
 }
 
-.kana-shell[data-accent='flat'] > .kana-accent-lane::before,
-.kana-shell[data-accent='drop'] > .kana-accent-lane::before {
+.kana-shell[data-accent-visible='true'][data-accent='flat'] > .kana-accent-lane::before,
+.kana-shell[data-accent-visible='true'][data-accent='drop'] > .kana-accent-lane::before {
     content: '';
     position: absolute;
     inset-inline: 0;
@@ -94,7 +95,7 @@ ruby > rt {
     pointer-events: none;
 }
 
-.kana-shell[data-accent='drop'] > .kana-accent-lane::after {
+.kana-shell[data-accent-visible='true'][data-accent='drop'] > .kana-accent-lane::after {
     content: '';
     position: absolute;
     right: 0;
@@ -121,6 +122,7 @@ ruby > rt {
 
 .kana-shell[data-accent-visible='true'] > .kana-accent-lane {
     opacity: 1;
+    visibility: visible;
     animation: kanaRevealFade 0.22s ease both;
 }
 

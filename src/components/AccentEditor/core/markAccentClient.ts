@@ -1,6 +1,16 @@
 import type { MarkAccentApiResponse, MarkAccentApiResultEntry } from './accentTypes';
 
-export async function fetchMarkAccent(text: string): Promise<MarkAccentApiResultEntry[]> {
+export type FetchMarkAccentResult =
+    | {
+          ok: true;
+          result: MarkAccentApiResultEntry[];
+      }
+    | {
+          ok: false;
+          reason: 'network' | 'invalid-response';
+      };
+
+export async function fetchMarkAccent(text: string): Promise<FetchMarkAccentResult> {
     try {
         const response = await fetch('/api/mark-accent', {
             method: 'POST',
@@ -12,13 +22,22 @@ export async function fetchMarkAccent(text: string): Promise<MarkAccentApiResult
 
         const data: MarkAccentApiResponse = await response.json();
         if (response.ok && data.status === 200 && Array.isArray(data.result)) {
-            return data.result;
+            return {
+                ok: true,
+                result: data.result,
+            };
         }
 
         console.error('API format error:', data);
-        return [];
+        return {
+            ok: false,
+            reason: 'invalid-response',
+        };
     } catch (error) {
         console.error('API error:', error);
-        return [];
+        return {
+            ok: false,
+            reason: 'network',
+        };
     }
 }

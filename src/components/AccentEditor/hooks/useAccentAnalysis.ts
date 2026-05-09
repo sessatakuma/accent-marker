@@ -36,18 +36,20 @@ export function useAccentAnalysis({
             const requestId = activeRequestIdRef.current + 1;
             activeRequestIdRef.current = requestId;
             setIsLoading(true);
-            const result = await fetchMarkAccent(text);
+            const response = await fetchMarkAccent(text);
             if (activeRequestIdRef.current !== requestId) {
                 return;
             }
 
-            if (result.length > 0) {
-                replaceWords(mapApiResultToWords(result));
-                setStatusMessage(`解析結果を更新しました。${result.length}件の語を表示しています。`);
-            } else {
+            if (!response.ok) {
                 replaceWords(mapFallbackTextToWords(text));
                 setStatusMessage('サーバーからの応答がないため、簡易解析結果を表示しています。');
+                setIsLoading(false);
+                return;
             }
+
+            replaceWords(mapApiResultToWords(response.result));
+            setStatusMessage(`解析結果を更新しました。${response.result.length}件の語を表示しています。`);
 
             setIsLoading(false);
         },

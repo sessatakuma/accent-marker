@@ -73,6 +73,8 @@ export function useResultReveal({
         revealedFuriganaUnits: 0,
     });
     const { accentUnits, furiganaUnits } = getRevealTotals(words);
+    const isStaleRevealState =
+        !isLoading && words.length > 0 && revealState.analysisVersion !== analysisVersion;
 
     useEffect(() => {
         if (paragraph.trim() === '') {
@@ -246,9 +248,9 @@ export function useResultReveal({
     }, [accentUnits, analysisVersion, furiganaUnits, isLoading, revealState.isPresenting]);
 
     return {
-        isPresenting: revealState.isPresenting,
-        revealedAccentUnits: revealState.revealedAccentUnits,
-        revealedFuriganaUnits: revealState.revealedFuriganaUnits,
+        isPresenting: isStaleRevealState || revealState.isPresenting,
+        revealedAccentUnits: isStaleRevealState ? 0 : revealState.revealedAccentUnits,
+        revealedFuriganaUnits: isStaleRevealState ? 0 : revealState.revealedFuriganaUnits,
         revealedLoadingCharacters,
     };
 }

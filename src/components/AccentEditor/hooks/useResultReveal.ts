@@ -1,9 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const LOADING_CHARACTER_INTERVAL_MS = 22;
-const FURIGANA_REVEAL_INTERVAL_MS = 40;
-const ACCENT_REVEAL_INTERVAL_MS = 36;
-const PHASE_GAP_MS = 80;
+const FURIGANA_REVEAL_INTERVAL_MS = 28;
+const ACCENT_REVEAL_INTERVAL_MS = 24;
+const PHASE_GAP_MS = 48;
 const REVEAL_ACCELERATION_START = 0.8;
 const REVEAL_MIN_INTERVAL_MULTIPLIER = 0.4;
 

@@ -42,7 +42,8 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
             words,
         });
 
-        const { deleteBackwardAcrossFurigana, updateFurigana, updateKana } = useResultEditing({
+        const { deleteBackwardAcrossFurigana, registerEditableKana, updateFurigana, updateKana } =
+            useResultEditing({
             resultRef,
             showFeedback,
             updateWords,
@@ -64,6 +65,7 @@ const Result = forwardRef<HTMLDivElement, ResultProps>(
                         deleteBackwardAcrossFurigana={deleteBackwardAcrossFurigana}
                         isLoading={isLoading}
                         onEditingChange={onEditingChange}
+                        registerEditableKana={registerEditableKana}
                         resultRef={resultRef}
                         showAccent={showAccent}
                         updateFurigana={updateFurigana}

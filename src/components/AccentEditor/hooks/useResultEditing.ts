@@ -13,6 +13,8 @@ interface PendingFocusTarget {
     placement: FocusPlacement;
 }
 
+type EditableKanaKey = `${number}:${number}`;
+
 interface UseResultEditingOptions {
     resultRef: React.RefObject<HTMLParagraphElement | null>;
     showFeedback: (message: string, type: 'success' | 'warning') => void;
@@ -27,10 +29,27 @@ export function useResultEditing({
     words,
 }: UseResultEditingOptions) {
     const pendingFocusRef = useRef<PendingFocusTarget | null>(null);
+    const editableKanaRefs = useRef(new Map<EditableKanaKey, HTMLSpanElement>());
+
+    const getEditableKanaKey = (wordIndex: number, textIndex: number): EditableKanaKey =>
+        `${wordIndex}:${textIndex}`;
 
     const focusEditableKana = useCallback(
         (wordIndex: number, textIndex: number, placement: FocusPlacement): void => {
             pendingFocusRef.current = { wordIndex, textIndex, placement };
+        },
+        [],
+    );
+
+    const registerEditableKana = useCallback(
+        (wordIndex: number, textIndex: number, node: HTMLSpanElement | null): void => {
+            const key = getEditableKanaKey(wordIndex, textIndex);
+            if (node) {
+                editableKanaRefs.current.set(key, node);
+                return;
+            }
+
+            editableKanaRefs.current.delete(key);
         },
         [],
     );
@@ -179,8 +198,8 @@ export function useResultEditing({
 
         pendingFocusRef.current = null;
         window.requestAnimationFrame(() => {
-            const target = resultRef.current?.querySelector<HTMLElement>(
-                `.kana-text[data-word-index="${pendingFocus.wordIndex}"][data-text-index="${pendingFocus.textIndex}"]`,
+            const target = editableKanaRefs.current.get(
+                getEditableKanaKey(pendingFocus.wordIndex, pendingFocus.textIndex),
             );
             if (target) {
                 setCaretPosition(target, pendingFocus.placement);
@@ -190,6 +209,7 @@ export function useResultEditing({
 
     return {
         deleteBackwardAcrossFurigana,
+        registerEditableKana,
         updateFurigana,
         updateKana,
     };

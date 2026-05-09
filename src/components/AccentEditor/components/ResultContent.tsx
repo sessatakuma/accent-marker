@@ -16,6 +16,7 @@ interface ResultContentProps {
     deleteBackwardAcrossFurigana: (wordIndex: number, textIndex: number, currentText: string) => boolean;
     isLoading: boolean;
     onEditingChange: (isEditing: boolean) => void;
+    registerEditableKana: (wordIndex: number, textIndex: number, node: HTMLSpanElement | null) => void;
     resultRef: React.RefObject<HTMLParagraphElement | null>;
     showAccent: boolean;
     updateFurigana: (
@@ -32,6 +33,7 @@ export default function ResultContent({
     deleteBackwardAcrossFurigana,
     isLoading,
     onEditingChange,
+    registerEditableKana,
     resultRef,
     showAccent,
     updateFurigana,
@@ -112,6 +114,9 @@ export default function ResultContent({
                                         updateFurigana(wordIndex, charIndex, newText, newAccent)
                                     }
                                     onFocusChange={onEditingChange}
+                                    registerTextRef={node =>
+                                        registerEditableKana(wordIndex, charIndex, node)
+                                    }
                                 />
                             ))}
                         </rt>

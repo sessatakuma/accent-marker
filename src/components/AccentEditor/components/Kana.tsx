@@ -20,6 +20,7 @@ interface KanaProps {
     editable?: boolean;
     ghost?: boolean;
     onFocusChange?: (isFocused: boolean) => void;
+    registerTextRef?: (node: HTMLSpanElement | null) => void;
     textIndex?: number;
     wordIndex?: number;
 }
@@ -34,6 +35,7 @@ export default function Kana({
     editable = false,
     ghost = false,
     onFocusChange,
+    registerTextRef,
     textIndex,
     wordIndex,
 }: KanaProps) {
@@ -139,6 +141,11 @@ export default function Kana({
         }
     };
 
+    const setTextNodeRef = (node: HTMLSpanElement | null): void => {
+        textRef.current = node;
+        registerTextRef?.(node);
+    };
+
     return (
         <span
             className='kana-shell'
@@ -158,7 +165,7 @@ export default function Kana({
                 />
             </span>
             <span
-                ref={textRef}
+                ref={setTextNodeRef}
                 className={`kana-text ${editable ? 'furigana' : ''}`}
                 contentEditable={editable || undefined}
                 suppressContentEditableWarning

@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useReducer } from 'react';
 
 import { cloneWords } from '../core/accent';
 
@@ -6,78 +6,153 @@ import type { Word } from '../core/accentTypes';
 
 const HISTORY_LIMIT = 50;
 
-export function useWordHistory() {
-    const [words, setWords] = useState<Word[]>([]);
-    const [pastWords, setPastWords] = useState<Word[][]>([]);
-    const [futureWords, setFutureWords] = useState<Word[][]>([]);
-    const wordsRef = useRef(words);
+interface WordHistoryState {
+    futureWords: Word[][];
+    pastWords: Word[][];
+    words: Word[];
+}
 
-    const syncWordsRef = useCallback((nextWords: Word[]) => {
-        wordsRef.current = nextWords;
-    }, []);
+type WordHistoryAction =
+    | {
+          type: 'redo';
+      }
+    | {
+          type: 'replace';
+          words: Word[];
+      }
+    | {
+          type: 'undo';
+      }
+    | {
+          type: 'update';
+          updater: Word[] | ((current: Word[]) => Word[]);
+      };
+
+const INITIAL_STATE: WordHistoryState = {
+    futureWords: [],
+    pastWords: [],
+    words: [],
+};
+
+function areWordsEqual(left: Word[], right: Word[]): boolean {
+    if (left.length !== right.length) return false;
+
+    return left.every((leftWord, wordIndex) => {
+        const rightWord = right[wordIndex];
+        if (!rightWord || leftWord.surface !== rightWord.surface) {
+            return false;
+        }
+
+        const leftAccent = Array.isArray(leftWord.accent) ? leftWord.accent : [leftWord.accent];
+        const rightAccent = Array.isArray(rightWord.accent) ? rightWord.accent : [rightWord.accent];
+        if (
+            leftAccent.length !== rightAccent.length ||
+            leftAccent.some((accent, accentIndex) => accent !== rightAccent[accentIndex])
+        ) {
+            return false;
+        }
+
+        if (leftWord.furigana.length !== rightWord.furigana.length) {
+            return false;
+        }
+
+        return leftWord.furigana.every((item, itemIndex) => {
+            const rightItem = rightWord.furigana[itemIndex];
+            return !!rightItem && item.text === rightItem.text && item.accent === rightItem.accent;
+        });
+    });
+}
+
+function wordHistoryReducer(state: WordHistoryState, action: WordHistoryAction): WordHistoryState {
+    switch (action.type) {
+        case 'replace':
+            return {
+                futureWords: [],
+                pastWords: [],
+                words: action.words,
+            };
+        case 'update': {
+            const nextWords =
+                typeof action.updater === 'function' ? action.updater(state.words) : action.updater;
+            if (areWordsEqual(state.words, nextWords)) {
+                return state;
+            }
+
+            return {
+                futureWords: [],
+                pastWords: [...state.pastWords.slice(-(HISTORY_LIMIT - 1)), cloneWords(state.words)],
+                words: nextWords,
+            };
+        }
+        case 'undo': {
+            const previousWords = state.pastWords.at(-1);
+            if (!previousWords) {
+                return state;
+            }
+
+            return {
+                futureWords: [cloneWords(state.words), ...state.futureWords].slice(0, HISTORY_LIMIT),
+                pastWords: state.pastWords.slice(0, -1),
+                words: cloneWords(previousWords),
+            };
+        }
+        case 'redo': {
+            const nextWords = state.futureWords[0];
+            if (!nextWords) {
+                return state;
+            }
+
+            return {
+                futureWords: state.futureWords.slice(1),
+                pastWords: [...state.pastWords.slice(-(HISTORY_LIMIT - 1)), cloneWords(state.words)],
+                words: cloneWords(nextWords),
+            };
+        }
+    }
+}
+
+export function useWordHistory() {
+    const [state, dispatch] = useReducer(wordHistoryReducer, INITIAL_STATE);
 
     const replaceWords = useCallback(
         (nextWords: Word[]): void => {
-            syncWordsRef(nextWords);
-            setWords(nextWords);
-            setPastWords([]);
-            setFutureWords([]);
+            dispatch({
+                type: 'replace',
+                words: nextWords,
+            });
         },
-        [syncWordsRef],
+        [],
     );
 
     const updateWords = useCallback(
         (updater: Word[] | ((current: Word[]) => Word[])): void => {
-            setWords(current => {
-                const nextWords = typeof updater === 'function' ? updater(current) : updater;
-                if (JSON.stringify(current) === JSON.stringify(nextWords)) {
-                    return current;
-                }
-
-                syncWordsRef(nextWords);
-                setPastWords(previous => [...previous.slice(-(HISTORY_LIMIT - 1)), cloneWords(current)]);
-                setFutureWords([]);
-                return nextWords;
+            dispatch({
+                type: 'update',
+                updater,
             });
         },
-        [syncWordsRef],
+        [],
     );
 
     const undoWords = useCallback((): void => {
-        setPastWords(currentPast => {
-            const previousWords = currentPast.at(-1);
-            if (!previousWords) {
-                return currentPast;
-            }
-
-            setFutureWords(currentFuture => [cloneWords(wordsRef.current), ...currentFuture].slice(0, HISTORY_LIMIT));
-            syncWordsRef(previousWords);
-            setWords(cloneWords(previousWords));
-            return currentPast.slice(0, -1);
+        dispatch({
+            type: 'undo',
         });
-    }, [syncWordsRef]);
+    }, []);
 
     const redoWords = useCallback((): void => {
-        setFutureWords(currentFuture => {
-            const nextWords = currentFuture[0];
-            if (!nextWords) {
-                return currentFuture;
-            }
-
-            setPastWords(currentPast => [...currentPast.slice(-(HISTORY_LIMIT - 1)), cloneWords(wordsRef.current)]);
-            syncWordsRef(nextWords);
-            setWords(cloneWords(nextWords));
-            return currentFuture.slice(1);
+        dispatch({
+            type: 'redo',
         });
-    }, [syncWordsRef]);
+    }, []);
 
     return {
-        canRedo: futureWords.length > 0,
-        canUndo: pastWords.length > 0,
+        canRedo: state.futureWords.length > 0,
+        canUndo: state.pastWords.length > 0,
         redoWords,
         replaceWords,
         undoWords,
         updateWords,
-        words,
+        words: state.words,
     };
 }

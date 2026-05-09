@@ -98,7 +98,7 @@ export default function Result({
                 />
             </div>
 
-            {!isEmpty && !isPresenting && (
+            {!isEmpty && !isLoading && !isPresenting && (
                 <ResultActions
                     copyFeedback={copyFeedback}
                     copyPlainText={copyPlainText}

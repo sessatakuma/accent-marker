@@ -1,11 +1,11 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
 
-import { useResultEditing } from 'hooks/useResultEditing';
+import { type Word } from '../core/accentTypes';
+import { exportResultAsImage, preloadImageExport } from '../core/exportImage';
+import { buildMarkdownExport } from '../core/exportMarkdown';
+import { buildPlainTextExport } from '../core/exportPlainText';
+import { useResultEditing } from '../hooks/useResultEditing';
 
-import { type Word } from './accentTypes';
-import { exportResultAsImage, preloadImageExport } from './exportImage';
-import { buildMarkdownExport } from './exportMarkdown';
-import { buildPlainTextExport } from './exportPlainText';
 import ResultActions from './ResultActions';
 import ResultContent from './ResultContent';
 

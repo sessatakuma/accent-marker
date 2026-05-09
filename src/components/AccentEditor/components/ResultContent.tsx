@@ -1,8 +1,9 @@
-import { AccentValue, type AccentValueType, type Word } from './accentTypes';
-import isKana from './isKana';
+import { placeholder } from '../constant/placeholder';
+import { AccentValue, type AccentValueType, type Word } from '../core/accentTypes';
+import isKana from '../core/isKana';
+import { splitKanaSyllables } from '../core/kanaUtils';
+
 import Kana from './Kana';
-import { splitKanaSyllables } from './kanaUtils';
-import { placeholder } from './placeholder';
 import SkeletonLoader from './SkeletonLoader';
 
 function getSurfaceSegments(word: Word): string[] {

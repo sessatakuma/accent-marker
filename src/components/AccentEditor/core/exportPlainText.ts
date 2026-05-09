@@ -1,6 +1,6 @@
-import { getAccentArray, getAccentNumberFromArray, getReadingFromFurigana } from 'hooks/accent';
+import { placeholder } from '../constant/placeholder';
 
-import { placeholder } from './placeholder';
+import { getAccentArray, getAccentNumberFromArray, getReadingFromFurigana } from './accent';
 
 import type { Word } from './accentTypes';
 

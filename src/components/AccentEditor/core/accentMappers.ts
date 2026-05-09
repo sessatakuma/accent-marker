@@ -2,6 +2,7 @@ import { AccentValue, type MarkAccentApiResultEntry, type Word } from './accentT
 import isKana from './isKana';
 import { splitKanaSyllables } from './kanaUtils';
 
+
 export function mapApiResultToWords(result: MarkAccentApiResultEntry[]): Word[] {
     return result.map(word => {
         const kanaWord = isKana(word.surface);

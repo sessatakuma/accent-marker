@@ -1,4 +1,4 @@
-import AccentEditor from './AccentEditor';
+import AccentEditor from './AccentEditor/components/AccentEditor';
 import Nav from './Nav';
 
 export default function Main() {

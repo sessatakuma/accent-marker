@@ -6,9 +6,11 @@ import {
     type MouseEvent,
 } from 'react';
 
-import { placeholder } from './placeholder';
+import { placeholder } from '../constant/placeholder';
 
-import type { AccentValueType } from './accentTypes';
+import type { AccentValueType } from '../core/accentTypes';
+
+import './Kana.css';
 
 interface KanaProps {
     text: string;

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { mapApiResultToWords, mapFallbackTextToWords } from 'components/accentMappers';
-import { fetchMarkAccent } from 'components/markAccentClient';
+import useDebounce from 'hooks/useDebounce';
 
-import useDebounce from './useDebounce';
+import { mapApiResultToWords, mapFallbackTextToWords } from '../core/accentMappers';
+import { fetchMarkAccent } from '../core/markAccentClient';
 
-import type { Word } from 'components/accentTypes';
+import type { Word } from '../core/accentTypes';
 
 interface UseAccentAnalysisOptions {
     isEditing: boolean;

@@ -15,6 +15,7 @@ function getSurfaceSegments(word: Word): string[] {
 interface ResultContentProps {
     deleteBackwardAcrossFurigana: (wordIndex: number, textIndex: number, currentText: string) => boolean;
     isLoading: boolean;
+    moveFocusAcrossFurigana: (wordIndex: number, textIndex: number, direction: 'previous' | 'next') => boolean;
     onEditingChange: (isEditing: boolean) => void;
     registerEditableKana: (wordIndex: number, textIndex: number, node: HTMLSpanElement | null) => void;
     resultRef: React.RefObject<HTMLParagraphElement | null>;
@@ -32,6 +33,7 @@ interface ResultContentProps {
 export default function ResultContent({
     deleteBackwardAcrossFurigana,
     isLoading,
+    moveFocusAcrossFurigana,
     onEditingChange,
     registerEditableKana,
     resultRef,
@@ -109,6 +111,9 @@ export default function ResultContent({
                                             charIndex,
                                             currentText,
                                         )
+                                    }
+                                    onArrowAtEdge={direction =>
+                                        moveFocusAcrossFurigana(wordIndex, charIndex, direction)
                                     }
                                     onUpdate={(newText, newAccent) =>
                                         updateFurigana(wordIndex, charIndex, newText, newAccent)

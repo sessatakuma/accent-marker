@@ -6,6 +6,7 @@ import { cloneWords } from '../core/word/accent';
 import { AccentValue, type AccentValueType, type Word } from '../core/word/accentTypes';
 
 type FocusPlacement = 'start' | 'end';
+type FocusDirection = 'previous' | 'next';
 
 interface PendingFocusTarget {
     wordIndex: number;
@@ -63,6 +64,47 @@ export function useResultEditing({
         selection.addRange(range);
         element.focus();
     }, []);
+
+    const moveFocusAcrossFurigana = useCallback(
+        (wordIndex: number, textIndex: number, direction: FocusDirection): boolean => {
+            const step = direction === 'next' ? 1 : -1;
+            let nextWordIndex = wordIndex;
+            let nextTextIndex = textIndex + step;
+
+            while (nextWordIndex >= 0 && nextWordIndex < words.length) {
+                const nextWord = words[nextWordIndex];
+                const furiganaLength = nextWord?.furigana.length ?? 0;
+
+                if (furiganaLength === 0) {
+                    nextWordIndex += step;
+                    nextTextIndex = direction === 'next' ? 0 : -1;
+                    continue;
+                }
+
+                if (nextTextIndex >= 0 && nextTextIndex < furiganaLength) {
+                    const target = editableKanaRefs.current.get(
+                        getEditableKanaKey(nextWordIndex, nextTextIndex),
+                    );
+
+                    if (target) {
+                        setCaretPosition(target, direction === 'next' ? 'start' : 'end');
+                        return true;
+                    }
+                }
+
+                nextWordIndex += step;
+                nextTextIndex = direction === 'next' ? 0 : Number.MAX_SAFE_INTEGER;
+
+                if (direction === 'previous') {
+                    const previousWord = words[nextWordIndex];
+                    nextTextIndex = (previousWord?.furigana.length ?? 0) - 1;
+                }
+            }
+
+            return false;
+        },
+        [setCaretPosition, words],
+    );
 
     const updateKana = useCallback(
         (wordIndex: number, textIndex: number, newAccent: AccentValueType): void => {
@@ -207,6 +249,7 @@ export function useResultEditing({
 
     return {
         deleteBackwardAcrossFurigana,
+        moveFocusAcrossFurigana,
         registerEditableKana,
         updateFurigana,
         updateKana,

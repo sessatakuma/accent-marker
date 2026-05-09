@@ -18,6 +18,7 @@ interface KanaProps {
     accent: AccentValueType;
     onUpdate?: (text: string, accent: AccentValueType) => void;
     onBackspaceAtStart?: (currentText: string) => boolean;
+    onArrowAtEdge?: (direction: 'previous' | 'next') => boolean;
     editable?: boolean;
     ghost?: boolean;
     onFocusChange?: (isFocused: boolean) => void;
@@ -33,6 +34,7 @@ function Kana({
     accent,
     onUpdate,
     onBackspaceAtStart,
+    onArrowAtEdge,
     editable = false,
     ghost = false,
     onFocusChange,
@@ -70,6 +72,18 @@ function Kana({
         const range = selection.getRangeAt(0).cloneRange();
         range.selectNodeContents(element);
         range.setEnd(selection.anchorNode!, selection.anchorOffset);
+        return range.toString().length === 0;
+    };
+
+    const isCaretAtEnd = (element: HTMLSpanElement): boolean => {
+        const selection = window.getSelection();
+        if (!selection || !selection.isCollapsed || selection.rangeCount === 0) {
+            return false;
+        }
+
+        const range = selection.getRangeAt(0).cloneRange();
+        range.selectNodeContents(element);
+        range.setStart(selection.anchorNode!, selection.anchorOffset);
         return range.toString().length === 0;
     };
 
@@ -119,6 +133,16 @@ function Kana({
 
         if (event.key === 'Backspace' && target.innerText.length <= 1) {
             target.innerText = placeholder;
+        }
+
+        if (event.key === 'ArrowLeft' && isCaretAtStart(target) && onArrowAtEdge?.('previous')) {
+            event.preventDefault();
+            return;
+        }
+
+        if (event.key === 'ArrowRight' && isCaretAtEnd(target) && onArrowAtEdge?.('next')) {
+            event.preventDefault();
+            return;
         }
 
         if (event.key === 'Enter' && !event.shiftKey) {

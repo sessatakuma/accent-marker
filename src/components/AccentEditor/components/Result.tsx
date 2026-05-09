@@ -44,7 +44,13 @@ export default function Result({
         words,
     });
 
-    const { deleteBackwardAcrossFurigana, registerEditableKana, updateFurigana, updateKana } =
+    const {
+        deleteBackwardAcrossFurigana,
+        moveFocusAcrossFurigana,
+        registerEditableKana,
+        updateFurigana,
+        updateKana,
+    } =
         useResultEditing({
             showFeedback,
             updateWords,
@@ -64,6 +70,7 @@ export default function Result({
                 <ResultContent
                     deleteBackwardAcrossFurigana={deleteBackwardAcrossFurigana}
                     isLoading={isLoading}
+                    moveFocusAcrossFurigana={moveFocusAcrossFurigana}
                     onEditingChange={onEditingChange}
                     registerEditableKana={registerEditableKana}
                     resultRef={resultRef}

@@ -14,10 +14,13 @@ import type { AccentValueType } from '../core/word/accentTypes';
 import './Kana.css';
 
 interface KanaProps {
+    accentVisible?: boolean;
     text: string;
+    textVisible?: boolean;
     accent: AccentValueType;
     onUpdate?: (text: string, accent: AccentValueType) => void;
     onBackspaceAtStart?: (currentText: string) => boolean;
+    onDeleteAtStart?: (currentText: string) => boolean;
     onArrowAtEdge?: (direction: 'previous' | 'next') => boolean;
     editable?: boolean;
     ghost?: boolean;
@@ -25,15 +28,19 @@ interface KanaProps {
     registerTextRef?: (node: HTMLSpanElement | null) => void;
     textIndex?: number;
     wordIndex?: number;
+    interactive?: boolean;
 }
 
 const accentName = ['none', 'flat', 'drop'] as const;
 
 function Kana({
+    accentVisible = true,
     text,
+    textVisible = true,
     accent,
     onUpdate,
     onBackspaceAtStart,
+    onDeleteAtStart,
     onArrowAtEdge,
     editable = false,
     ghost = false,
@@ -41,6 +48,7 @@ function Kana({
     registerTextRef,
     textIndex,
     wordIndex,
+    interactive = true,
 }: KanaProps) {
     const textRef = useRef<HTMLSpanElement>(null);
     const isComposingRef = useRef(false);
@@ -156,6 +164,14 @@ function Kana({
             }
         }
 
+        if (event.key === 'Delete') {
+            const currentText = getSanitizedText();
+            if ((currentText.length === 0 || isCaretAtStart(target)) && onDeleteAtStart?.(currentText)) {
+                event.preventDefault();
+                return;
+            }
+        }
+
         if (event.key === 'Backspace' && target.innerText.length <= 1) {
             target.innerText = placeholder;
         }
@@ -201,13 +217,16 @@ function Kana({
             className='kana-shell'
             data-accent={accentName[accent]}
             data-editable={editable || undefined}
+            data-accent-visible={accentVisible || undefined}
             data-empty={text.length === 0 || undefined}
             data-ghost={ghost || undefined}
+            data-interactive={interactive || undefined}
         >
             <span className='kana-accent-lane' aria-hidden='true'>
                 <button
                     type='button'
                     className='kana-accent-hitbox'
+                    disabled={!interactive}
                     onClick={changeAccent}
                     onMouseDown={handleAccentMouseDown}
                     aria-label='アクセントを切り替え'
@@ -217,7 +236,7 @@ function Kana({
             <span
                 ref={setTextNodeRef}
                 className={`kana-text ${editable ? 'furigana' : ''}`}
-                contentEditable={editable || undefined}
+                contentEditable={editable && interactive ? true : undefined}
                 suppressContentEditableWarning
                 onBlur={finishEditing}
                 onCompositionEnd={handleCompositionEnd}
@@ -234,6 +253,7 @@ function Kana({
                 spellCheck={false}
                 data-text-index={editable ? textIndex : undefined}
                 data-word-index={editable ? wordIndex : undefined}
+                data-text-visible={textVisible || undefined}
             >
                 {text}
             </span>
@@ -244,9 +264,12 @@ function Kana({
 function areKanaPropsEqual(previous: KanaProps, next: KanaProps): boolean {
     return (
         previous.accent === next.accent &&
+        previous.accentVisible === next.accentVisible &&
         previous.editable === next.editable &&
         previous.ghost === next.ghost &&
+        previous.interactive === next.interactive &&
         previous.text === next.text &&
+        previous.textVisible === next.textVisible &&
         previous.textIndex === next.textIndex &&
         previous.wordIndex === next.wordIndex
     );

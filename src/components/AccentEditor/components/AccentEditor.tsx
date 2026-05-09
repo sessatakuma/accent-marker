@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { useAccentAnalysis } from '../hooks/useAccentAnalysis';
 import { useHistoryKeyboardShortcuts } from '../hooks/useHistoryKeyboardShortcuts';
+import { useResultReveal } from '../hooks/useResultReveal';
 import { useSyncedPanelHeight } from '../hooks/useSyncedPanelHeight';
 import { useWordHistory } from '../hooks/useWordHistory';
 
@@ -21,11 +22,24 @@ export default function AccentEditor() {
         updateWords,
         words,
     } = useWordHistory();
-    const { isLoading, statusMessage } = useAccentAnalysis({
+    const { analysisVersion, isLoading, statusMessage } = useAccentAnalysis({
         isEditing,
         paragraph,
         replaceWords,
     });
+    const {
+        isPresenting,
+        revealedAccentUnits,
+        revealedFuriganaUnits,
+        revealedLoadingCharacters,
+        revealedSurfaceUnits,
+    } = useResultReveal({
+        analysisVersion,
+        isLoading,
+        paragraph,
+        words,
+    });
+    const isBusy = isLoading || isPresenting;
     useHistoryKeyboardShortcuts({
         onRedo: redoWords,
         onUndo: undoWords,
@@ -43,8 +57,14 @@ export default function AccentEditor() {
                 </section>
 
                 <div className='result-panel-stack' style={{ minHeight: `${minHeight}px` }}>
-                    <section className='result-panel' aria-label='結果' aria-busy={isLoading}>
+                    <section className='result-panel' aria-label='結果' aria-busy={isBusy}>
                         <Result
+                            isPresenting={isPresenting}
+                            paragraph={paragraph}
+                            revealedAccentUnits={revealedAccentUnits}
+                            revealedFuriganaUnits={revealedFuriganaUnits}
+                            revealedLoadingCharacters={revealedLoadingCharacters}
+                            revealedSurfaceUnits={revealedSurfaceUnits}
                             words={words}
                             updateWords={updateWords}
                             isLoading={isLoading}
@@ -52,7 +72,7 @@ export default function AccentEditor() {
                             statusMessage={statusMessage}
                         />
                     </section>
-                    {!isLoading && words.length > 0 && (
+                    {!isBusy && words.length > 0 && (
                         <p className='result-panel-hint' aria-hidden='true'>
                             ふりがな・アクセントをクリックして編集
                         </p>

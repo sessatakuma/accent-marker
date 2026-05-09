@@ -1,4 +1,5 @@
 import {
+    memo,
     useRef,
     type CompositionEvent,
     type FocusEvent,
@@ -27,7 +28,7 @@ interface KanaProps {
 
 const accentName = ['none', 'flat', 'drop'] as const;
 
-export default function Kana({
+function Kana({
     text,
     accent,
     onUpdate,
@@ -189,3 +190,16 @@ export default function Kana({
         </span>
     );
 }
+
+function areKanaPropsEqual(previous: KanaProps, next: KanaProps): boolean {
+    return (
+        previous.accent === next.accent &&
+        previous.editable === next.editable &&
+        previous.ghost === next.ghost &&
+        previous.text === next.text &&
+        previous.textIndex === next.textIndex &&
+        previous.wordIndex === next.wordIndex
+    );
+}
+
+export default memo(Kana, areKanaPropsEqual);

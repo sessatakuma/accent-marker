@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useAccentAnalysis } from '../hooks/useAccentAnalysis';
 import { useHistoryKeyboardShortcuts } from '../hooks/useHistoryKeyboardShortcuts';
@@ -14,6 +14,9 @@ import './AccentEditor.css';
 export default function AccentEditor() {
     const [paragraph, setParagraph] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    const [hintPhase, setHintPhase] = useState<'hidden' | 'loading' | 'done' | 'edit'>('hidden');
+    const doneTimeoutRef = useRef<number | null>(null);
+    const previousBusyRef = useRef(false);
     const { minHeight, panelRef } = useSyncedPanelHeight<HTMLElement>();
     const {
         redoWords,
@@ -39,6 +42,43 @@ export default function AccentEditor() {
         words,
     });
     const isBusy = isLoading || isPresenting;
+
+    useEffect(() => {
+        if (doneTimeoutRef.current !== null) {
+            window.clearTimeout(doneTimeoutRef.current);
+            doneTimeoutRef.current = null;
+        }
+
+        if (isBusy && paragraph.trim().length > 0) {
+            setHintPhase('loading');
+            previousBusyRef.current = true;
+            return;
+        }
+
+        if (!isBusy && previousBusyRef.current && words.length > 0) {
+            setHintPhase('done');
+            previousBusyRef.current = false;
+            doneTimeoutRef.current = window.setTimeout(() => {
+                setHintPhase('edit');
+                doneTimeoutRef.current = null;
+            }, 300);
+            return;
+        }
+
+        previousBusyRef.current = false;
+        setHintPhase(words.length > 0 ? 'edit' : 'hidden');
+    }, [isBusy, paragraph, words.length]);
+
+    useEffect(
+        () => () => {
+            if (doneTimeoutRef.current !== null) {
+                window.clearTimeout(doneTimeoutRef.current);
+                doneTimeoutRef.current = null;
+            }
+        },
+        [],
+    );
+
     useHistoryKeyboardShortcuts({
         onRedo: redoWords,
         onUndo: undoWords,
@@ -70,9 +110,23 @@ export default function AccentEditor() {
                             statusMessage={statusMessage}
                         />
                     </section>
-                    {!isBusy && words.length > 0 && (
-                        <p className='result-panel-hint' aria-hidden='true'>
-                            ふりがな・アクセントをクリックして編集
+                    {hintPhase !== 'hidden' && (
+                        <p
+                            className={`result-panel-hint result-panel-hint-${hintPhase}`}
+                            aria-hidden='true'
+                        >
+                            {hintPhase === 'loading' && (
+                                <>
+                                    <span>分析中</span>
+                                    <span className='result-panel-hint-dots'>
+                                        <span className='result-panel-hint-dot'></span>
+                                        <span className='result-panel-hint-dot'></span>
+                                        <span className='result-panel-hint-dot'></span>
+                                    </span>
+                                </>
+                            )}
+                            {hintPhase === 'done' && '分析完了！'}
+                            {hintPhase === 'edit' && 'ふりがな・アクセントをクリックして編集'}
                         </p>
                     )}
                 </div>

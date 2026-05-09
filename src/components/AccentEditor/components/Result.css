@@ -85,57 +85,6 @@
     padding: 0;
 }
 
-.result-status-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: color-mix(in srgb, var(--color-bg-secondary) 46%, transparent);
-    color: var(--color-text-secondary);
-    z-index: 2;
-    pointer-events: none;
-}
-
-.result-container-inner.dark-result .result-status-overlay {
-    background-color: color-mix(in srgb, var(--color-bg-dark-panel) 46%, transparent);
-    color: var(--color-text-dark-secondary);
-}
-
-.result-status-overlay-done {
-    color: var(--color-accent-green);
-}
-
-.result-status-label {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-}
-
-.result-status-dots {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-}
-
-.result-status-dot {
-    width: 0.42rem;
-    height: 0.42rem;
-    border-radius: 999px;
-    background-color: currentColor;
-    animation: resultStatusWave 0.9s ease-in-out infinite;
-}
-
-.result-status-dot:nth-child(2) {
-    animation-delay: 0.12s;
-}
-
-.result-status-dot:nth-child(3) {
-    animation-delay: 0.24s;
-}
-
 .empty-state {
     display: flex;
     justify-content: flex-start;
@@ -264,17 +213,6 @@ rt {
     100% {
         opacity: 0;
         transform: translateY(-10px);
-    }
-}
-
-@keyframes resultStatusWave {
-    0%, 60%, 100% {
-        transform: translateY(0);
-        opacity: 0.45;
-    }
-    30% {
-        transform: translateY(-0.18rem);
-        opacity: 1;
     }
 }
 

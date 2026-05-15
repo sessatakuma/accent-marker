@@ -191,14 +191,11 @@
 
 .word-reading-cell > .kana-shell {
     min-width: 0;
-}
-
-.word-group-kana .word-reading-cell > .kana-shell {
     width: 100%;
 }
 
-.word-group-kana .word-reading-cell > .kana-shell > .kana-text,
-.word-group-kana .word-reading-cell > .kana-shell > .kana-accent-lane {
+.word-reading-cell > .kana-shell > .kana-text,
+.word-reading-cell > .kana-shell > .kana-accent-lane {
     width: 100%;
 }
 

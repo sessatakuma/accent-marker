@@ -531,20 +531,3 @@ input:checked + .slider:before {
 .result-container-inner.dark-result .word-reading-row .kana-text[data-text-visible='true'] {
     color: var(--color-text-dark-primary);
 }
-
-@media (max-width: 640px) {
-    .result-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .action-group-left,
-    .action-group-right {
-        justify-content: space-between;
-    }
-
-    .accent-toggle {
-        justify-content: space-between;
-        width: 100%;
-    }
-}

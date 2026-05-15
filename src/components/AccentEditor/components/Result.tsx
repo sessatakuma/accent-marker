@@ -1,5 +1,8 @@
 import { useRef } from 'react';
 
+import { Minimize2, Maximize2 } from 'lucide-react';
+
+import { useI18n } from '../../../i18n';
 import { type Word } from '../core/word/accentTypes';
 import { useResultControls } from '../hooks/useResultControls';
 import { useResultEditing } from '../hooks/useResultEditing';
@@ -20,6 +23,8 @@ interface ResultProps {
     updateWords: (updater: Word[] | ((current: Word[]) => Word[])) => void;
     isLoading: boolean;
     onEditingChange: (isEditing: boolean) => void;
+    onToggleExpanded: () => void;
+    isExpanded: boolean;
     statusMessage: string;
 }
 
@@ -33,9 +38,12 @@ export default function Result({
     words,
     updateWords,
     isLoading,
+    isExpanded,
     onEditingChange,
+    onToggleExpanded,
     statusMessage,
 }: ResultProps) {
+    const { t } = useI18n();
     const resultRef = useRef<HTMLParagraphElement>(null);
     const {
         copyFeedback,
@@ -79,6 +87,19 @@ export default function Result({
             <p className='visually-hidden' aria-live='polite'>
                 {statusMessage}
             </p>
+            {!isEmpty && (
+                <div className='result-panel-utility'>
+                    <button
+                        className='panel-utility-button'
+                        onClick={onToggleExpanded}
+                        aria-label={isExpanded ? t.collapseResult : t.expandResult}
+                        title={isExpanded ? t.collapseResult : t.expandResult}
+                        type='button'
+                    >
+                        {isExpanded ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+                    </button>
+                </div>
+            )}
             <div className='result-content'>
                 <ResultContent
                     accentPhaseActive={accentPhaseActive}

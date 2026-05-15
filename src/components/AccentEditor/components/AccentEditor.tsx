@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useI18n } from '../../../i18n';
 import { useAccentAnalysis } from '../hooks/useAccentAnalysis';
@@ -16,6 +16,7 @@ export default function AccentEditor() {
     const { t } = useI18n();
     const [paragraph, setParagraph] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    const [isResultExpanded, setIsResultExpanded] = useState(false);
     const { minHeight, panelRef } = useSyncedPanelHeight<HTMLElement>();
     const {
         redoWords,
@@ -44,6 +45,34 @@ export default function AccentEditor() {
     });
     const isBusy = isLoading || isPresenting;
 
+    useEffect(() => {
+        if (!isResultExpanded) {
+            return;
+        }
+
+        const handleKeyDown = (event: KeyboardEvent): void => {
+            if (event.key === 'Escape') {
+                setIsResultExpanded(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isResultExpanded]);
+
+    useEffect(() => {
+        const { body } = document;
+        const previousOverflow = body.style.overflow;
+
+        if (isResultExpanded) {
+            body.style.overflow = 'hidden';
+        }
+
+        return () => {
+            body.style.overflow = previousOverflow;
+        };
+    }, [isResultExpanded]);
+
     useHistoryKeyboardShortcuts({
         onRedo: redoWords,
         onUndo: undoWords,
@@ -55,16 +84,27 @@ export default function AccentEditor() {
             <p className='visually-hidden' aria-live='polite'>
                 {statusMessage}
             </p>
-            <div className='two-col-layout' aria-label={t.resultsAndInput}>
+            <div
+                className={`two-col-layout ${isResultExpanded ? 'two-col-layout-expanded' : ''}`}
+                aria-label={t.resultsAndInput}
+            >
                 <section className='input-panel' aria-label={t.inputPanelLabel} ref={panelRef}>
                     <Input paragraph={paragraph} setParagraph={setParagraph} isLoading={isLoading} />
                 </section>
 
-                <div className='result-panel-stack' style={{ minHeight: `${minHeight}px` }}>
-                    <section className='result-panel' aria-label={t.resultPanelLabel} aria-busy={isBusy}>
+                <div
+                    className={`result-panel-stack ${isResultExpanded ? 'result-panel-stack-expanded' : ''}`}
+                    style={{ minHeight: `${minHeight}px` }}
+                >
+                    <section
+                        className={`result-panel ${isResultExpanded ? 'result-panel-expanded' : ''}`}
+                        aria-label={t.resultPanelLabel}
+                        aria-busy={isBusy}
+                    >
                         <Result
                             accentPhaseActive={accentPhaseActive}
                             isPresenting={isPresenting}
+                            isExpanded={isResultExpanded}
                             paragraph={paragraph}
                             revealedAccentUnits={revealedAccentUnits}
                             revealedFuriganaUnits={revealedFuriganaUnits}
@@ -73,10 +113,11 @@ export default function AccentEditor() {
                             updateWords={updateWords}
                             isLoading={isLoading}
                             onEditingChange={setIsEditing}
+                            onToggleExpanded={() => setIsResultExpanded(prev => !prev)}
                             statusMessage={statusMessage}
                         />
                     </section>
-                    {words.length > 0 && (
+                    {words.length > 0 && !isResultExpanded && (
                         <p className='result-panel-hint' aria-hidden='true'>
                             {t.resultHint}
                         </p>

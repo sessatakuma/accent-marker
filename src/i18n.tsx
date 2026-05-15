@@ -13,10 +13,12 @@ interface TranslationSet {
     accentMarkerLabel: string;
     accentResultLabel: string;
     accentToggle: string;
+    collapseResult: string;
     copyAsText: string;
     copyFailed: string;
     copied: string;
     editFurigana: string;
+    expandResult: string;
     exportHtml: string;
     exportHtmlSuccess: string;
     exportImage: string;
@@ -65,10 +67,12 @@ const translations: Record<Locale, TranslationSet> = {
         accentMarkerLabel: 'Accent Marker',
         accentResultLabel: 'Pitch accent analysis result',
         accentToggle: 'Accent',
+        collapseResult: 'Collapse result',
         copyAsText: 'Copy as text',
         copyFailed: 'Copy failed',
         copied: 'Copied',
         editFurigana: 'Edit furigana',
+        expandResult: 'Expand result',
         exportHtml: 'HTML',
         exportHtmlSuccess: 'HTML exported',
         exportImage: 'Image',
@@ -110,10 +114,12 @@ const translations: Record<Locale, TranslationSet> = {
         accentMarkerLabel: 'アクセントマーカー',
         accentResultLabel: 'アクセント解析結果',
         accentToggle: 'アクセント',
+        collapseResult: '結果の拡大表示を閉じる',
         copyAsText: 'テキスト形式でコピー',
         copyFailed: 'コピーに失敗しました',
         copied: 'コピーしました',
         editFurigana: 'ふりがなを編集',
+        expandResult: '結果を拡大表示',
         exportHtml: 'HTML',
         exportHtmlSuccess: 'HTMLを書き出しました',
         exportImage: '画像',
@@ -154,10 +160,12 @@ const translations: Record<Locale, TranslationSet> = {
         accentMarkerLabel: 'Accent Marker',
         accentResultLabel: '音調分析結果',
         accentToggle: '音調',
+        collapseResult: '收合結果面板',
         copyAsText: '複製為文字',
         copyFailed: '複製失敗',
         copied: '已複製',
         editFurigana: '編輯振假名',
+        expandResult: '展開結果面板',
         exportHtml: 'HTML',
         exportHtmlSuccess: '已匯出 HTML',
         exportImage: '圖片',

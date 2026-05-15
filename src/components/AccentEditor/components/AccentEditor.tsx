@@ -17,12 +17,13 @@ export default function AccentEditor() {
     const { minHeight, panelRef } = useSyncedPanelHeight<HTMLElement>();
     const {
         redoWords,
+        replaceVersion,
         replaceWords,
         undoWords,
         updateWords,
         words,
     } = useWordHistory();
-    const { analysisVersion, isLoading, statusMessage } = useAccentAnalysis({
+    const { isLoading, statusMessage } = useAccentAnalysis({
         isEditing,
         paragraph,
         replaceWords,
@@ -34,7 +35,7 @@ export default function AccentEditor() {
         revealedFuriganaUnits,
         revealedLoadingCharacters,
     } = useResultReveal({
-        analysisVersion,
+        analysisVersion: replaceVersion,
         isLoading,
         paragraph,
         words,

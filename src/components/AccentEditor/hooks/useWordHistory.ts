@@ -9,6 +9,7 @@ const HISTORY_LIMIT = 50;
 interface WordHistoryState {
     futureWords: Word[][];
     pastWords: Word[][];
+    replaceVersion: number;
     words: Word[];
 }
 
@@ -31,6 +32,7 @@ type WordHistoryAction =
 const INITIAL_STATE: WordHistoryState = {
     futureWords: [],
     pastWords: [],
+    replaceVersion: 0,
     words: [],
 };
 
@@ -69,6 +71,7 @@ function wordHistoryReducer(state: WordHistoryState, action: WordHistoryAction):
             return {
                 futureWords: [],
                 pastWords: [],
+                replaceVersion: state.replaceVersion + 1,
                 words: action.words,
             };
         case 'update': {
@@ -81,6 +84,7 @@ function wordHistoryReducer(state: WordHistoryState, action: WordHistoryAction):
             return {
                 futureWords: [],
                 pastWords: [...state.pastWords.slice(-(HISTORY_LIMIT - 1)), cloneWords(state.words)],
+                replaceVersion: state.replaceVersion,
                 words: nextWords,
             };
         }
@@ -93,6 +97,7 @@ function wordHistoryReducer(state: WordHistoryState, action: WordHistoryAction):
             return {
                 futureWords: [cloneWords(state.words), ...state.futureWords].slice(0, HISTORY_LIMIT),
                 pastWords: state.pastWords.slice(0, -1),
+                replaceVersion: state.replaceVersion,
                 words: cloneWords(previousWords),
             };
         }
@@ -105,6 +110,7 @@ function wordHistoryReducer(state: WordHistoryState, action: WordHistoryAction):
             return {
                 futureWords: state.futureWords.slice(1),
                 pastWords: [...state.pastWords.slice(-(HISTORY_LIMIT - 1)), cloneWords(state.words)],
+                replaceVersion: state.replaceVersion,
                 words: cloneWords(nextWords),
             };
         }
@@ -150,6 +156,7 @@ export function useWordHistory() {
         canRedo: state.futureWords.length > 0,
         canUndo: state.pastWords.length > 0,
         redoWords,
+        replaceVersion: state.replaceVersion,
         replaceWords,
         undoWords,
         updateWords,

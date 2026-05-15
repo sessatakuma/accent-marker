@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react';
+
 import { placeholder } from '../constant/placeholder';
 import isKana from '../core/kana/isKana';
 import { splitKanaSyllables } from '../core/kana/kanaUtils';
@@ -10,6 +12,23 @@ function getSurfaceSegments(word: Word): string[] {
     return isKana(word.surface) && Array.isArray(word.accent)
         ? splitKanaSyllables(word.surface)
         : [...word.surface];
+}
+
+function getWordLayoutMetrics(baseCount: number, readingCount: number) {
+    const rubyScale = 0.6;
+    const safeBaseCount = Math.max(baseCount, 1);
+    const safeReadingCount = Math.max(readingCount, 1);
+    const groupWidthEm = Math.max(baseCount, readingCount * rubyScale, 1);
+
+    return {
+        baseSlotWidthEm: groupWidthEm / safeBaseCount,
+        groupWidthEm,
+        readingSlotWidthEm: groupWidthEm / (safeReadingCount * rubyScale),
+    };
+}
+
+function createWidthStyle(widthEm: number): CSSProperties {
+    return { width: `${widthEm}em` };
 }
 
 interface ResultContentProps {
@@ -90,19 +109,34 @@ export default function ResultContent({
                 const surfaceSegments = getSurfaceSegments(word);
                 const kanaWord = isKana(word.surface);
                 const kanaAccents = Array.isArray(word.accent) ? word.accent : null;
+                const readingCount = kanaWord ? surfaceSegments.length : word.furigana.length;
+                const { baseSlotWidthEm, groupWidthEm, readingSlotWidthEm } = getWordLayoutMetrics(
+                    surfaceSegments.length,
+                    readingCount,
+                );
+                const groupStyle = createWidthStyle(groupWidthEm);
+                const baseCellStyle = createWidthStyle(baseSlotWidthEm);
+                const readingCellStyle = createWidthStyle(readingSlotWidthEm);
 
                 if (kanaWord && kanaAccents) {
                     return (
-                        <span key={`${wordIndex}-${word.surface}`}>
-                            {surfaceSegments.map((segment, charIndex) => {
-                                const isAccentVisible =
-                                    accentPhaseActive && accentRevealIndex < revealedAccentUnits;
-                                accentRevealIndex += 1;
+                        <span
+                            key={`${wordIndex}-${word.surface}`}
+                            className='word-group word-group-kana'
+                            style={groupStyle}
+                        >
+                            <span className='word-reading-row'>
+                                {surfaceSegments.map((segment, charIndex) => {
+                                    const isAccentVisible =
+                                        accentPhaseActive && accentRevealIndex < revealedAccentUnits;
+                                    accentRevealIndex += 1;
 
-                                return (
-                                    <ruby key={`${wordIndex}-${charIndex}`} className='kana-only-ruby'>
-                                        <span className='kana-only-base'>{segment}</span>
-                                        <rt>
+                                    return (
+                                        <span
+                                            key={`${wordIndex}-${charIndex}`}
+                                            className='word-reading-cell'
+                                            style={readingCellStyle}
+                                        >
                                             <Kana
                                                 accentPhaseActive={accentPhaseActive}
                                                 text={segment}
@@ -114,20 +148,32 @@ export default function ResultContent({
                                                     updateKana(wordIndex, charIndex, newAccent)
                                                 }
                                             />
-                                        </rt>
-                                    </ruby>
-                                );
-                            })}
+                                        </span>
+                                    );
+                                })}
+                            </span>
+                            <span className='word-base-row' aria-hidden='true'>
+                                {surfaceSegments.map((segment, charIndex) => (
+                                    <span
+                                        key={`${wordIndex}-${charIndex}`}
+                                        className='word-base-cell kana-only-base'
+                                        style={baseCellStyle}
+                                    >
+                                        {segment}
+                                    </span>
+                                ))}
+                            </span>
                         </span>
                     );
                 }
 
                 return (
-                    <ruby key={`${wordIndex}-${word.surface}`}>
-                        {surfaceSegments.map((segment, charIndex) => (
-                            <span key={`${wordIndex}-${charIndex}`}>{segment}</span>
-                        ))}
-                        <rt>
+                    <span
+                        key={`${wordIndex}-${word.surface}`}
+                        className='word-group'
+                        style={groupStyle}
+                    >
+                        <span className='word-reading-row'>
                             <span className='furigana-group'>
                                 {word.furigana.map((char, charIndex) => {
                                     const isFuriganaVisible = furiganaRevealIndex < revealedFuriganaUnits;
@@ -138,39 +184,55 @@ export default function ResultContent({
                                     accentRevealIndex += 1;
 
                                     return (
-                                        <Kana
+                                        <span
                                             key={`${wordIndex}-${charIndex}`}
-                                            accent={char.accent}
-                                            accentPhaseActive={accentPhaseActive}
-                                            accentVisible={isAccentVisible}
-                                            editable
-                                            interactive={!isPresenting}
-                                            text={char.text === placeholder ? '' : char.text}
-                                            textIndex={charIndex}
-                                            textVisible={isFuriganaVisible}
-                                            wordIndex={wordIndex}
-                                            onBackspaceAtStart={currentText =>
-                                                deleteBackwardAcrossFurigana(wordIndex, charIndex, currentText)
-                                            }
-                                            onDeleteAtStart={currentText =>
-                                                deleteForwardAcrossFurigana(wordIndex, charIndex, currentText)
-                                            }
-                                            onArrowAtEdge={direction =>
-                                                moveFocusAcrossFurigana(wordIndex, charIndex, direction)
-                                            }
-                                            onUpdate={(newText, newAccent) =>
-                                                updateFurigana(wordIndex, charIndex, newText, newAccent)
-                                            }
-                                            onFocusChange={onEditingChange}
-                                            registerTextRef={node =>
-                                                registerEditableKana(wordIndex, charIndex, node)
-                                            }
-                                        />
+                                            className='word-reading-cell'
+                                            style={readingCellStyle}
+                                        >
+                                            <Kana
+                                                accent={char.accent}
+                                                accentPhaseActive={accentPhaseActive}
+                                                accentVisible={isAccentVisible}
+                                                editable
+                                                interactive={!isPresenting}
+                                                text={char.text === placeholder ? '' : char.text}
+                                                textIndex={charIndex}
+                                                textVisible={isFuriganaVisible}
+                                                wordIndex={wordIndex}
+                                                onBackspaceAtStart={currentText =>
+                                                    deleteBackwardAcrossFurigana(wordIndex, charIndex, currentText)
+                                                }
+                                                onDeleteAtStart={currentText =>
+                                                    deleteForwardAcrossFurigana(wordIndex, charIndex, currentText)
+                                                }
+                                                onArrowAtEdge={direction =>
+                                                    moveFocusAcrossFurigana(wordIndex, charIndex, direction)
+                                                }
+                                                onUpdate={(newText, newAccent) =>
+                                                    updateFurigana(wordIndex, charIndex, newText, newAccent)
+                                                }
+                                                onFocusChange={onEditingChange}
+                                                registerTextRef={node =>
+                                                    registerEditableKana(wordIndex, charIndex, node)
+                                                }
+                                            />
+                                        </span>
                                     );
                                 })}
                             </span>
-                        </rt>
-                    </ruby>
+                        </span>
+                        <span className='word-base-row' aria-hidden='true'>
+                            {surfaceSegments.map((segment, charIndex) => (
+                                <span
+                                    key={`${wordIndex}-${charIndex}`}
+                                    className='word-base-cell'
+                                    style={baseCellStyle}
+                                >
+                                    {segment}
+                                </span>
+                            ))}
+                        </span>
+                    </span>
                 );
             })}
         </div>

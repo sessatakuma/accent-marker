@@ -122,35 +122,66 @@
     color: var(--color-text-dark-primary);
 }
 
-ruby {
-    display: inline-block;
-    display: ruby;
+.word-group {
+    display: inline-grid;
+    grid-template-rows: auto auto;
+    vertical-align: top;
+    justify-items: stretch;
 }
 
-rt {
+.word-reading-row,
+.word-base-row {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.word-reading-row {
+    min-height: calc(1em * var(--kana-ruby-font-scale, 0.6));
     font-size: calc(1em * var(--kana-ruby-font-scale, 0.6));
     line-height: 1.2;
     letter-spacing: 0;
-    user-select: none;
-    text-align: center;
-    white-space: nowrap;
     color: var(--color-text-secondary);
+    user-select: none;
+    white-space: nowrap;
 }
 
-.result-area:not(.result-area-hide-accent) rt {
+.result-area:not(.result-area-hide-accent) .word-reading-row {
     min-height: var(--kana-ruby-stack-height);
+}
+
+.word-base-row {
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.word-reading-cell,
+.word-base-cell {
+    display: inline-flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex: none;
+}
+
+.word-base-cell {
+    align-items: flex-end;
 }
 
 .furigana-group {
     position: relative;
-    display: inline-flex;
+    display: flex;
     align-items: flex-end;
     isolation: isolate;
     white-space: nowrap;
+    width: 100%;
+}
+
+.word-reading-cell > .kana-shell {
+    min-width: 0;
 }
 
 .result-area:not(.result-area-hide-accent) .furigana-group,
-.result-area:not(.result-area-hide-accent) .kana-only-ruby > rt > .kana-shell {
+.result-area:not(.result-area-hide-accent) .word-reading-cell > .kana-shell {
     min-height: var(--kana-ruby-stack-height);
 }
 
@@ -444,13 +475,14 @@ input:checked + .slider:before {
     color: var(--color-text-dark-primary);
 }
 
-.result-container-inner.dark-result rt {
+.result-container-inner.dark-result .word-reading-row {
     color: var(--color-text-dark-secondary);
 }
 
 .result-container-inner.dark-result .result-area,
-.result-container-inner.dark-result .result-area span,
-.result-container-inner.dark-result .result-area ruby {
+.result-container-inner.dark-result .word-base-row,
+.result-container-inner.dark-result .word-base-row span,
+.result-container-inner.dark-result .word-reading-row .kana-text[data-text-visible='true'] {
     color: var(--color-text-dark-primary);
 }
 

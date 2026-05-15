@@ -7,6 +7,13 @@ import { useInputModality } from '../../../hooks/useInputModality';
 
 import './Input.css';
 
+const sampleParagraphs: readonly string[] = [
+    '今日は朝から猫がベランダで日向ぼっこしていたので、つい一緒にゴロゴロしてしまった。',
+    '近所のパン屋さんで新作のメロンパンを買ったら、予想以上にサクサクで感動した。',
+    '図書館で偶然見つけた本が面白すぎて、気づいたら3時間も経っていた。',
+    '雨の中を歩いていたら、傘を持っていない猫と目が合って、思わず傘を貸したくなった。',
+];
+
 interface InputProps {
     paragraph: string;
     setParagraph: Dispatch<SetStateAction<string>>;
@@ -15,20 +22,25 @@ interface InputProps {
 
 export default function Input({ paragraph, setParagraph, isLoading }: InputProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const lastSampleIndexRef = useRef<number | null>(null);
     const [isTextareaFocused, setIsTextareaFocused] = useState(false);
     const isKeyboardModality = useInputModality();
 
     useAutoResizeTextarea(textareaRef, paragraph);
 
     const generateRandomParagraph = (): void => {
-        const examples = [
-            '今日は朝から猫がベランダで日向ぼっこしていたので、つい一緒にゴロゴロしてしまった。',
-            '近所のパン屋さんで新作のメロンパンを買ったら、予想以上にサクサクで感動した。',
-            '図書館で偶然見つけた本が面白すぎて、気づいたら3時間も経っていた。',
-            '雨の中を歩いていたら、傘を持っていない猫と目が合って、思わず傘を貸したくなった。',
-        ];
-        const newText = examples[Math.floor(Math.random() * examples.length)];
-        setParagraph(newText);
+        if (sampleParagraphs.length === 0) return;
+
+        let nextIndex = Math.floor(Math.random() * sampleParagraphs.length);
+
+        if (sampleParagraphs.length > 1) {
+            while (nextIndex === lastSampleIndexRef.current) {
+                nextIndex = Math.floor(Math.random() * sampleParagraphs.length);
+            }
+        }
+
+        lastSampleIndexRef.current = nextIndex;
+        setParagraph(sampleParagraphs[nextIndex]);
     };
 
     const handlePaste = async (): Promise<void> => {

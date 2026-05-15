@@ -41,7 +41,7 @@ export default function Result({
         copyFeedback,
         copyPlainText,
         downloadImage,
-        downloadMarkdown,
+        downloadHtml,
         feedbackType,
         isDarkResult,
         isEmpty,
@@ -106,7 +106,7 @@ export default function Result({
                     copyFeedback={copyFeedback}
                     copyPlainText={copyPlainText}
                     downloadImage={downloadImage}
-                    downloadMarkdown={downloadMarkdown}
+                    downloadHtml={downloadHtml}
                     feedbackType={feedbackType}
                     isDarkResult={isDarkResult}
                     isMenuOpen={isMenuOpen}

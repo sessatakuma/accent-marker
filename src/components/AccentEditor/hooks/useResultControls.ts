@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { exportResultAsImage, preloadImageExport } from '../core/export/exportImage';
-import { buildMarkdownExport } from '../core/export/exportMarkdown';
+import { buildHtmlExport } from '../core/export/exportHtml';
 import { buildPlainTextExport } from '../core/export/exportPlainText';
 
 import type { Word } from '../core/word/accentTypes';
@@ -29,18 +29,18 @@ export function useResultControls({ resultRef, words }: UseResultControlsOptions
         }, 2000);
     };
 
-    const downloadMarkdown = (): void => {
+    const downloadHtml = (): void => {
         if (isEmpty) return;
 
-        const markdownDocument = buildMarkdownExport(words, showAccent);
-        const blob = new Blob([markdownDocument], { type: 'text/markdown;charset=utf-8' });
+        const htmlDocument = buildHtmlExport(words, showAccent);
+        const blob = new Blob([htmlDocument], { type: 'text/html;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.download = 'accented-text.md';
+        link.download = 'accented-text.html';
         link.href = url;
         link.click();
         window.setTimeout(() => URL.revokeObjectURL(url), 0);
-        showFeedback('Markdownを書き出しました！', 'success');
+        showFeedback('HTMLを書き出しました！', 'success');
     };
 
     const downloadImage = async (): Promise<void> => {
@@ -99,7 +99,7 @@ export function useResultControls({ resultRef, words }: UseResultControlsOptions
         copyFeedback,
         copyPlainText,
         downloadImage,
-        downloadMarkdown,
+        downloadHtml,
         feedbackType,
         isDarkResult,
         isEmpty,

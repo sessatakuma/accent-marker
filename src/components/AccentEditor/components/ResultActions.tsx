@@ -11,9 +11,9 @@ type FeedbackType = 'success' | 'warning';
 
 interface ResultActionsProps {
     copyFeedback: string | null;
+    downloadHtml: () => void;
     copyPlainText: () => void;
     downloadImage: () => void;
-    downloadMarkdown: () => void;
     feedbackType: FeedbackType;
     isDarkResult: boolean;
     isMenuOpen: boolean;
@@ -26,8 +26,8 @@ interface ResultActionsProps {
 export default function ResultActions({
     copyFeedback,
     copyPlainText,
+    downloadHtml,
     downloadImage,
-    downloadMarkdown,
     feedbackType,
     isDarkResult,
     isMenuOpen,
@@ -126,14 +126,14 @@ export default function ResultActions({
                             <button
                                 className='menu-item'
                                 onClick={() => {
-                                    downloadMarkdown();
+                                    downloadHtml();
                                     setIsMenuOpen(false);
                                 }}
                                 role='menuitem'
                                 type='button'
                             >
                                 <CodeXml size={16} />
-                                <span>Markdown</span>
+                                <span>HTML</span>
                             </button>
                         </div>
                     )}

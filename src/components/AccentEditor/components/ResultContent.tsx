@@ -10,6 +10,17 @@ function createWidthStyle(widthEm: number): CSSProperties {
     return { width: `${widthEm}em` };
 }
 
+function renderPlainSegment(segment: string, key: string) {
+    return (
+        <span key={key} className='word-stack word-stack-plain'>
+            <span className='word-reading-row word-reading-row-empty' aria-hidden='true' />
+            <span className='word-base-row'>
+                <span className='word-base-cell word-base-cell-plain'>{segment}</span>
+            </span>
+        </span>
+    );
+}
+
 interface ResultContentProps {
     accentPhaseActive: boolean;
     deleteBackwardAcrossFurigana: (wordIndex: number, textIndex: number, currentText: string) => boolean;
@@ -104,47 +115,34 @@ export default function ResultContent({
                     return (
                         <span
                             key={`${wordIndex}-${word.surface}`}
-                            className='word-group word-group-kana'
+                            className='word-inline-cluster word-group-kana'
                             style={createWidthStyle(model.groupWidthEm)}
                         >
-                            <span className='word-reading-row'>
-                                {model.annotatedReading.map((segment, charIndex) => {
-                                    const isAccentVisible =
-                                        accentPhaseActive && accentRevealIndex < revealedAccentUnits;
-                                    accentRevealIndex += 1;
+                            {model.annotatedReading.map((segment, charIndex) => {
+                                const isAccentVisible =
+                                    accentPhaseActive && accentRevealIndex < revealedAccentUnits;
+                                accentRevealIndex += 1;
 
-                                    return (
-                                        <span
-                                            key={`${wordIndex}-${charIndex}`}
-                                            className='word-reading-cell'
-                                            style={createWidthStyle(model.readingCellWidthsEm[charIndex] / rubyScale)}
-                                        >
-                                            <Kana
-                                                accentPhaseActive={accentPhaseActive}
-                                                text={segment}
-                                                ghost
-                                                accent={kanaAccents[charIndex] ?? AccentValue.None}
-                                                accentVisible={isAccentVisible}
-                                                interactive={!isPresenting}
-                                                onUpdate={(_ignore, newAccent) =>
-                                                    updateKana(wordIndex, charIndex, newAccent)
-                                                }
-                                            />
-                                        </span>
-                                    );
-                                })}
-                            </span>
-                            <span className='word-base-row' aria-hidden='true'>
-                                {model.annotatedSurface.map((segment, charIndex) => (
+                                return (
                                     <span
                                         key={`${wordIndex}-${charIndex}`}
-                                        className='word-base-cell kana-only-base'
+                                        className='word-reading-cell'
                                         style={createWidthStyle(model.baseCellWidthsEm[charIndex])}
                                     >
-                                        {segment}
+                                        <Kana
+                                            accentPhaseActive={accentPhaseActive}
+                                            text={segment}
+                                            textVisible
+                                            accent={kanaAccents[charIndex] ?? AccentValue.None}
+                                            accentVisible={isAccentVisible}
+                                            interactive={!isPresenting}
+                                            onUpdate={(_ignore, newAccent) =>
+                                                updateKana(wordIndex, charIndex, newAccent)
+                                            }
+                                        />
                                     </span>
-                                ))}
-                            </span>
+                                );
+                            })}
                         </span>
                     );
                 }
@@ -154,12 +152,10 @@ export default function ResultContent({
 
                 const mixedWordContent = (
                     <span key={`${wordIndex}-${word.surface}`} className='word-inline-cluster'>
-                        {model.prefixSurface.map((segment, segmentIndex) => (
-                            <span key={`prefix-${wordIndex}-${segmentIndex}`} className='word-plain-segment'>
-                                {segment}
-                            </span>
-                        ))}
-                        <span className='word-group' style={createWidthStyle(model.groupWidthEm)}>
+                        {model.prefixSurface.map((segment, segmentIndex) =>
+                            renderPlainSegment(segment, `prefix-${wordIndex}-${segmentIndex}`),
+                        )}
+                        <span className='word-stack word-stack-annotated' style={createWidthStyle(model.groupWidthEm)}>
                             <span className='word-reading-row'>
                                 <span className='furigana-group'>
                                     {model.annotatedReading.map((segment, annotatedIndex) => {
@@ -224,11 +220,9 @@ export default function ResultContent({
                                 ))}
                             </span>
                         </span>
-                        {model.suffixSurface.map((segment, segmentIndex) => (
-                            <span key={`suffix-${wordIndex}-${segmentIndex}`} className='word-plain-segment'>
-                                {segment}
-                            </span>
-                        ))}
+                        {model.suffixSurface.map((segment, segmentIndex) =>
+                            renderPlainSegment(segment, `suffix-${wordIndex}-${segmentIndex}`),
+                        )}
                     </span>
                 );
 

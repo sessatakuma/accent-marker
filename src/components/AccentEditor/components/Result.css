@@ -106,12 +106,13 @@
 }
 
 .result-area {
-    --result-reading-text-height: calc((1em * var(--kana-ruby-font-scale, 0.6)) * 1.2);
-    --result-reading-track-height: calc(
-        (1em * var(--kana-ruby-font-scale, 0.6) * 2) + var(--kana-accent-gap, 2px)
-    );
+    --result-ruby-font-size: calc(1em * var(--kana-ruby-font-scale, 0.6));
+    --result-ruby-line-height: 1.2;
+    --result-reading-text-height: calc(var(--result-ruby-font-size) * var(--result-ruby-line-height));
     --result-kana-shell-gap: var(--kana-accent-gap);
     --result-kana-shell-rows: var(--kana-accent-lane-height) auto;
+    --result-accent-track-height: calc(var(--kana-accent-lane-height) + var(--result-kana-shell-gap));
+    --result-reading-track-height: calc(var(--result-accent-track-height) + var(--result-reading-text-height));
 
     font-size: 1.5rem;
     line-height: 2.5;
@@ -130,12 +131,12 @@
 }
 
 .result-area-hide-accent {
-    --result-reading-track-height: var(--result-reading-text-height);
     --result-kana-shell-gap: 0;
     --result-kana-shell-rows: 0 auto;
+    --result-accent-track-height: 0;
 }
 
-.word-group {
+.word-stack {
     display: inline-grid;
     grid-template-rows: var(--result-reading-track-height) auto;
     vertical-align: top;
@@ -144,7 +145,7 @@
 
 .word-inline-cluster {
     display: inline-flex;
-    align-items: flex-end;
+    align-items: flex-start;
     vertical-align: top;
 }
 
@@ -156,12 +157,17 @@
 }
 
 .word-reading-row {
-    font-size: calc(1em * var(--kana-ruby-font-scale, 0.6));
-    line-height: 1.2;
+    min-height: var(--result-reading-track-height);
+    font-size: var(--result-ruby-font-size);
+    line-height: var(--result-ruby-line-height);
     letter-spacing: 0;
     color: var(--color-text-secondary);
     user-select: none;
     white-space: nowrap;
+}
+
+.word-reading-row-empty {
+    color: transparent;
 }
 
 .word-base-row {
@@ -178,15 +184,11 @@
 }
 
 .word-base-cell {
-    width: 100%;
     align-items: flex-end;
 }
 
-.word-plain-segment {
-    display: inline-flex;
-    align-items: flex-end;
-    line-height: 1;
-    white-space: nowrap;
+.word-base-cell-plain {
+    justify-content: flex-start;
 }
 
 .furigana-group {
@@ -204,6 +206,10 @@
     grid-template-rows: var(--result-kana-shell-rows);
     justify-items: stretch;
     row-gap: var(--result-kana-shell-gap);
+}
+
+.word-base-cell[style] {
+    width: 100%;
 }
 
 .word-reading-cell > .kana-shell > .kana-text,
@@ -226,7 +232,7 @@
 
 .furigana-group,
 .word-reading-cell > .kana-shell {
-    min-height: var(--result-reading-track-height);
+    min-height: 100%;
 }
 
 .furigana-group::before {

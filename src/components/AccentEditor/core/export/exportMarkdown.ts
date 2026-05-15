@@ -78,9 +78,14 @@ export function buildMarkdownExport(words: Word[], showAccent: boolean): string 
 
             return `<span class="word-inline-cluster">${
                 model.prefixSurface
-                    .map(segment => `<span class="word-plain-segment">${escapeHtml(segment)}</span>`)
+                    .map(
+                        segment =>
+                            `<span class="word-stack word-stack-plain"><span class="word-reading-row word-reading-row-empty" aria-hidden="true"></span><span class="word-base-row"><span class="word-base-cell word-base-cell-plain">${escapeHtml(
+                                segment,
+                            )}</span></span></span>`,
+                    )
                     .join('')
-            }<span class="word-group" style="width:${model.groupWidthEm}em">${
+            }<span class="word-stack word-stack-annotated" style="width:${model.groupWidthEm}em">${
                 `<span class="word-reading-row"><span class="furigana-group">${model.annotatedReading
                     .map((segment, annotatedIndex) => {
                         const charIndex = model.annotatedStartIndex + annotatedIndex;
@@ -102,7 +107,12 @@ export function buildMarkdownExport(words: Word[], showAccent: boolean): string 
                 )
                 .join('')}</span></span>${
                 model.suffixSurface
-                    .map(segment => `<span class="word-plain-segment">${escapeHtml(segment)}</span>`)
+                    .map(
+                        segment =>
+                            `<span class="word-stack word-stack-plain"><span class="word-reading-row word-reading-row-empty" aria-hidden="true"></span><span class="word-base-row"><span class="word-base-cell word-base-cell-plain">${escapeHtml(
+                                segment,
+                            )}</span></span></span>`,
+                    )
                     .join('')
             }</span>`;
         })

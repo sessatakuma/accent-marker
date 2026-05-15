@@ -1,5 +1,9 @@
 .accent-marker {
     --kana-ruby-font-scale: 0.6;
+    --result-ruby-font-size: calc(1em * var(--kana-ruby-font-scale));
+    --result-ruby-line-height: 1.2;
+    --result-reading-text-height: calc(var(--result-ruby-font-size) * var(--result-ruby-line-height));
+    --result-reading-track-height: var(--result-reading-text-height);
 
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 1.5rem;
@@ -7,16 +11,17 @@
     color: #1f2937;
 }
 
+.accent-marker .word-stack,
 .accent-marker .word-group {
     display: inline-grid;
-    grid-template-rows: auto auto;
+    grid-template-rows: var(--result-reading-track-height) auto;
     vertical-align: top;
     justify-items: stretch;
 }
 
 .accent-marker .word-inline-cluster {
     display: inline-flex;
-    align-items: flex-end;
+    align-items: flex-start;
     vertical-align: top;
 }
 
@@ -28,31 +33,37 @@
 }
 
 .accent-marker .word-reading-row {
-    min-height: calc((1em * var(--kana-ruby-font-scale)) * 1.2);
-    font-size: calc(1em * var(--kana-ruby-font-scale));
-    line-height: 1.2;
+    min-height: var(--result-reading-track-height);
+    font-size: var(--result-ruby-font-size);
+    line-height: var(--result-ruby-line-height);
     letter-spacing: 0;
     color: #6b7280;
     white-space: nowrap;
 }
 
-.accent-marker .word-base-row,
-.accent-marker .word-plain-segment {
+.accent-marker .word-reading-row-empty {
+    color: transparent;
+}
+
+.accent-marker .word-base-row {
     line-height: 1;
     white-space: nowrap;
 }
 
 .accent-marker .word-reading-cell,
-.accent-marker .word-base-cell,
-.accent-marker .word-plain-segment {
+.accent-marker .word-base-cell {
     display: inline-flex;
     justify-content: center;
     align-items: flex-end;
     flex: none;
 }
 
-.accent-marker .word-base-cell {
+.accent-marker .word-base-cell[style] {
     width: 100%;
+}
+
+.accent-marker .word-base-cell-plain {
+    justify-content: flex-start;
 }
 
 .accent-marker .furigana-group {

@@ -193,11 +193,17 @@
 .word-reading-cell > .kana-shell {
     min-width: 0;
     width: 100%;
+    justify-items: stretch;
 }
 
 .word-reading-cell > .kana-shell > .kana-text,
 .word-reading-cell > .kana-shell > .kana-accent-lane {
+    display: block;
     width: 100%;
+}
+
+.word-reading-cell > .kana-shell > .kana-text {
+    text-align: center;
 }
 
 .result-area:not(.result-area-hide-accent) .furigana-group,

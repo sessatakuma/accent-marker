@@ -202,6 +202,10 @@
     width: 100%;
 }
 
+.result-area-hide-accent .word-reading-cell > .kana-shell > .kana-accent-lane {
+    display: none;
+}
+
 .word-reading-cell > .kana-shell > .kana-text {
     text-align: center;
 }

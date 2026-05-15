@@ -1,107 +1,10 @@
 import type { CSSProperties } from 'react';
 
-import { placeholder } from '../constant/placeholder';
-import isKana from '../core/kana/isKana';
-import { splitKanaSyllables } from '../core/kana/kanaUtils';
 import { AccentValue, type AccentValueType, type Word } from '../core/word/accentTypes';
+import { buildWordAnnotationModel, rubyScale } from '../core/word/annotationLayout';
 
 import Kana from './Kana';
 import SkeletonLoader from './SkeletonLoader';
-
-const rubyScale = 0.6;
-const smallKana = new Set(['ゃ', 'ゅ', 'ょ', 'ャ', 'ュ', 'ョ', 'ァ', 'ィ', 'ゥ', 'ェ', 'ォ', 'ヮ', 'ぁ', 'ぃ', 'ぅ', 'ぇ', 'ぉ']);
-
-function getSurfaceSegments(word: Word): string[] {
-    return isKana(word.surface) && Array.isArray(word.accent)
-        ? splitKanaSyllables(word.surface)
-        : [...word.surface];
-}
-
-function splitAnnotatedWord(surfaceSegments: string[], readingSegments: string[]) {
-    let prefixCount = 0;
-
-    while (
-        prefixCount < surfaceSegments.length &&
-        prefixCount < readingSegments.length &&
-        isKana(surfaceSegments[prefixCount]) &&
-        surfaceSegments[prefixCount] === readingSegments[prefixCount]
-    ) {
-        prefixCount += 1;
-    }
-
-    let suffixCount = 0;
-
-    while (
-        suffixCount < surfaceSegments.length - prefixCount &&
-        suffixCount < readingSegments.length - prefixCount &&
-        isKana(surfaceSegments[surfaceSegments.length - 1 - suffixCount]) &&
-        surfaceSegments[surfaceSegments.length - 1 - suffixCount] ===
-            readingSegments[readingSegments.length - 1 - suffixCount]
-    ) {
-        suffixCount += 1;
-    }
-
-    const annotatedSurface = surfaceSegments.slice(prefixCount, surfaceSegments.length - suffixCount);
-    const annotatedReading = readingSegments.slice(prefixCount, readingSegments.length - suffixCount);
-
-    if (annotatedSurface.length === 0 || annotatedReading.length === 0) {
-        return {
-            annotatedReading: readingSegments,
-            annotatedStartIndex: 0,
-            annotatedSurface: surfaceSegments,
-            prefixSurface: [] as string[],
-            suffixSurface: [] as string[],
-            trailingHiddenReadingCount: 0,
-        };
-    }
-
-    return {
-        annotatedReading,
-        annotatedStartIndex: prefixCount,
-        annotatedSurface,
-        prefixSurface: surfaceSegments.slice(0, prefixCount),
-        suffixSurface: surfaceSegments.slice(surfaceSegments.length - suffixCount),
-        trailingHiddenReadingCount: suffixCount,
-    };
-}
-
-function getTextWeight(text: string): number {
-    const glyphs = [...text];
-
-    if (glyphs.length === 0) {
-        return 1;
-    }
-
-    return glyphs.reduce((sum, glyph) => sum + (smallKana.has(glyph) ? 0.65 : 1), 0);
-}
-
-function distributeWidths(weights: number[], totalWidthEm: number): number[] {
-    const safeWeights = weights.length > 0 ? weights : [1];
-    const totalWeight = safeWeights.reduce((sum, weight) => sum + weight, 0) || 1;
-
-    return safeWeights.map(weight => (totalWidthEm * weight) / totalWeight);
-}
-
-function getWordLayoutMetrics(baseSegments: string[], readingSegments: string[]) {
-    const safeBaseSegments = baseSegments.length > 0 ? baseSegments : [''];
-    const safeReadingSegments = readingSegments.length > 0 ? readingSegments : [''];
-    const baseWeights = safeBaseSegments.map(getTextWeight);
-    const readingWeights = safeReadingSegments.map(getTextWeight);
-    const baseWidthEm = baseWeights.reduce((sum, weight) => sum + weight, 0);
-    const readingWidthEm = readingWeights.reduce((sum, weight) => sum + weight, 0) * rubyScale;
-    const groupWidthEm = Math.max(baseWidthEm, readingWidthEm, 1);
-    const readingIsLonger = readingWidthEm > baseWidthEm;
-
-    return {
-        baseCellWidthsEm: readingIsLonger
-            ? Array.from({ length: safeBaseSegments.length }, () => groupWidthEm / safeBaseSegments.length)
-            : distributeWidths(baseWeights, groupWidthEm),
-        groupWidthEm,
-        readingCellWidthsEm: readingIsLonger
-            ? distributeWidths(readingWeights, groupWidthEm)
-            : Array.from({ length: safeReadingSegments.length }, () => groupWidthEm / safeReadingSegments.length),
-    };
-}
 
 function createWidthStyle(widthEm: number): CSSProperties {
     return { width: `${widthEm}em` };
@@ -182,25 +85,19 @@ export default function ResultContent({
             lang='ja'
         >
             {words.map((word, wordIndex) => {
-                const surfaceSegments = getSurfaceSegments(word);
-                const kanaWord = isKana(word.surface);
-                const kanaAccents = Array.isArray(word.accent) ? word.accent : null;
+                const model = buildWordAnnotationModel(word);
 
-                if (kanaWord && kanaAccents) {
-                    const { baseCellWidthsEm, groupWidthEm, readingCellWidthsEm } = getWordLayoutMetrics(
-                        surfaceSegments,
-                        surfaceSegments,
-                    );
-                    const groupStyle = createWidthStyle(groupWidthEm);
+                if (model.isKanaWord && model.kanaAccents) {
+                    const kanaAccents = model.kanaAccents;
 
                     return (
                         <span
                             key={`${wordIndex}-${word.surface}`}
                             className='word-group word-group-kana'
-                            style={groupStyle}
+                            style={createWidthStyle(model.groupWidthEm)}
                         >
                             <span className='word-reading-row'>
-                                {surfaceSegments.map((segment, charIndex) => {
+                                {model.annotatedReading.map((segment, charIndex) => {
                                     const isAccentVisible =
                                         accentPhaseActive && accentRevealIndex < revealedAccentUnits;
                                     accentRevealIndex += 1;
@@ -209,7 +106,7 @@ export default function ResultContent({
                                         <span
                                             key={`${wordIndex}-${charIndex}`}
                                             className='word-reading-cell'
-                                            style={createWidthStyle(readingCellWidthsEm[charIndex] / rubyScale)}
+                                            style={createWidthStyle(model.readingCellWidthsEm[charIndex] / rubyScale)}
                                         >
                                             <Kana
                                                 accentPhaseActive={accentPhaseActive}
@@ -227,11 +124,11 @@ export default function ResultContent({
                                 })}
                             </span>
                             <span className='word-base-row' aria-hidden='true'>
-                                {surfaceSegments.map((segment, charIndex) => (
+                                {model.annotatedSurface.map((segment, charIndex) => (
                                     <span
                                         key={`${wordIndex}-${charIndex}`}
                                         className='word-base-cell kana-only-base'
-                                        style={createWidthStyle(baseCellWidthsEm[charIndex])}
+                                        style={createWidthStyle(model.baseCellWidthsEm[charIndex])}
                                     >
                                         {segment}
                                     </span>
@@ -241,36 +138,21 @@ export default function ResultContent({
                     );
                 }
 
-                const readingSegments = word.furigana.map(char => (char.text === placeholder ? '' : char.text));
-                const {
-                    annotatedReading,
-                    annotatedStartIndex,
-                    annotatedSurface,
-                    prefixSurface,
-                    suffixSurface,
-                    trailingHiddenReadingCount,
-                } = splitAnnotatedWord(surfaceSegments, readingSegments);
-                const { baseCellWidthsEm, groupWidthEm, readingCellWidthsEm } = getWordLayoutMetrics(
-                    annotatedSurface,
-                    annotatedReading,
-                );
-                const groupStyle = createWidthStyle(groupWidthEm);
-
-                furiganaRevealIndex += annotatedStartIndex;
-                accentRevealIndex += annotatedStartIndex;
+                furiganaRevealIndex += model.annotatedStartIndex;
+                accentRevealIndex += model.annotatedStartIndex;
 
                 const mixedWordContent = (
                     <span key={`${wordIndex}-${word.surface}`} className='word-inline-cluster'>
-                        {prefixSurface.map((segment, segmentIndex) => (
+                        {model.prefixSurface.map((segment, segmentIndex) => (
                             <span key={`prefix-${wordIndex}-${segmentIndex}`} className='word-plain-segment'>
                                 {segment}
                             </span>
                         ))}
-                        <span className='word-group' style={groupStyle}>
+                        <span className='word-group' style={createWidthStyle(model.groupWidthEm)}>
                             <span className='word-reading-row'>
                                 <span className='furigana-group'>
-                                    {annotatedReading.map((segment, annotatedIndex) => {
-                                        const charIndex = annotatedStartIndex + annotatedIndex;
+                                    {model.annotatedReading.map((segment, annotatedIndex) => {
+                                        const charIndex = model.annotatedStartIndex + annotatedIndex;
                                         const char = word.furigana[charIndex];
                                         const isFuriganaVisible = furiganaRevealIndex < revealedFuriganaUnits;
                                         const isAccentVisible =
@@ -283,7 +165,9 @@ export default function ResultContent({
                                             <span
                                                 key={`${wordIndex}-${charIndex}`}
                                                 className='word-reading-cell'
-                                                style={createWidthStyle(readingCellWidthsEm[annotatedIndex] / rubyScale)}
+                                                style={createWidthStyle(
+                                                    model.readingCellWidthsEm[annotatedIndex] / rubyScale,
+                                                )}
                                             >
                                                 <Kana
                                                     accent={char.accent}
@@ -318,18 +202,18 @@ export default function ResultContent({
                                 </span>
                             </span>
                             <span className='word-base-row' aria-hidden='true'>
-                                {annotatedSurface.map((segment, annotatedIndex) => (
+                                {model.annotatedSurface.map((segment, annotatedIndex) => (
                                     <span
                                         key={`${wordIndex}-${annotatedIndex}`}
                                         className='word-base-cell'
-                                        style={createWidthStyle(baseCellWidthsEm[annotatedIndex])}
+                                        style={createWidthStyle(model.baseCellWidthsEm[annotatedIndex])}
                                     >
                                         {segment}
                                     </span>
                                 ))}
                             </span>
                         </span>
-                        {suffixSurface.map((segment, segmentIndex) => (
+                        {model.suffixSurface.map((segment, segmentIndex) => (
                             <span key={`suffix-${wordIndex}-${segmentIndex}`} className='word-plain-segment'>
                                 {segment}
                             </span>
@@ -337,8 +221,8 @@ export default function ResultContent({
                     </span>
                 );
 
-                furiganaRevealIndex += trailingHiddenReadingCount;
-                accentRevealIndex += trailingHiddenReadingCount;
+                furiganaRevealIndex += model.trailingHiddenReadingCount;
+                accentRevealIndex += model.trailingHiddenReadingCount;
 
                 return mixedWordContent;
             })}

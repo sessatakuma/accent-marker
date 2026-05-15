@@ -107,7 +107,9 @@
 
 .result-area {
     --result-reading-text-height: calc((1em * var(--kana-ruby-font-scale, 0.6)) * 1.2);
-    --result-reading-track-height: var(--kana-ruby-stack-height);
+    --result-reading-track-height: calc(
+        (1em * var(--kana-ruby-font-scale, 0.6) * 2) + var(--kana-accent-gap, 2px)
+    );
     --result-kana-shell-gap: var(--kana-accent-gap);
     --result-kana-shell-rows: var(--kana-accent-lane-height) auto;
 

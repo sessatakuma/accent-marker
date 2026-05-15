@@ -135,7 +135,7 @@
 
 .word-group {
     display: inline-grid;
-    grid-template-rows: auto auto;
+    grid-template-rows: var(--result-reading-track-height) auto;
     vertical-align: top;
     justify-items: stretch;
 }
@@ -154,7 +154,6 @@
 }
 
 .word-reading-row {
-    min-height: var(--result-reading-track-height);
     font-size: calc(1em * var(--kana-ruby-font-scale, 0.6));
     line-height: 1.2;
     letter-spacing: 0;

@@ -120,15 +120,18 @@ function getWordLayoutMetrics(baseSegments: string[], readingSegments: string[])
     const readingWidthEm = readingWeights.reduce((sum, weight) => sum + weight, 0) * rubyScale;
     const groupWidthEm = Math.max(baseWidthEm, readingWidthEm, 1);
     const readingIsLonger = readingWidthEm > baseWidthEm;
+    const alignedSegmentCounts = safeBaseSegments.length === safeReadingSegments.length;
 
     return {
-        baseCellWidthsEm: readingIsLonger
-            ? Array.from({ length: safeBaseSegments.length }, () => groupWidthEm / safeBaseSegments.length)
-            : distributeWidths(baseWeights, groupWidthEm),
+        baseCellWidthsEm:
+            alignedSegmentCounts || !readingIsLonger
+                ? distributeWidths(baseWeights, groupWidthEm)
+                : Array.from({ length: safeBaseSegments.length }, () => groupWidthEm / safeBaseSegments.length),
         groupWidthEm,
-        readingCellWidthsEm: readingIsLonger
-            ? distributeWidths(readingWeights, groupWidthEm)
-            : Array.from({ length: safeReadingSegments.length }, () => groupWidthEm / safeReadingSegments.length),
+        readingCellWidthsEm:
+            alignedSegmentCounts || readingIsLonger
+                ? distributeWidths(readingWeights, groupWidthEm)
+                : Array.from({ length: safeReadingSegments.length }, () => groupWidthEm / safeReadingSegments.length),
     };
 }
 

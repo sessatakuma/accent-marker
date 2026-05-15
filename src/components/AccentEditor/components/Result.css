@@ -170,6 +170,7 @@
 }
 
 .word-base-cell {
+    width: 100%;
     align-items: flex-end;
 }
 

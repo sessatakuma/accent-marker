@@ -4,6 +4,7 @@ import { Dices, Clipboard } from 'lucide-react';
 
 import { useAutoResizeTextarea } from '../../../hooks/useAutoResizeTextarea';
 import { useInputModality } from '../../../hooks/useInputModality';
+import { useI18n } from '../../../i18n';
 
 import './Input.css';
 
@@ -21,6 +22,7 @@ interface InputProps {
 }
 
 export default function Input({ paragraph, setParagraph, isLoading }: InputProps) {
+    const { lang, t } = useI18n();
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const lastSampleIndexRef = useRef<number | null>(null);
     const [isTextareaFocused, setIsTextareaFocused] = useState(false);
@@ -57,7 +59,7 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
     return (
         <div className='input-section'>
             <label className='visually-hidden' htmlFor='accent-input'>
-                解析する日本語テキスト
+                {t.inputLabel}
             </label>
             <textarea
                 id='accent-input'
@@ -68,23 +70,23 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
                 onChange={e => setParagraph(e.target.value)}
                 onFocus={() => setIsTextareaFocused(true)}
                 onBlur={() => setIsTextareaFocused(false)}
-                placeholder='文章を入力...'
+                placeholder={t.inputPlaceholder}
                 aria-describedby='input-shortcuts'
                 aria-controls='accent-result-output'
                 aria-busy={isLoading}
-                lang='ja'
+                lang={lang}
             />
             <p id='input-shortcuts' className='visually-hidden'>
-                解析結果は右側の結果領域に表示されます。編集中はアクセントを切り替えたり、ふりがなを直接修正できます。
+                {t.inputDescription}
             </p>
 
-            <div className='input-actions' aria-label='入力補助'>
+            <div className='input-actions' aria-label={t.inputTools}>
                 {!paragraph && (
                     <button
                         className='paste-button'
                         onClick={handlePaste}
-                        title='クリップボードから貼り付け'
-                        aria-label='クリップボードから貼り付け'
+                        title={t.pasteFromClipboard}
+                        aria-label={t.pasteFromClipboard}
                         type='button'
                     >
                         <Clipboard size={20} />
@@ -94,8 +96,8 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
                 <button
                     className='generate-button'
                     onClick={generateRandomParagraph}
-                    title='ランダムな文章を生成'
-                    aria-label='サンプル文を生成'
+                    title={t.randomSample}
+                    aria-label={t.randomSample}
                     type='button'
                 >
                     <span className='generate-button-icon' aria-hidden='true'>

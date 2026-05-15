@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { exportResultAsImage, preloadImageExport } from '../core/export/exportImage';
+import { useI18n } from '../../../i18n';
 import { buildHtmlExport } from '../core/export/exportHtml';
+import { exportResultAsImage, preloadImageExport } from '../core/export/exportImage';
 import { buildPlainTextExport } from '../core/export/exportPlainText';
 
 import type { Word } from '../core/word/accentTypes';
@@ -14,6 +15,7 @@ interface UseResultControlsOptions {
 }
 
 export function useResultControls({ resultRef, words }: UseResultControlsOptions) {
+    const { lang, t } = useI18n();
     const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
     const [feedbackType, setFeedbackType] = useState<FeedbackType>('success');
     const [isDarkResult, setIsDarkResult] = useState(false);
@@ -32,7 +34,11 @@ export function useResultControls({ resultRef, words }: UseResultControlsOptions
     const downloadHtml = (): void => {
         if (isEmpty) return;
 
-        const htmlDocument = buildHtmlExport(words, showAccent);
+        const htmlDocument = buildHtmlExport(words, showAccent, {
+            ariaLabel: t.htmlExportAriaLabel,
+            lang,
+            title: t.htmlExportTitle,
+        });
         const blob = new Blob([htmlDocument], { type: 'text/html;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -40,7 +46,7 @@ export function useResultControls({ resultRef, words }: UseResultControlsOptions
         link.href = url;
         link.click();
         window.setTimeout(() => URL.revokeObjectURL(url), 0);
-        showFeedback('HTMLを書き出しました！', 'success');
+        showFeedback(t.exportHtmlSuccess, 'success');
     };
 
     const downloadImage = async (): Promise<void> => {
@@ -58,10 +64,10 @@ export function useResultControls({ resultRef, words }: UseResultControlsOptions
 
         navigator.clipboard
             .writeText(buildPlainTextExport(words, showAccent))
-            .then(() => showFeedback('コピーしました！', 'success'))
+            .then(() => showFeedback(t.copied, 'success'))
             .catch(error => {
                 console.error('コピー失敗', error);
-                showFeedback('コピーに失敗しました', 'warning');
+                showFeedback(t.copyFailed, 'warning');
             });
     };
 

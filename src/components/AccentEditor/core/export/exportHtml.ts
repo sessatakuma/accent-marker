@@ -5,6 +5,12 @@ import markdownExportStyles from './markdownExport.css?raw';
 
 const accentName = ['none', 'flat', 'drop'] as const;
 
+interface HtmlExportOptions {
+    ariaLabel: string;
+    lang: string;
+    title: string;
+}
+
 function escapeHtml(value: string): string {
     return value
         .replaceAll('&', '&amp;')
@@ -134,7 +140,7 @@ function renderAnnotatedWord(word: Word, showAccent: boolean): string {
         .join('\n');
 }
 
-export function buildHtmlExport(words: Word[], showAccent: boolean): string {
+export function buildHtmlExport(words: Word[], showAccent: boolean, options: HtmlExportOptions): string {
     const content = words
         .map((word, wordIndex) => {
             const lineBreakMarkup = renderLineBreaks(word, wordIndex);
@@ -149,16 +155,16 @@ export function buildHtmlExport(words: Word[], showAccent: boolean): string {
 
     return [
         '<!DOCTYPE html>',
-        '<html lang="ja">',
+        `<html lang="${escapeHtml(options.lang)}">`,
         '<head>',
         '  <meta charset="utf-8">',
         '  <meta name="viewport" content="width=device-width, initial-scale=1">',
-        '  <title>Accent Marker Export</title>',
+        `  <title>${escapeHtml(options.title)}</title>`,
         `  <style>${markdownExportStyles.trim()}</style>`,
         '</head>',
         '<body>',
         '  <main>',
-        '    <article class="accent-marker" aria-label="Accent-marked text export">',
+        `    <article class="accent-marker" aria-label="${escapeHtml(options.ariaLabel)}">`,
         content,
         '    </article>',
         '  </main>',

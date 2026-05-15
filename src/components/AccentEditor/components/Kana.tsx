@@ -7,6 +7,7 @@ import {
     type MouseEvent,
 } from 'react';
 
+import { useI18n } from '../../../i18n';
 import { placeholder } from '../constant/placeholder';
 
 import type { AccentValueType } from '../core/word/accentTypes';
@@ -52,6 +53,7 @@ function Kana({
     wordIndex,
     interactive = true,
 }: KanaProps) {
+    const { t } = useI18n();
     const textRef = useRef<HTMLSpanElement>(null);
     const isComposingRef = useRef(false);
     const shouldCommitAfterCompositionRef = useRef(false);
@@ -232,8 +234,8 @@ function Kana({
                     disabled={!interactive || !accentPhaseActive}
                     onClick={changeAccent}
                     onMouseDown={handleAccentMouseDown}
-                    aria-label='アクセントを切り替え'
-                    title='アクセントを切り替え'
+                    aria-label={t.switchAccent}
+                    title={t.switchAccent}
                 />
             </span>
             <span
@@ -248,7 +250,7 @@ function Kana({
                 onKeyDown={handleKeyDown}
                 onMouseDown={handleMouseDown}
                 role={editable ? 'textbox' : undefined}
-                aria-label={editable ? 'ふりがなを編集' : undefined}
+                aria-label={editable ? t.editFurigana : undefined}
                 aria-multiline={editable || undefined}
                 autoCapitalize='off'
                 autoCorrect='off'

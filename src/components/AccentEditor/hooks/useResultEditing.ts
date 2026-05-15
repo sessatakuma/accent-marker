@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
+import { useI18n } from '../../../i18n';
 import { placeholder } from '../constant/placeholder';
 import { isKanaReading, splitKanaSyllables } from '../core/kana/kanaUtils';
 import { cloneWords } from '../core/word/accent';
@@ -27,6 +28,7 @@ export function useResultEditing({
     updateWords,
     words,
 }: UseResultEditingOptions) {
+    const { t } = useI18n();
     const pendingFocusRef = useRef<PendingFocusTarget | null>(null);
     const editableKanaRefs = useRef(new Map<EditableKanaKey, HTMLSpanElement>());
 
@@ -125,7 +127,7 @@ export function useResultEditing({
             const trimmed = newFurigana.trim();
 
             if (trimmed !== '' && !isKanaReading(trimmed)) {
-                showFeedback('ふりがなにはかなのみ入力できます', 'warning');
+                showFeedback(t.furiganaInputWarning, 'warning');
                 return;
             }
 
@@ -164,7 +166,7 @@ export function useResultEditing({
                 return nextWords;
             });
         },
-        [showFeedback, updateWords],
+        [showFeedback, t.furiganaInputWarning, updateWords],
     );
 
     const deleteForwardAcrossFurigana = useCallback(

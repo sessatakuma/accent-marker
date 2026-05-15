@@ -7,6 +7,8 @@ import {
     Sun,
 } from 'lucide-react';
 
+import { useI18n } from '../../../i18n';
+
 type FeedbackType = 'success' | 'warning';
 
 interface ResultActionsProps {
@@ -36,11 +38,13 @@ export default function ResultActions({
     setShowAccent,
     showAccent,
 }: ResultActionsProps) {
+    const { t } = useI18n();
+
     return (
-        <div className='result-actions' aria-label='結果の操作'>
+        <div className='result-actions' aria-label={t.resultActions}>
             <div className='action-group-left'>
                 <label className='accent-toggle' htmlFor='show-accent-toggle'>
-                    <span className='accent-toggle-label'>アクセント</span>
+                    <span className='accent-toggle-label'>{t.accentToggle}</span>
                     <span className='switch'>
                         <input
                             id='show-accent-toggle'
@@ -54,7 +58,7 @@ export default function ResultActions({
                 </label>
             </div>
 
-            <div className='action-group-right' aria-label='書き出しとコピー'>
+            <div className='action-group-right' aria-label={t.saveAndCopy}>
                 <div className='copy-action-container'>
                     {copyFeedback && (
                         <div
@@ -68,8 +72,8 @@ export default function ResultActions({
                     <button
                         className='action-button'
                         onClick={copyPlainText}
-                        title='テキスト形式でコピー'
-                        aria-label='テキスト形式でコピー'
+                        title={t.copyAsText}
+                        aria-label={t.copyAsText}
                         type='button'
                     >
                         <Copy size={18} />
@@ -81,8 +85,8 @@ export default function ResultActions({
                         id='save-menu-trigger'
                         className={`action-button save-menu-trigger ${isMenuOpen ? 'active' : ''}`}
                         onClick={() => setIsMenuOpen(prev => !prev)}
-                        title='保存オプション'
-                        aria-label='保存オプションを開く'
+                        title={t.exportOptions}
+                        aria-label={t.exportOptions}
                         aria-haspopup='menu'
                         aria-expanded={isMenuOpen}
                         aria-controls='save-menu'
@@ -109,15 +113,15 @@ export default function ResultActions({
                                     type='button'
                                 >
                                     <ImageIcon size={16} />
-                                    <span>画像</span>
+                                    <span>{t.exportImage}</span>
                                 </button>
                                 <button
                                     type='button'
                                     className='theme-pill-button theme-pill-button-single'
                                     onClick={() => setIsDarkResult(prev => !prev)}
                                     aria-pressed={isDarkResult}
-                                    aria-label={`画像テーマを${isDarkResult ? 'ライト' : 'ダーク'}に切り替え`}
-                                    title={`画像テーマを${isDarkResult ? 'ライト' : 'ダーク'}に切り替え`}
+                                    aria-label={t.toggleImageTheme(isDarkResult)}
+                                    title={t.toggleImageTheme(isDarkResult)}
                                 >
                                     {isDarkResult ? <Moon size={18} /> : <Sun size={18} />}
                                 </button>
@@ -133,7 +137,7 @@ export default function ResultActions({
                                 type='button'
                             >
                                 <CodeXml size={16} />
-                                <span>HTML</span>
+                                <span>{t.exportHtml}</span>
                             </button>
                         </div>
                     )}

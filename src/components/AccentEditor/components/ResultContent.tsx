@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 
+import { useI18n } from '../../../i18n';
 import { AccentValue, type AccentValueType, type Word } from '../core/word/accentTypes';
 import { buildWordAnnotationModel, getLineBreakCount, rubyScale } from '../core/word/annotationLayout';
 
@@ -65,6 +66,8 @@ export default function ResultContent({
     updateKana,
     words,
 }: ResultContentProps) {
+    const { lang, t } = useI18n();
+
     if (isLoading) {
         return (
             <SkeletonLoader
@@ -77,7 +80,7 @@ export default function ResultContent({
     if (words.length === 0) {
         return (
             <div className='empty-state' role='status' aria-live='polite'>
-                <p>結果</p>
+                <p>{t.result}</p>
             </div>
         );
     }
@@ -92,8 +95,8 @@ export default function ResultContent({
             ref={resultRef}
             role='region'
             aria-live='polite'
-            aria-label='アクセント解析結果'
-            lang='ja'
+            aria-label={t.accentResultLabel}
+            lang={lang}
         >
             {words.map((word, wordIndex) => {
                 const lineBreakCount = getLineBreakCount(word.surface);

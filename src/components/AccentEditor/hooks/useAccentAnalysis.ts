@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import useThrottle from '../../../hooks/useThrottle';
+import { useI18n } from '../../../i18n';
 import { fetchMarkAccent } from '../core/api/markAccentClient';
 import { mapApiResultToWords, mapFallbackTextToWords } from '../core/word/accentMappers';
 
@@ -19,6 +20,7 @@ export function useAccentAnalysis({
     paragraph,
     replaceWords,
 }: UseAccentAnalysisOptions) {
+    const { t } = useI18n();
     const [isLoading, setIsLoading] = useState(false);
     const [statusMessage, setStatusMessage] = useState('');
     const throttledParagraph = useThrottle(paragraph, 800);
@@ -61,17 +63,17 @@ export function useAccentAnalysis({
             clearVisibleLoadingTimeout();
             if (!response.ok) {
                 replaceWords(mapFallbackTextToWords(text));
-                setStatusMessage('サーバーからの応答がないため、簡易解析結果を表示しています。');
+                setStatusMessage(t.fallbackStatus);
                 setIsLoading(false);
                 return;
             }
 
             replaceWords(mapApiResultToWords(response.result));
-            setStatusMessage(`解析結果を更新しました。${response.result.length}件の語を表示しています。`);
+            setStatusMessage(t.statusUpdated(response.result.length));
 
             setIsLoading(false);
         },
-        [clearVisibleLoadingTimeout, replaceWords],
+        [clearVisibleLoadingTimeout, replaceWords, t],
     );
 
     useEffect(() => {

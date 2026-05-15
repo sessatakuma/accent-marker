@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useI18n } from '../../../i18n';
 import { useAccentAnalysis } from '../hooks/useAccentAnalysis';
 import { useHistoryKeyboardShortcuts } from '../hooks/useHistoryKeyboardShortcuts';
 import { useResultReveal } from '../hooks/useResultReveal';
@@ -12,6 +13,7 @@ import Result from './Result';
 import './AccentEditor.css';
 
 export default function AccentEditor() {
+    const { t } = useI18n();
     const [paragraph, setParagraph] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const { minHeight, panelRef } = useSyncedPanelHeight<HTMLElement>();
@@ -49,17 +51,17 @@ export default function AccentEditor() {
 
     return (
         <main id='main-content' className='main-content'>
-            <h1 className='visually-hidden'>日本語アクセントマーカー</h1>
+            <h1 className='visually-hidden'>{t.heading}</h1>
             <p className='visually-hidden' aria-live='polite'>
                 {statusMessage}
             </p>
-            <div className='two-col-layout' aria-label='入力と解析結果'>
-                <section className='input-panel' aria-label='入力' ref={panelRef}>
+            <div className='two-col-layout' aria-label={t.resultsAndInput}>
+                <section className='input-panel' aria-label={t.inputPanelLabel} ref={panelRef}>
                     <Input paragraph={paragraph} setParagraph={setParagraph} isLoading={isLoading} />
                 </section>
 
                 <div className='result-panel-stack' style={{ minHeight: `${minHeight}px` }}>
-                    <section className='result-panel' aria-label='結果' aria-busy={isBusy}>
+                    <section className='result-panel' aria-label={t.resultPanelLabel} aria-busy={isBusy}>
                         <Result
                             accentPhaseActive={accentPhaseActive}
                             isPresenting={isPresenting}
@@ -76,7 +78,7 @@ export default function AccentEditor() {
                     </section>
                     {words.length > 0 && (
                         <p className='result-panel-hint' aria-hidden='true'>
-                            ふりがな・アクセントをクリックして編集
+                            {t.resultHint}
                         </p>
                     )}
                 </div>

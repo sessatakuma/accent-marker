@@ -58,7 +58,7 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
 
     return (
         <div className='input-section'>
-            <label className='visually-hidden' htmlFor='accent-input'>
+            <label id='accent-input-label' className='visually-hidden' htmlFor='accent-input'>
                 {t.inputLabel}
             </label>
             <textarea
@@ -71,6 +71,7 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
                 onFocus={() => setIsTextareaFocused(true)}
                 onBlur={() => setIsTextareaFocused(false)}
                 placeholder={t.inputPlaceholder}
+                aria-labelledby='accent-input-label'
                 aria-describedby='input-shortcuts'
                 aria-controls='accent-result-output'
                 aria-busy={isLoading}

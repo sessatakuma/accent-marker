@@ -17,8 +17,8 @@ ruby > rt {
 }
 
 .kana-only-ruby > rt {
-    width: calc(1em / var(--kana-ruby-font-scale));
-    min-width: calc(1em / var(--kana-ruby-font-scale));
+    inline-size: max-content;
+    min-inline-size: 1em;
 }
 
 .kana-only-base {
@@ -39,8 +39,8 @@ ruby > rt {
 }
 
 .kana-only-ruby > rt > .kana-shell {
-    width: calc(1em / var(--kana-ruby-font-scale));
-    min-width: calc(1em / var(--kana-ruby-font-scale));
+    inline-size: max-content;
+    min-inline-size: 1em;
 }
 
 .kana-accent-lane {

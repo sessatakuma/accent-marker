@@ -6,6 +6,11 @@ import type { AccentValueType, Word } from './accentTypes';
 
 export const rubyScale = 0.6;
 
+export function getLineBreakCount(surface: string): number {
+    const matches = surface.match(/\r?\n/g);
+    return matches ? matches.length : 0;
+}
+
 interface LayoutMetrics {
     baseCellWidthsEm: number[];
     groupWidthEm: number;

@@ -1,15 +1,7 @@
-import { placeholder } from '../../constant/placeholder';
-import isKana from '../kana/isKana';
-import { splitKanaSyllables } from '../kana/kanaUtils';
 import { AccentValue, type AccentValueType, type Word } from '../word/accentTypes';
+import { buildWordAnnotationModel, getLineBreakCount, rubyScale } from '../word/annotationLayout';
 
 import markdownExportStyles from './markdownExport.css?raw';
-
-function getSurfaceSegments(word: Word): string[] {
-    return isKana(word.surface) && Array.isArray(word.accent)
-        ? splitKanaSyllables(word.surface)
-        : [...word.surface];
-}
 
 function escapeHtml(value: string): string {
     return value
@@ -20,39 +12,101 @@ function escapeHtml(value: string): string {
         .replaceAll("'", '&#39;');
 }
 
-function renderMarkdownSyllable(text: string, accent: AccentValueType): string {
+function renderAccentText(text: string, accent: AccentValueType, showAccent: boolean): string {
     const escapedText = escapeHtml(text);
-    if (accent === AccentValue.High) return `<i>${escapedText}</i>`;
-    if (accent === AccentValue.Drop) return `<b>${escapedText}</b>`;
+
+    if (!showAccent) {
+        return escapedText;
+    }
+
+    if (accent === AccentValue.High) {
+        return `<i>${escapedText}</i>`;
+    }
+
+    if (accent === AccentValue.Drop) {
+        return `<b>${escapedText}</b>`;
+    }
+
     return escapedText;
 }
 
+function renderLineBreaks(word: Word, wordIndex: number): string | null {
+    const lineBreakCount = getLineBreakCount(word.surface);
+
+    if (lineBreakCount === 0) {
+        return null;
+    }
+
+    return Array.from({ length: lineBreakCount }, (_, breakIndex) =>
+        `<br data-break="${wordIndex}-${breakIndex}">`,
+    ).join('');
+}
+
 export function buildMarkdownExport(words: Word[], showAccent: boolean): string {
-    const rubyMarkup = words
-        .map(word => {
-            const surfaceSegments = getSurfaceSegments(word);
-            const kanaAccents = isKana(word.surface) && Array.isArray(word.accent) ? word.accent : null;
-            const baseMarkup = escapeHtml(word.surface);
+    const markup = words
+        .map((word, wordIndex) => {
+            const lineBreakMarkup = renderLineBreaks(word, wordIndex);
+            if (lineBreakMarkup) {
+                return lineBreakMarkup;
+            }
 
-            const readingMarkup = (kanaAccents
-                ? surfaceSegments.map((segment, index) =>
-                      showAccent
-                          ? renderMarkdownSyllable(segment, kanaAccents[index] ?? AccentValue.None)
-                          : escapeHtml(segment),
-                  )
-                : word.furigana.map(item =>
-                      showAccent
-                          ? renderMarkdownSyllable(
-                                item.text === placeholder ? '' : item.text,
-                                item.accent,
-                            )
-                          : escapeHtml(item.text === placeholder ? '' : item.text),
-                  )
-            ).join('');
+            const model = buildWordAnnotationModel(word);
 
-            return `<ruby>${baseMarkup}<rt>${readingMarkup}</rt></ruby>`;
+            if (model.isKanaWord && model.kanaAccents) {
+                return `<span class="word-group word-group-kana" style="width:${model.groupWidthEm}em">${
+                    `<span class="word-reading-row">${model.annotatedReading
+                        .map(
+                            (segment, charIndex) =>
+                                `<span class="word-reading-cell" style="width:${
+                                    model.readingCellWidthsEm[charIndex] / rubyScale
+                                }em">${renderAccentText(
+                                    segment,
+                                    model.kanaAccents?.[charIndex] ?? AccentValue.None,
+                                    showAccent,
+                                )}</span>`,
+                        )
+                        .join('')}</span>`
+                }<span class="word-base-row">${model.annotatedSurface
+                    .map(
+                        (segment, charIndex) =>
+                            `<span class="word-base-cell" style="width:${model.baseCellWidthsEm[charIndex]}em">${escapeHtml(
+                                segment,
+                            )}</span>`,
+                    )
+                    .join('')}</span></span>`;
+            }
+
+            return `<span class="word-inline-cluster">${
+                model.prefixSurface
+                    .map(segment => `<span class="word-plain-segment">${escapeHtml(segment)}</span>`)
+                    .join('')
+            }<span class="word-group" style="width:${model.groupWidthEm}em">${
+                `<span class="word-reading-row"><span class="furigana-group">${model.annotatedReading
+                    .map((segment, annotatedIndex) => {
+                        const charIndex = model.annotatedStartIndex + annotatedIndex;
+                        return `<span class="word-reading-cell" style="width:${
+                            model.readingCellWidthsEm[annotatedIndex] / rubyScale
+                        }em">${renderAccentText(
+                            segment,
+                            word.furigana[charIndex]?.accent ?? AccentValue.None,
+                            showAccent,
+                        )}</span>`;
+                    })
+                    .join('')}</span></span>`
+            }<span class="word-base-row">${model.annotatedSurface
+                .map(
+                    (segment, annotatedIndex) =>
+                        `<span class="word-base-cell" style="width:${model.baseCellWidthsEm[annotatedIndex]}em">${escapeHtml(
+                            segment,
+                        )}</span>`,
+                )
+                .join('')}</span></span>${
+                model.suffixSurface
+                    .map(segment => `<span class="word-plain-segment">${escapeHtml(segment)}</span>`)
+                    .join('')
+            }</span>`;
         })
         .join('');
 
-    return `<style>${markdownExportStyles.trim()}</style><div class="accent-marker">${rubyMarkup}</div>`;
+    return `<style>${markdownExportStyles.trim()}</style><div class="accent-marker">${markup}</div>`;
 }

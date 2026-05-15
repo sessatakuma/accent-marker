@@ -1,18 +1,13 @@
 import type { CSSProperties } from 'react';
 
 import { AccentValue, type AccentValueType, type Word } from '../core/word/accentTypes';
-import { buildWordAnnotationModel, rubyScale } from '../core/word/annotationLayout';
+import { buildWordAnnotationModel, getLineBreakCount, rubyScale } from '../core/word/annotationLayout';
 
 import Kana from './Kana';
 import SkeletonLoader from './SkeletonLoader';
 
 function createWidthStyle(widthEm: number): CSSProperties {
     return { width: `${widthEm}em` };
-}
-
-function getLineBreakCount(surface: string): number {
-    const matches = surface.match(/\r?\n/g);
-    return matches ? matches.length : 0;
 }
 
 interface ResultContentProps {

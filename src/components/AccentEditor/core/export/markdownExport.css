@@ -1,18 +1,68 @@
 .accent-marker {
+    --kana-ruby-font-scale: 0.6;
+
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 1.5rem;
     line-height: 2.5;
     color: #1f2937;
 }
 
-.accent-marker ruby {
-    ruby-position: over;
+.accent-marker .word-group {
+    display: inline-grid;
+    grid-template-rows: auto auto;
+    vertical-align: top;
+    justify-items: stretch;
 }
 
-.accent-marker rt {
-    font-size: 0.6em;
+.accent-marker .word-inline-cluster {
+    display: inline-flex;
+    align-items: flex-end;
+    vertical-align: top;
+}
+
+.accent-marker .word-reading-row,
+.accent-marker .word-base-row {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.accent-marker .word-reading-row {
+    min-height: calc((1em * var(--kana-ruby-font-scale)) * 1.2);
+    font-size: calc(1em * var(--kana-ruby-font-scale));
     line-height: 1.2;
+    letter-spacing: 0;
     color: #6b7280;
+    white-space: nowrap;
+}
+
+.accent-marker .word-base-row,
+.accent-marker .word-plain-segment {
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.accent-marker .word-reading-cell,
+.accent-marker .word-base-cell,
+.accent-marker .word-plain-segment {
+    display: inline-flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex: none;
+}
+
+.accent-marker .word-base-cell {
+    width: 100%;
+}
+
+.accent-marker .furigana-group {
+    display: flex;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.accent-marker .word-reading-cell {
+    text-align: center;
 }
 
 .accent-marker i,

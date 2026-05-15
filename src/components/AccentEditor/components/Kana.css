@@ -144,15 +144,6 @@ ruby > rt {
     outline: none;
 }
 
-.result-area-hide-accent .kana-accent-lane {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.result-area-hide-accent .kana-accent-hitbox {
-    pointer-events: none;
-}
-
 @keyframes kanaRevealFade {
     from {
         opacity: 0;

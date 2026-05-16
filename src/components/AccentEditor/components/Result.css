@@ -11,44 +11,6 @@
         color 0.2s ease;
 }
 
-.result-panel-utility {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: var(--space-3);
-}
-
-.panel-utility-button {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: var(--radius-md);
-    background-color: color-mix(in srgb, var(--color-bg-secondary) 88%, transparent);
-    color: var(--color-text-secondary);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.panel-utility-button:hover {
-    background-color: var(--color-bg-secondary-hover);
-    color: var(--color-text-primary);
-    transform: translateY(-1px);
-}
-
-.result-container-inner.dark-result .panel-utility-button {
-    background-color: color-mix(in srgb, var(--color-bg-dark-hover) 72%, transparent);
-    color: var(--color-text-dark-secondary);
-}
-
-.result-container-inner.dark-result .panel-utility-button:hover {
-    background-color: var(--color-bg-dark-hover);
-    color: var(--color-text-dark-primary);
-}
-
 .result-container-inner.dark-result {
     --accent-color: color-mix(in srgb, var(--color-accent-red) 72%, white);
     --kana-edit-hover-bg: color-mix(in srgb, var(--color-accent-red) 14%, transparent);
@@ -96,7 +58,6 @@
 
 .action-button:focus-visible,
 .menu-item:focus-visible,
-.panel-utility-button:focus-visible,
 .switch input:focus-visible + .slider,
 .kana-accent-hitbox:focus-visible,
 .kana-text:focus-visible {
@@ -111,6 +72,10 @@
 .result-container-inner.dark-result .action-button:hover {
     background-color: var(--color-bg-dark-hover);
     color: var(--color-text-dark-primary);
+}
+
+.action-button-expand {
+    display: inline-flex;
 }
 
 .theme-toggle.active {
@@ -299,6 +264,12 @@
 .dark-theme .result-area {
     background-color: var(--color-bg-dark-panel);
     color: var(--color-text-dark-primary);
+}
+
+@media (max-width: 768px) {
+    .action-button-expand {
+        display: none;
+    }
 }
 
 .result-container-inner.tone-down {

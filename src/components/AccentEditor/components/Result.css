@@ -27,6 +27,12 @@
     padding-top: 1rem;
 }
 
+.action-group-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .export-group {
     display: flex;
     gap: 0.5rem;
@@ -49,6 +55,13 @@
     gap: 0.5rem;
     font-weight: 500;
     font-size: 0.9rem;
+}
+
+.action-group-right .action-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    flex-shrink: 0;
 }
 
 .action-button:hover {
@@ -76,6 +89,11 @@
 
 .action-button-expand {
     display: inline-flex;
+}
+
+.action-button-expand svg {
+    width: 18px;
+    height: 18px;
 }
 
 .theme-toggle.active {

@@ -106,3 +106,19 @@
     flex-direction: column;
     padding: 0;
 }
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 0;
+    }
+
+    .two-col-layout {
+        gap: 0;
+    }
+
+    .input-panel,
+    .result-panel {
+        border-radius: 0;
+        border-inline: 0;
+    }
+}

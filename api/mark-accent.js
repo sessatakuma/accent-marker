@@ -3,10 +3,35 @@ import {
     isMarkAccentProxyLoop,
 } from '../proxy.config.js';
 
+const ALLOWED_SITE_ORIGIN = 'https://accent-marker.sessatakuma.dev';
+
+function extractRequestOrigin(request) {
+    const originHeader = request.headers.origin;
+    if (originHeader) {
+        return originHeader;
+    }
+
+    const refererHeader = request.headers.referer;
+    if (!refererHeader) {
+        return null;
+    }
+
+    try {
+        return new URL(refererHeader).origin;
+    } catch {
+        return null;
+    }
+}
+
 export default async function handler(request, response) {
     if (request.method !== 'POST') {
         response.setHeader('Allow', 'POST');
         return response.status(405).json({ error: 'Method Not Allowed' });
+    }
+
+    const requestOrigin = extractRequestOrigin(request);
+    if (requestOrigin !== ALLOWED_SITE_ORIGIN) {
+        return response.status(403).json({ error: 'Forbidden' });
     }
 
     const apiKey = process.env.MARK_ACCENT_API_KEY;

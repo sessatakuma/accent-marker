@@ -121,4 +121,8 @@
         border-radius: 0;
         border-inline: 0;
     }
+
+    .result-panel-stack {
+        padding-bottom: 2rem;
+    }
 }

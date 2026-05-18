@@ -310,6 +310,39 @@ export function useResultReveal({
         });
     }, [accentUnits, analysisVersion, furiganaUnits, isLoading, revealState.phase]);
 
+    useEffect(() => {
+        if (isLoading || revealState.phase !== 'revealing') {
+            return;
+        }
+
+        if (revealState.analysisVersion !== analysisVersion) {
+            return;
+        }
+
+        if (
+            revealState.revealedAccentUnits < accentUnits ||
+            revealState.revealedFuriganaUnits < furiganaUnits
+        ) {
+            return;
+        }
+
+        setRevealState(currentState =>
+            currentState.analysisVersion !== analysisVersion ||
+            currentState.phase !== 'revealing'
+                ? currentState
+                : createCompleteRevealState(analysisVersion, accentUnits, furiganaUnits),
+        );
+    }, [
+        accentUnits,
+        analysisVersion,
+        furiganaUnits,
+        isLoading,
+        revealState.analysisVersion,
+        revealState.phase,
+        revealState.revealedAccentUnits,
+        revealState.revealedFuriganaUnits,
+    ]);
+
     const revealPhase = isStaleRevealState ? 'revealing' : revealState.phase;
 
     return {

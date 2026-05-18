@@ -4,14 +4,20 @@ const MIN_PANEL_HEIGHT = 500;
 
 export function useSyncedPanelHeight<T extends HTMLElement>() {
     const panelRef = useRef<T>(null);
+    const footerRef = useRef<HTMLDivElement>(null);
     const [minHeight, setMinHeight] = useState(MIN_PANEL_HEIGHT);
 
     useEffect(() => {
         const panel = panelRef.current;
-        if (!panel) return;
+        const footer = footerRef.current;
+        const textarea = panel?.querySelector('textarea');
+        if (!panel || !footer || !textarea) return;
 
         const syncHeight = (): void => {
-            setMinHeight(Math.max(MIN_PANEL_HEIGHT, Math.ceil(panel.getBoundingClientRect().height)));
+            const textareaHeight = textarea.getBoundingClientRect().height;
+            const footerHeight = footer.getBoundingClientRect().height;
+
+            setMinHeight(Math.max(MIN_PANEL_HEIGHT, Math.ceil(textareaHeight + footerHeight)));
         };
 
         syncHeight();
@@ -20,11 +26,13 @@ export function useSyncedPanelHeight<T extends HTMLElement>() {
             syncHeight();
         });
 
-        observer.observe(panel);
+        observer.observe(textarea);
+        observer.observe(footer);
         return () => observer.disconnect();
     }, []);
 
     return {
+        footerRef,
         minHeight,
         panelRef,
     };

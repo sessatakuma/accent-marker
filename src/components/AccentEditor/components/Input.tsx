@@ -1,4 +1,4 @@
-import { useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import { useRef, useState, type Dispatch, type RefObject, type SetStateAction } from 'react';
 
 import { Dices, Clipboard } from 'lucide-react';
 
@@ -19,9 +19,10 @@ interface InputProps {
     paragraph: string;
     setParagraph: Dispatch<SetStateAction<string>>;
     isLoading: boolean;
+    actionsRef?: RefObject<HTMLDivElement | null>;
 }
 
-export default function Input({ paragraph, setParagraph, isLoading }: InputProps) {
+export default function Input({ paragraph, setParagraph, isLoading, actionsRef }: InputProps) {
     const { lang, t } = useI18n();
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const lastSampleIndexRef = useRef<number | null>(null);
@@ -81,7 +82,7 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
                 {t.inputDescription}
             </p>
 
-            <div className='input-actions' aria-label={t.inputTools}>
+            <div className='input-actions' aria-label={t.inputTools} ref={actionsRef}>
                 {!paragraph && (
                     <button
                         className='paste-button'

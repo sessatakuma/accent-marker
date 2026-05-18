@@ -17,7 +17,7 @@ export default function AccentEditor() {
     const [paragraph, setParagraph] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [isResultExpanded, setIsResultExpanded] = useState(false);
-    const { minHeight, panelRef } = useSyncedPanelHeight<HTMLElement>();
+    const { footerRef, minHeight, panelRef } = useSyncedPanelHeight<HTMLElement>();
     const {
         redoWords,
         replaceVersion,
@@ -89,7 +89,12 @@ export default function AccentEditor() {
                 aria-label={t.resultsAndInput}
             >
                 <section className='input-panel' aria-label={t.inputPanelLabel} ref={panelRef}>
-                    <Input paragraph={paragraph} setParagraph={setParagraph} isLoading={isLoading} />
+                    <Input
+                        paragraph={paragraph}
+                        setParagraph={setParagraph}
+                        isLoading={isLoading}
+                        actionsRef={footerRef}
+                    />
                 </section>
 
                 <div

@@ -5,6 +5,7 @@ const REVEAL_INTERVAL_MS = 28;
 const REVEAL_ACCELERATION_START = 0.55;
 const REVEAL_MIN_INTERVAL_MULTIPLIER = 0.18;
 const MAX_REVEAL_DURATION_MS = 3200;
+const MAX_ANIMATED_REVEAL_UNITS = 320;
 
 function getRevealStepDelay(totalUnits: number, stepIndex: number, baseIntervalMs: number) {
     if (totalUnits <= 1) {
@@ -94,6 +95,8 @@ export function useResultReveal({
         revealedFuriganaUnits: 0,
     });
     const { accentUnits, furiganaUnits } = getRevealTotals(words);
+    const revealUnits = Math.max(furiganaUnits, accentUnits);
+    const shouldSkipAnimatedReveal = revealUnits > MAX_ANIMATED_REVEAL_UNITS;
     const isStaleRevealState =
         !isLoading && words.length > 0 && revealState.analysisVersion !== analysisVersion;
 
@@ -142,13 +145,31 @@ export function useResultReveal({
             return;
         }
 
+        if (shouldSkipAnimatedReveal) {
+            setRevealState({
+                analysisVersion,
+                phase: 'complete',
+                revealedAccentUnits: accentUnits,
+                revealedFuriganaUnits: furiganaUnits,
+            });
+            return;
+        }
+
         setRevealState({
             analysisVersion,
             phase: 'revealing',
             revealedAccentUnits: 0,
             revealedFuriganaUnits: 0,
         });
-    }, [accentUnits, analysisVersion, furiganaUnits, isLoading, revealState.analysisVersion, words.length]);
+    }, [
+        accentUnits,
+        analysisVersion,
+        furiganaUnits,
+        isLoading,
+        revealState.analysisVersion,
+        shouldSkipAnimatedReveal,
+        words.length,
+    ]);
 
     useEffect(() => {
         if (isLoading || words.length === 0) {
@@ -173,6 +194,17 @@ export function useResultReveal({
             return;
         }
 
+        if (shouldSkipAnimatedReveal) {
+            animatedAnalysisVersionRef.current = analysisVersion;
+            setRevealState({
+                analysisVersion,
+                phase: 'complete',
+                revealedAccentUnits: accentUnits,
+                revealedFuriganaUnits: furiganaUnits,
+            });
+            return;
+        }
+
         if (analysisVersion === animatedAnalysisVersionRef.current) {
             return;
         }
@@ -189,7 +221,6 @@ export function useResultReveal({
                   },
         );
 
-        const revealUnits = Math.max(furiganaUnits, accentUnits);
         const revealSchedule = buildRevealSchedule(revealUnits, REVEAL_INTERVAL_MS);
 
         if (revealSchedule.length === 0) {
@@ -243,7 +274,15 @@ export function useResultReveal({
         frameId = window.requestAnimationFrame(tick);
 
         return () => window.cancelAnimationFrame(frameId);
-    }, [accentUnits, analysisVersion, furiganaUnits, isLoading, words.length]);
+    }, [
+        accentUnits,
+        analysisVersion,
+        furiganaUnits,
+        isLoading,
+        revealUnits,
+        shouldSkipAnimatedReveal,
+        words.length,
+    ]);
 
     useEffect(() => {
         if (isLoading || revealState.phase === 'revealing') {

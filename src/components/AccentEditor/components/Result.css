@@ -141,7 +141,7 @@
     font-size: 1.5rem;
     line-height: 2.5;
     color: var(--color-text-primary);
-    padding: 0;
+    padding: 0 0 var(--result-reading-track-height);
     margin: 0;
     border-radius: var(--radius-md);
     transition:

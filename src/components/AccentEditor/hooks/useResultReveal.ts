@@ -4,6 +4,7 @@ const LOADING_CHARACTER_INTERVAL_MS = 22;
 const REVEAL_INTERVAL_MS = 28;
 const REVEAL_ACCELERATION_START = 0.55;
 const REVEAL_MIN_INTERVAL_MULTIPLIER = 0.18;
+const MAX_REVEAL_DURATION_MS = 3200;
 
 function getRevealStepDelay(totalUnits: number, stepIndex: number, baseIntervalMs: number) {
     if (totalUnits <= 1) {
@@ -22,6 +23,27 @@ function getRevealStepDelay(totalUnits: number, stepIndex: number, baseIntervalM
         1 - (1 - REVEAL_MIN_INTERVAL_MULTIPLIER) * easedTailProgress;
 
     return Math.max(12, Math.round(baseIntervalMs * intervalMultiplier));
+}
+
+function buildRevealSchedule(totalUnits: number, baseIntervalMs: number): number[] {
+    if (totalUnits <= 0) {
+        return [];
+    }
+
+    const cumulativeDurations: number[] = [];
+    let elapsedMs = 0;
+
+    for (let index = 1; index <= totalUnits; index += 1) {
+        elapsedMs += getRevealStepDelay(totalUnits, index, baseIntervalMs);
+        cumulativeDurations.push(elapsedMs);
+    }
+
+    if (elapsedMs <= MAX_REVEAL_DURATION_MS) {
+        return cumulativeDurations;
+    }
+
+    const scale = MAX_REVEAL_DURATION_MS / elapsedMs;
+    return cumulativeDurations.map(duration => Math.round(duration * scale));
 }
 
 function getRevealTotals(
@@ -167,45 +189,60 @@ export function useResultReveal({
                   },
         );
 
-        let elapsedMs = 0;
-        const timeoutIds: number[] = [];
         const revealUnits = Math.max(furiganaUnits, accentUnits);
+        const revealSchedule = buildRevealSchedule(revealUnits, REVEAL_INTERVAL_MS);
 
-        for (let index = 1; index <= revealUnits; index += 1) {
-            elapsedMs += getRevealStepDelay(revealUnits, index, REVEAL_INTERVAL_MS);
-            timeoutIds.push(
-                window.setTimeout(() => {
-                    setRevealState(currentState =>
-                        currentState.analysisVersion !== analysisVersion
-                            ? currentState
-                            : {
-                                  ...currentState,
-                                  ...currentState,
-                                  phase: 'revealing',
-                                  revealedAccentUnits: Math.min(index, accentUnits),
-                                  revealedFuriganaUnits: Math.min(index, furiganaUnits),
-                              },
-                    );
-                }, elapsedMs),
+        if (revealSchedule.length === 0) {
+            setRevealState(currentState =>
+                currentState.analysisVersion !== analysisVersion
+                    ? currentState
+                    : {
+                          ...currentState,
+                          phase: 'complete',
+                          revealedAccentUnits: accentUnits,
+                          revealedFuriganaUnits: furiganaUnits,
+                      },
             );
+            return;
         }
 
-        timeoutIds.push(
-            window.setTimeout(() => {
-                setRevealState(currentState =>
-                    currentState.analysisVersion !== analysisVersion
-                        ? currentState
-                        : {
-                              ...currentState,
-                              phase: 'complete',
-                              revealedAccentUnits: accentUnits,
-                              revealedFuriganaUnits: furiganaUnits,
-                          },
-                );
-            }, elapsedMs),
-        );
+        let frameId = 0;
+        let revealedUnits = 0;
+        let animationStartMs: number | null = null;
 
-        return () => timeoutIds.forEach(timeoutId => window.clearTimeout(timeoutId));
+        const tick = (timestampMs: number): void => {
+            if (animationStartMs === null) {
+                animationStartMs = timestampMs;
+            }
+
+            const elapsedMs = timestampMs - animationStartMs;
+
+            while (
+                revealedUnits < revealSchedule.length &&
+                elapsedMs >= revealSchedule[revealedUnits]
+            ) {
+                revealedUnits += 1;
+            }
+
+            setRevealState(currentState =>
+                currentState.analysisVersion !== analysisVersion
+                    ? currentState
+                    : {
+                          ...currentState,
+                          phase: revealedUnits >= revealUnits ? 'complete' : 'revealing',
+                          revealedAccentUnits: Math.min(revealedUnits, accentUnits),
+                          revealedFuriganaUnits: Math.min(revealedUnits, furiganaUnits),
+                      },
+            );
+
+            if (revealedUnits < revealUnits) {
+                frameId = window.requestAnimationFrame(tick);
+            }
+        };
+
+        frameId = window.requestAnimationFrame(tick);
+
+        return () => window.cancelAnimationFrame(frameId);
     }, [accentUnits, analysisVersion, furiganaUnits, isLoading, words.length]);
 
     useEffect(() => {

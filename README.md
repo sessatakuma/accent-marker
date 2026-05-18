@@ -33,10 +33,12 @@ bun dev
 
 ## Local API Setup (Internal Development)
 
-Local development and `vite preview` use a same-origin proxy for `/api/mark-accent`.
+Local development and `vite preview` use a same-origin proxy for `/api/mark-accent` that calls the upstream API directly from the Vite server.
 
-If you have an API key, add it to `.env` and requests will go directly to the real upstream API:
+Add the API key to `.env` so local requests can be proxied server-side:
 
 ```bash
 MARK_ACCENT_API_KEY=<your_api_key>
 ```
+
+For local backward compatibility, `VITE_X_API_KEY` is also accepted, but `MARK_ACCENT_API_KEY` is the preferred variable name.

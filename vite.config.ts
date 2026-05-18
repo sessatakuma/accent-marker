@@ -2,7 +2,6 @@ import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
 
 import {
-    DEFAULT_MARK_ACCENT_PUBLIC_PROXY_TARGET,
     DEFAULT_MARK_ACCENT_UPSTREAM_URL,
     MARK_ACCENT_PROXY_PATH,
     normalizeMarkAccentUrl,
@@ -10,12 +9,10 @@ import {
 
 interface MarkAccentProxyOptions {
     apiKey?: string;
-    publicProxyTarget: string;
     upstreamUrl: string;
 }
 
 function createMarkAccentProxy(options: MarkAccentProxyOptions) {
-    const normalizedPublicProxyTarget = normalizeMarkAccentUrl(options.publicProxyTarget);
     const normalizedUpstreamUrl = normalizeMarkAccentUrl(options.upstreamUrl);
 
     const proxyRequest = async (
@@ -54,15 +51,16 @@ function createMarkAccentProxy(options: MarkAccentProxyOptions) {
                     : req.headers['content-type'] || 'application/json',
             };
 
-            const requestUrl = options.apiKey
-                ? normalizedUpstreamUrl
-                : `${normalizedPublicProxyTarget}/api/mark-accent`;
-
-            if (options.apiKey) {
-                requestHeaders['X-API-KEY'] = options.apiKey;
+            if (!options.apiKey) {
+                res.statusCode = 500;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({ error: 'MARK_ACCENT_API_KEY is not configured' }));
+                return;
             }
 
-            const upstreamResponse = await fetch(requestUrl, {
+            requestHeaders['X-API-KEY'] = options.apiKey;
+
+            const upstreamResponse = await fetch(normalizedUpstreamUrl, {
                 method: 'POST',
                 headers: requestHeaders,
                 body,
@@ -99,9 +97,7 @@ function createMarkAccentProxy(options: MarkAccentProxyOptions) {
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
-    const devMarkAccentProxyTarget =
-        env.VITE_MARK_ACCENT_API_URL?.trim() || DEFAULT_MARK_ACCENT_PUBLIC_PROXY_TARGET;
-    const markAccentApiKey = env.MARK_ACCENT_API_KEY?.trim();
+    const markAccentApiKey = env.MARK_ACCENT_API_KEY?.trim() || env.VITE_X_API_KEY?.trim();
     const markAccentUpstreamUrl =
         env.MARK_ACCENT_UPSTREAM_URL?.trim() || DEFAULT_MARK_ACCENT_UPSTREAM_URL;
 
@@ -110,7 +106,6 @@ export default defineConfig(({ mode }) => {
             react(),
             createMarkAccentProxy({
                 apiKey: markAccentApiKey,
-                publicProxyTarget: devMarkAccentProxyTarget,
                 upstreamUrl: markAccentUpstreamUrl,
             }),
         ],

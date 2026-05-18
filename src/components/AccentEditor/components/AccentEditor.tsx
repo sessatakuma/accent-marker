@@ -105,7 +105,7 @@ export default function AccentEditor() {
                 >
                     {isBusy && !isResultExpanded && (
                         <p className='result-panel-status' aria-hidden='true'>
-                            <span className='result-panel-status-label'>分析中</span>
+                            <span className='result-panel-status-label'>{t.statusAnalyzing}</span>
                             <span className='result-panel-status-dots'>
                                 <span className='result-panel-status-dot'>.</span>
                                 <span className='result-panel-status-dot'>.</span>

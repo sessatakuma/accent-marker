@@ -5,7 +5,6 @@ import {
     useRef,
     type CompositionEvent,
     type FocusEvent,
-    type FormEvent,
     type KeyboardEvent,
     type MouseEvent,
 } from 'react';
@@ -277,7 +276,7 @@ function Kana({
         }
     };
 
-    const handleInput = (_event: FormEvent<HTMLSpanElement>): void => {
+    const handleInput = (): void => {
         syncLiveLayoutWidth();
     };
 

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { useI18n } from '../../../i18n';
 import { placeholder } from '../constant/placeholder';
-import { isKanaReading, splitKanaSyllables } from '../core/kana/kanaUtils';
+import { isKanaReading, normalizeKanaText, splitKanaSyllables } from '../core/kana/kanaUtils';
 import { cloneWords } from '../core/word/accent';
 import { AccentValue, type AccentValueType, type Word } from '../core/word/accentTypes';
 
@@ -124,7 +124,7 @@ export function useResultEditing({
 
     const updateFurigana = useCallback(
         (wordIndex: number, textIndex: number, newFurigana: string, newAccent: AccentValueType): void => {
-            const trimmed = newFurigana.trim();
+            const trimmed = normalizeKanaText(newFurigana.trim());
 
             if (trimmed !== '' && !isKanaReading(trimmed)) {
                 showFeedback(t.furiganaInputWarning, 'warning');

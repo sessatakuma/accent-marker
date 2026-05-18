@@ -1,10 +1,15 @@
+export function normalizeKanaText(text: string): string {
+    return text.normalize('NFC');
+}
+
 export function splitKanaSyllables(kana: string): string[] {
     const smallKana = 'ゃゅょァィゥェォャュョヮぁぃぅぇぉ';
+    const normalizedKana = normalizeKanaText(kana);
     const result: string[] = [];
 
-    for (let i = 0; i < kana.length; i++) {
-        const char = kana[i];
-        const next = kana[i + 1];
+    for (let i = 0; i < normalizedKana.length; i++) {
+        const char = normalizedKana[i];
+        const next = normalizedKana[i + 1];
 
         if (next && smallKana.includes(next)) {
             result.push(char + next);
@@ -18,5 +23,5 @@ export function splitKanaSyllables(kana: string): string[] {
 }
 
 export function isKanaReading(text: string): boolean {
-    return /^[ぁ-んァ-ンーゔゞ゛゜・･ー]+$/.test(text);
+    return /^[ぁ-んァ-ンーゔゞ゛゜・･ー]+$/.test(normalizeKanaText(text));
 }

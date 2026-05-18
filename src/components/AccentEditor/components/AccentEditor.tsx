@@ -101,6 +101,16 @@ export default function AccentEditor() {
                     className={`result-panel-stack ${isResultExpanded ? 'result-panel-stack-expanded' : ''}`}
                     style={{ minHeight: `${minHeight}px` }}
                 >
+                    {isBusy && !isResultExpanded && (
+                        <p className='result-panel-status' aria-hidden='true'>
+                            <span className='result-panel-status-label'>分析中</span>
+                            <span className='result-panel-status-dots'>
+                                <span className='result-panel-status-dot'>.</span>
+                                <span className='result-panel-status-dot'>.</span>
+                                <span className='result-panel-status-dot'>.</span>
+                            </span>
+                        </p>
+                    )}
                     <section
                         className={`result-panel ${isResultExpanded ? 'result-panel-expanded' : ''}`}
                         aria-label={t.resultPanelLabel}

@@ -65,6 +65,52 @@ function getRevealTotals(
     return { accentUnits, furiganaUnits };
 }
 
+function createIdleRevealState(analysisVersion: number): RevealState {
+    return {
+        analysisVersion,
+        phase: 'idle',
+        revealedAccentUnits: 0,
+        revealedFuriganaUnits: 0,
+    };
+}
+
+function createRevealingRevealState(analysisVersion: number): RevealState {
+    return {
+        analysisVersion,
+        phase: 'revealing',
+        revealedAccentUnits: 0,
+        revealedFuriganaUnits: 0,
+    };
+}
+
+function createCompleteRevealState(
+    analysisVersion: number,
+    accentUnits: number,
+    furiganaUnits: number,
+): RevealState {
+    return {
+        analysisVersion,
+        phase: 'complete',
+        revealedAccentUnits: accentUnits,
+        revealedFuriganaUnits: furiganaUnits,
+    };
+}
+
+function createResolvedRevealState(
+    analysisVersion: number,
+    accentUnits: number,
+    furiganaUnits: number,
+    shouldAnimate: boolean,
+): RevealState {
+    if (accentUnits === 0 && furiganaUnits === 0) {
+        return createIdleRevealState(analysisVersion);
+    }
+
+    return shouldAnimate
+        ? createRevealingRevealState(analysisVersion)
+        : createCompleteRevealState(analysisVersion, accentUnits, furiganaUnits);
+}
+
 interface RevealState {
     analysisVersion: number;
     phase: 'idle' | 'revealing' | 'complete';
@@ -141,26 +187,14 @@ export function useResultReveal({
             return;
         }
 
-        if (furiganaUnits === 0 && accentUnits === 0) {
-            return;
-        }
-
-        if (shouldSkipAnimatedReveal) {
-            setRevealState({
+        setRevealState(
+            createResolvedRevealState(
                 analysisVersion,
-                phase: 'complete',
-                revealedAccentUnits: accentUnits,
-                revealedFuriganaUnits: furiganaUnits,
-            });
-            return;
-        }
-
-        setRevealState({
-            analysisVersion,
-            phase: 'revealing',
-            revealedAccentUnits: 0,
-            revealedFuriganaUnits: 0,
-        });
+                accentUnits,
+                furiganaUnits,
+                !shouldSkipAnimatedReveal,
+            ),
+        );
     }, [
         accentUnits,
         analysisVersion,
@@ -174,34 +208,18 @@ export function useResultReveal({
     useEffect(() => {
         if (isLoading || words.length === 0) {
             if (!isLoading && words.length === 0) {
-                setRevealState(currentState => ({
-                    ...currentState,
-                    phase: 'idle',
-                    revealedAccentUnits: 0,
-                    revealedFuriganaUnits: 0,
-                }));
+                setRevealState(currentState => createIdleRevealState(currentState.analysisVersion));
             }
             return;
         }
 
         if (furiganaUnits === 0 && accentUnits === 0) {
-            setRevealState(currentState => ({
-                ...currentState,
-                phase: 'idle',
-                revealedAccentUnits: 0,
-                revealedFuriganaUnits: 0,
-            }));
+            setRevealState(currentState => createIdleRevealState(currentState.analysisVersion));
             return;
         }
 
-        if (shouldSkipAnimatedReveal) {
+        if (shouldSkipAnimatedReveal || revealState.phase !== 'revealing') {
             animatedAnalysisVersionRef.current = analysisVersion;
-            setRevealState({
-                analysisVersion,
-                phase: 'complete',
-                revealedAccentUnits: accentUnits,
-                revealedFuriganaUnits: furiganaUnits,
-            });
             return;
         }
 
@@ -210,16 +228,6 @@ export function useResultReveal({
         }
 
         animatedAnalysisVersionRef.current = analysisVersion;
-        setRevealState(currentState =>
-            currentState.analysisVersion !== analysisVersion
-                ? currentState
-                : {
-                      ...currentState,
-                      phase: 'revealing',
-                      revealedAccentUnits: 0,
-                      revealedFuriganaUnits: 0,
-                  },
-        );
 
         const revealSchedule = buildRevealSchedule(revealUnits, REVEAL_INTERVAL_MS);
 
@@ -227,12 +235,7 @@ export function useResultReveal({
             setRevealState(currentState =>
                 currentState.analysisVersion !== analysisVersion
                     ? currentState
-                    : {
-                          ...currentState,
-                          phase: 'complete',
-                          revealedAccentUnits: accentUnits,
-                          revealedFuriganaUnits: furiganaUnits,
-                      },
+                    : createCompleteRevealState(analysisVersion, accentUnits, furiganaUnits),
             );
             return;
         }
@@ -280,6 +283,7 @@ export function useResultReveal({
         furiganaUnits,
         isLoading,
         revealUnits,
+        revealState.phase,
         shouldSkipAnimatedReveal,
         words.length,
     ]);

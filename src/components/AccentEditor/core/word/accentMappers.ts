@@ -6,6 +6,9 @@ import { AccentValue, type MarkAccentApiResultEntry, type Word } from './accentT
 export function mapApiResultToWords(result: MarkAccentApiResultEntry[]): Word[] {
     return result.map(word => {
         const kanaWord = isKana(word.surface);
+        const accent = word.accent.map(
+            item => item.accent_marking_type as Word['furigana'][number]['accent'],
+        );
 
         return {
             surface: word.surface,
@@ -17,9 +20,7 @@ export function mapApiResultToWords(result: MarkAccentApiResultEntry[]): Word[] 
                         accent: item.accent_marking_type as Word['furigana'][number]['accent'],
                     }))
                   : [{ text: '', accent: AccentValue.None }],
-            accent: kanaWord
-                ? word.accent.map(item => item.accent_marking_type as Word['furigana'][number]['accent'])
-                : AccentValue.None,
+            accent,
         };
     });
 }

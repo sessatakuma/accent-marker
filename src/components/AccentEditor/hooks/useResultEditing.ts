@@ -23,6 +23,10 @@ interface UseResultEditingOptions {
     words: Word[];
 }
 
+function syncWordAccentWithFurigana(word: Word): void {
+    word.accent = word.furigana.map(item => item.accent);
+}
+
 export function useResultEditing({
     showFeedback,
     updateWords,
@@ -145,6 +149,8 @@ export function useResultEditing({
                     } else {
                         word.furigana.splice(textIndex, 1);
                     }
+
+                    syncWordAccentWithFurigana(word);
                     return nextWords;
                 }
 
@@ -152,6 +158,7 @@ export function useResultEditing({
                 if (syllables.length === 1) {
                     word.furigana[textIndex].text = trimmed;
                     word.furigana[textIndex].accent = newAccent;
+                    syncWordAccentWithFurigana(word);
                     return nextWords;
                 }
 
@@ -163,6 +170,7 @@ export function useResultEditing({
                         accent: index === 0 ? newAccent : AccentValue.None,
                     })),
                 );
+                syncWordAccentWithFurigana(word);
                 return nextWords;
             });
         },
@@ -203,10 +211,12 @@ export function useResultEditing({
                         focusEditableKana(wordIndex, nextFocusIndex, 'start');
                     }
 
+                    syncWordAccentWithFurigana(word);
                     return nextWords;
                 }
 
                 currentItem.text = currentUnits.slice(1).join('');
+                syncWordAccentWithFurigana(word);
                 focusEditableKana(wordIndex, textIndex, 'start');
                 return nextWords;
             });
@@ -256,6 +266,8 @@ export function useResultEditing({
                 } else {
                     previousItem.text = nextPreviousText;
                 }
+
+                syncWordAccentWithFurigana(word);
 
                 let focusIndex = textIndex;
                 if (isCurrentEmpty) {

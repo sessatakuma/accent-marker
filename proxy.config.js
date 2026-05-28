@@ -1,6 +1,6 @@
 export const MARK_ACCENT_PROXY_PATH = '/api/mark-accent';
 export const DEFAULT_MARK_ACCENT_PUBLIC_PROXY_TARGET = 'https://accent-marker.hsichen.dev';
-export const DEFAULT_MARK_ACCENT_UPSTREAM_URL = 'https://api.sessatakuma.dev/api/MarkAccent/';
+export const DEFAULT_MARK_ACCENT_UPSTREAM_URL = 'https://api.sessatakuma.dev/v1/mark-accent';
 
 export function normalizeMarkAccentUrl(value) {
     return value.replace(/\/$/, '');

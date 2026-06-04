@@ -175,9 +175,9 @@ const translations: Record<Locale, TranslationSet> = {
         accentResultLabel: '音調分析結果',
         accentToggle: '音調',
         temporaryIssuesBody:
-            '系統目前發生暫時性問題，因此無法完成音調標示。請稍後再試一次。',
+            '系統目前暫時無法進行分析，開發團隊正在積極搶救，請稍後再試一次。',
         temporaryIssuesClose: '關閉',
-        temporaryIssuesTitle: '系統暫時發生問題',
+        temporaryIssuesTitle: '系統發生問題',
         collapseResult: '收合結果面板',
         copyAsText: '複製為文字',
         copyFailed: '複製失敗',

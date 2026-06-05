@@ -1,8 +1,7 @@
-import { useRef, useState, type Dispatch, type RefObject, type SetStateAction } from 'react';
+import { useRef, useState, type Dispatch, type SetStateAction } from 'react';
 
 import { Dices, Clipboard } from 'lucide-react';
 
-import { useAutoResizeTextarea } from '../../../hooks/useAutoResizeTextarea';
 import { useInputModality } from '../../../hooks/useInputModality';
 import { useI18n } from '../../../i18n';
 
@@ -19,17 +18,13 @@ interface InputProps {
     paragraph: string;
     setParagraph: Dispatch<SetStateAction<string>>;
     isLoading: boolean;
-    actionsRef?: RefObject<HTMLDivElement | null>;
 }
 
-export default function Input({ paragraph, setParagraph, isLoading, actionsRef }: InputProps) {
+export default function Input({ paragraph, setParagraph, isLoading }: InputProps) {
     const { lang, t } = useI18n();
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
     const lastSampleIndexRef = useRef<number | null>(null);
     const [isTextareaFocused, setIsTextareaFocused] = useState(false);
     const isKeyboardModality = useInputModality();
-
-    useAutoResizeTextarea(textareaRef, paragraph);
 
     const generateRandomParagraph = (): void => {
         if (sampleParagraphs.length === 0) return;
@@ -64,7 +59,6 @@ export default function Input({ paragraph, setParagraph, isLoading, actionsRef }
             </label>
             <textarea
                 id='accent-input'
-                ref={textareaRef}
                 className={`input-area${isTextareaFocused && isKeyboardModality ? ' input-area-keyboard-focus' : ''}`}
                 autoFocus
                 value={paragraph}
@@ -83,7 +77,7 @@ export default function Input({ paragraph, setParagraph, isLoading, actionsRef }
                 {t.inputDescription}
             </p>
 
-            <div className='input-actions' aria-label={t.inputTools} ref={actionsRef}>
+            <div className='input-actions' aria-label={t.inputTools}>
                 {!paragraph && (
                     <button
                         className='paste-button'

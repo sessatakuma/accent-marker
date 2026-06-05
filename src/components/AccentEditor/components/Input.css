@@ -23,7 +23,14 @@
     transition: all 0.2s ease;
     resize: none;
     font-family: inherit; /* Ensure font matches */
-    overflow: hidden;
+    field-sizing: content;
+    overflow: auto;
+}
+
+@supports (field-sizing: content) {
+    .input-area {
+        overflow: hidden;
+    }
 }
 
 .input-area:focus {

@@ -4,7 +4,6 @@ import { useI18n } from '../../../i18n';
 import { useAccentAnalysis } from '../hooks/useAccentAnalysis';
 import { useHistoryKeyboardShortcuts } from '../hooks/useHistoryKeyboardShortcuts';
 import { useResultReveal } from '../hooks/useResultReveal';
-import { useSyncedPanelHeight } from '../hooks/useSyncedPanelHeight';
 import { useWordHistory } from '../hooks/useWordHistory';
 
 import Input from './Input';
@@ -19,7 +18,6 @@ export default function AccentEditor() {
     const [isEditing, setIsEditing] = useState(false);
     const [isResultExpanded, setIsResultExpanded] = useState(false);
     const [isTemporaryIssuesDialogOpen, setIsTemporaryIssuesDialogOpen] = useState(false);
-    const { footerRef, minHeight, panelRef } = useSyncedPanelHeight<HTMLElement>();
     const {
         redoWords,
         replaceVersion,
@@ -105,12 +103,11 @@ export default function AccentEditor() {
                 aria-label={t.resultsAndInput}
             >
                 <div className='input-panel-stack'>
-                    <section className='input-panel' aria-label={t.inputPanelLabel} ref={panelRef}>
+                    <section className='input-panel' aria-label={t.inputPanelLabel}>
                         <Input
                             paragraph={paragraph}
                             setParagraph={setParagraph}
                             isLoading={isLoading}
-                            actionsRef={footerRef}
                         />
                     </section>
                 </div>
@@ -132,7 +129,6 @@ export default function AccentEditor() {
                         className={`result-panel ${isResultExpanded ? 'result-panel-expanded' : ''}`}
                         aria-label={t.resultPanelLabel}
                         aria-busy={isBusy}
-                        style={{ minHeight: `${minHeight}px` }}
                     >
                         <Result
                             accentPhaseActive={accentPhaseActive}

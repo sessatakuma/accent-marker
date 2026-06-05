@@ -20,6 +20,7 @@ interface TranslationSet {
     copyAsText: string;
     copyFailed: string;
     copied: string;
+    dismissResultHint: string;
     editFurigana: string;
     expandResult: string;
     exportHtml: string;
@@ -78,6 +79,7 @@ const translations: Record<Locale, TranslationSet> = {
         copyAsText: 'Copy as text',
         copyFailed: 'Copy failed',
         copied: 'Copied',
+        dismissResultHint: 'Dismiss edit hint',
         editFurigana: 'Edit furigana',
         expandResult: 'Expand result',
         exportHtml: 'HTML',
@@ -129,6 +131,7 @@ const translations: Record<Locale, TranslationSet> = {
         copyAsText: 'テキスト形式でコピー',
         copyFailed: 'コピーに失敗しました',
         copied: 'コピーしました',
+        dismissResultHint: '編集ヒントを閉じる',
         editFurigana: 'ふりがなを編集',
         expandResult: '結果を拡大表示',
         exportHtml: 'HTML',
@@ -179,6 +182,7 @@ const translations: Record<Locale, TranslationSet> = {
         copyAsText: '複製為文字',
         copyFailed: '複製失敗',
         copied: '已複製',
+        dismissResultHint: '關閉編輯提示',
         editFurigana: '編輯振假名',
         expandResult: '展開結果面板',
         exportHtml: 'HTML',

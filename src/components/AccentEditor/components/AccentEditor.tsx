@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { X } from 'lucide-react';
+
 import { useI18n } from '../../../i18n';
 import { useAccentAnalysis } from '../hooks/useAccentAnalysis';
 import { useHistoryKeyboardShortcuts } from '../hooks/useHistoryKeyboardShortcuts';
@@ -16,6 +18,7 @@ export default function AccentEditor() {
     const { t } = useI18n();
     const [paragraph, setParagraph] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    const [isMobileResultHintDismissed, setIsMobileResultHintDismissed] = useState(false);
     const [isResultExpanded, setIsResultExpanded] = useState(false);
     const [isTemporaryIssuesDialogOpen, setIsTemporaryIssuesDialogOpen] = useState(false);
     const {
@@ -48,6 +51,12 @@ export default function AccentEditor() {
         words,
     });
     const isBusy = isLoading || isPresenting || isStreaming;
+    const shouldShowResultHint = words.length > 0 && !isResultExpanded;
+    const shouldShowMobileResultHint = shouldShowResultHint && !isMobileResultHintDismissed;
+
+    useEffect(() => {
+        setIsMobileResultHintDismissed(false);
+    }, [replaceVersion]);
 
     useEffect(() => {
         if (!isResultExpanded) {
@@ -145,9 +154,22 @@ export default function AccentEditor() {
                             onToggleExpanded={() => setIsResultExpanded(prev => !prev)}
                             statusMessage={statusMessage}
                         />
+                        {shouldShowMobileResultHint && (
+                            <div className='result-panel-hint result-panel-hint-chip'>
+                                <span>{t.resultHint}</span>
+                                <button
+                                    type='button'
+                                    className='result-panel-hint-dismiss'
+                                    aria-label={t.dismissResultHint}
+                                    onClick={() => setIsMobileResultHintDismissed(true)}
+                                >
+                                    <X size={16} aria-hidden='true' />
+                                </button>
+                            </div>
+                        )}
                     </section>
-                    {words.length > 0 && !isResultExpanded && (
-                        <p className='result-panel-hint' aria-hidden='true'>
+                    {shouldShowResultHint && (
+                        <p className='result-panel-hint result-panel-hint-row' aria-hidden='true'>
                             {t.resultHint}
                         </p>
                     )}

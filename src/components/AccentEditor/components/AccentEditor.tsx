@@ -53,6 +53,7 @@ export default function AccentEditor() {
     const isBusy = isLoading || isPresenting || isStreaming;
     const shouldShowResultHint = words.length > 0 && !isResultExpanded;
     const shouldShowMobileResultHint = shouldShowResultHint && !isMobileResultHintDismissed;
+    const shouldShowMobileStatusChip = (isBusy || shouldShowMobileResultHint) && !isResultExpanded;
 
     useEffect(() => {
         setIsMobileResultHintDismissed(false);
@@ -97,15 +98,31 @@ export default function AccentEditor() {
             <p className='visually-hidden' aria-live='polite'>
                 {statusMessage}
             </p>
-            {isBusy && !isResultExpanded && (
-                <p className='result-panel-status result-panel-status-chip' aria-hidden='true'>
-                    <span className='result-panel-status-label'>{t.statusAnalyzing}</span>
-                    <span className='result-panel-status-dots'>
-                        <span className='result-panel-status-dot'>.</span>
-                        <span className='result-panel-status-dot'>.</span>
-                        <span className='result-panel-status-dot'>.</span>
-                    </span>
-                </p>
+            {shouldShowMobileStatusChip && (
+                <div className='result-panel-status result-panel-status-chip'>
+                    {isBusy ? (
+                        <>
+                            <span className='result-panel-status-label'>{t.statusAnalyzing}</span>
+                            <span className='result-panel-status-dots'>
+                                <span className='result-panel-status-dot'>.</span>
+                                <span className='result-panel-status-dot'>.</span>
+                                <span className='result-panel-status-dot'>.</span>
+                            </span>
+                        </>
+                    ) : (
+                        <>
+                            <span>{t.resultHint}</span>
+                            <button
+                                type='button'
+                                className='result-panel-status-dismiss'
+                                aria-label={t.dismissResultHint}
+                                onClick={() => setIsMobileResultHintDismissed(true)}
+                            >
+                                <X size={16} aria-hidden='true' />
+                            </button>
+                        </>
+                    )}
+                </div>
             )}
             <div
                 className={`two-col-layout ${isResultExpanded ? 'two-col-layout-expanded' : ''}`}
@@ -154,19 +171,6 @@ export default function AccentEditor() {
                             onToggleExpanded={() => setIsResultExpanded(prev => !prev)}
                             statusMessage={statusMessage}
                         />
-                        {shouldShowMobileResultHint && (
-                            <div className='result-panel-hint result-panel-hint-chip'>
-                                <span>{t.resultHint}</span>
-                                <button
-                                    type='button'
-                                    className='result-panel-hint-dismiss'
-                                    aria-label={t.dismissResultHint}
-                                    onClick={() => setIsMobileResultHintDismissed(true)}
-                                >
-                                    <X size={16} aria-hidden='true' />
-                                </button>
-                            </div>
-                        )}
                     </section>
                     {shouldShowResultHint && (
                         <p className='result-panel-hint result-panel-hint-row' aria-hidden='true'>

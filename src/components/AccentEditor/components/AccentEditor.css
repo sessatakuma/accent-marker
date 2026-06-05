@@ -102,6 +102,9 @@
 }
 
 .result-panel-status-chip {
+    position: fixed;
+    top: calc(var(--nav-height) + var(--space-4));
+    gap: var(--space-2);
     padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-md);
     background-color: var(--color-bg-secondary);
@@ -116,11 +119,7 @@
     bottom: var(--space-3);
 }
 
-.result-panel-hint-chip {
-    display: none;
-}
-
-.result-panel-hint-dismiss {
+.result-panel-status-dismiss {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -136,12 +135,12 @@
         color 0.2s ease;
 }
 
-.result-panel-hint-dismiss:hover {
+.result-panel-status-dismiss:hover {
     background-color: var(--color-bg-secondary-hover);
     color: var(--color-text-primary);
 }
 
-.result-panel-hint-dismiss:focus-visible {
+.result-panel-status-dismiss:focus-visible {
     outline: 2px solid var(--color-accent-green);
     outline-offset: 2px;
 }
@@ -296,10 +295,6 @@
     padding: 0;
 }
 
-.result-panel {
-    position: relative;
-}
-
 @media (max-width: 1023px) {
     .two-col-layout {
         gap: var(--space-2);
@@ -308,25 +303,15 @@
     .input-panel-stack {
         padding-block: 0;
     }
-}
 
-@media (min-width: 769px) and (max-width: 1023px) {
-    .result-panel-stack {
-        padding-bottom: var(--result-panel-callout-space);
-    }
-
-    .result-panel-hint {
-        bottom: var(--result-panel-callout-edge-space);
+    .result-panel-hint-row {
+        display: none;
     }
 }
 
 @media (max-width: 768px) {
     .main-content {
         padding: 0;
-    }
-
-    .result-panel-status {
-        top: var(--space-4);
     }
 
     .two-col-layout {
@@ -341,22 +326,6 @@
 
     .result-panel-stack {
         min-height: 0;
-    }
-
-    .result-panel-hint-row {
-        display: none;
-    }
-
-    .result-panel-hint-chip {
-        bottom: var(--space-4);
-        z-index: 1;
-        display: inline-flex;
-        justify-content: space-between;
-        gap: var(--space-2);
-        padding: var(--space-2) var(--space-3);
-        border-radius: var(--radius-md);
-        background-color: var(--color-bg-secondary);
-        box-shadow: var(--shadow-soft-floating);
     }
 
     .input-panel,

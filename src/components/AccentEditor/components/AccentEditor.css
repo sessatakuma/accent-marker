@@ -287,14 +287,16 @@
 
     .two-col-layout {
         gap: 0;
+        min-height: calc(100dvh - var(--nav-height));
+        grid-auto-rows: minmax(calc((100dvh - var(--nav-height)) / 2), auto);
     }
 
     .input-panel-stack {
-        padding-inline: var(--space-4);
+        min-height: 0;
     }
 
     .result-panel-stack {
-        padding-inline: var(--space-4);
+        min-height: 0;
     }
 
     .input-panel,

@@ -90,6 +90,16 @@ export default function AccentEditor() {
             <p className='visually-hidden' aria-live='polite'>
                 {statusMessage}
             </p>
+            {isBusy && !isResultExpanded && (
+                <p className='result-panel-status' aria-hidden='true'>
+                    <span className='result-panel-status-label'>{t.statusAnalyzing}</span>
+                    <span className='result-panel-status-dots'>
+                        <span className='result-panel-status-dot'>.</span>
+                        <span className='result-panel-status-dot'>.</span>
+                        <span className='result-panel-status-dot'>.</span>
+                    </span>
+                </p>
+            )}
             <div
                 className={`two-col-layout ${isResultExpanded ? 'two-col-layout-expanded' : ''}`}
                 aria-label={t.resultsAndInput}
@@ -108,16 +118,6 @@ export default function AccentEditor() {
                 <div
                     className={`result-panel-stack ${isResultExpanded ? 'result-panel-stack-expanded' : ''}`}
                 >
-                    {isBusy && !isResultExpanded && (
-                        <p className='result-panel-status' aria-hidden='true'>
-                            <span className='result-panel-status-label'>{t.statusAnalyzing}</span>
-                            <span className='result-panel-status-dots'>
-                                <span className='result-panel-status-dot'>.</span>
-                                <span className='result-panel-status-dot'>.</span>
-                                <span className='result-panel-status-dot'>.</span>
-                            </span>
-                        </p>
-                    )}
                     <section
                         className={`result-panel ${isResultExpanded ? 'result-panel-expanded' : ''}`}
                         aria-label={t.resultPanelLabel}

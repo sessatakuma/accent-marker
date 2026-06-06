@@ -47,7 +47,7 @@
 .usage-guide-card {
     display: grid;
     gap: var(--space-4);
-    padding: var(--space-5);
+    padding: var(--space-6);
     background-color: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -60,12 +60,19 @@
 }
 
 .usage-guide-input-area {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
     min-height: calc(var(--editor-panel-min-height) - var(--editor-action-control-size) - var(--space-5));
     overflow: hidden;
 }
 
 .usage-guide-preview-panel {
     min-height: 0;
+    width: 100%;
+    max-width: 760px;
+    aspect-ratio: 16 / 5;
+    overflow: hidden;
 }
 
 .usage-guide-line {
@@ -85,13 +92,14 @@
 
 .usage-guide-result-area {
     padding: 0;
-    font-size: 1.25rem;
+    font-size: 1.875rem;
     line-height: 1.5;
 }
 
 .usage-guide-reading-row {
     display: flex;
     gap: var(--space-2);
+    align-items: start;
 }
 
 .usage-guide-reading-cell {
@@ -100,21 +108,69 @@
 
 .usage-guide-preview-result-shell {
     min-height: 0;
+    padding: var(--space-5);
 }
 
 .usage-guide-preview-result-content {
-    min-height: 88px;
+    min-height: 100%;
     display: flex;
     align-items: center;
 }
 
 .usage-guide-preview-share-spacer {
-    min-height: 48px;
+    min-height: calc(100% - 72px);
+}
+
+.usage-guide-preview-start .input-section,
+.usage-guide-preview-share .result-container-inner {
+    min-height: 100%;
+}
+
+.usage-guide-preview-start .input-area {
+    font-size: 1.25rem;
+}
+
+.usage-guide-preview-start .usage-guide-line-strong {
+    width: 80%;
+}
+
+.usage-guide-preview-start .input-actions {
+    padding-bottom: var(--space-4);
+}
+
+.usage-guide-preview-furigana .usage-guide-preview-result-content,
+.usage-guide-preview-accent .usage-guide-preview-result-content {
+    justify-content: center;
+}
+
+.usage-guide-preview-furigana .usage-guide-reading-row,
+.usage-guide-preview-accent .usage-guide-reading-row {
+    width: fit-content;
+}
+
+.usage-guide-preview-furigana .usage-guide-preview-panel,
+.usage-guide-preview-accent .usage-guide-preview-panel {
+    aspect-ratio: 16 / 5.5;
+}
+
+.usage-guide-preview-furigana .usage-guide-preview-result-shell,
+.usage-guide-preview-accent .usage-guide-preview-result-shell {
+    padding-inline: var(--space-6);
+}
+
+.usage-guide-preview-share .result-actions {
+    margin-top: 0;
+    padding-top: var(--space-4);
+}
+
+.usage-guide-preview-share .usage-guide-preview-panel {
+    aspect-ratio: 16 / 4.75;
 }
 
 .usage-guide-copy {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-3);
+    align-content: center;
 }
 
 .usage-guide-copy h3 {
@@ -148,9 +204,17 @@
     }
 
     .usage-guide-card {
-        grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+        grid-template-columns: minmax(560px, 1.15fr) minmax(320px, 0.85fr);
         align-items: center;
-        gap: var(--space-6);
+        gap: var(--space-8);
+    }
+
+    .usage-guide-card:nth-child(odd) .usage-guide-preview-panel {
+        justify-self: start;
+    }
+
+    .usage-guide-card:nth-child(even) .usage-guide-preview-panel {
+        justify-self: end;
     }
 
     .usage-guide-card:nth-child(even) .usage-guide-preview {
@@ -165,5 +229,18 @@
 @media (max-width: 768px) {
     .usage-section {
         padding: var(--space-6) var(--space-4);
+    }
+
+    .usage-guide-card {
+        padding: var(--space-5);
+    }
+
+    .usage-guide-preview-panel {
+        aspect-ratio: 16 / 8;
+        max-width: 100%;
+    }
+
+    .usage-guide-result-area {
+        font-size: 1.5rem;
     }
 }

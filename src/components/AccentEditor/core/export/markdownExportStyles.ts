@@ -1,3 +1,4 @@
+const markdownExportStyles = `
 .accent-marker {
     --accent-color: #cc3344;
     --accent-width: 2px;
@@ -142,3 +143,6 @@
     height: var(--kana-drop-height);
     border-left: var(--accent-width) solid var(--accent-color);
 }
+`;
+
+export default markdownExportStyles;

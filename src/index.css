@@ -1,6 +1,6 @@
 :root {
-    --font-body: 'Noto Sans JP', sans-serif;
-    --font-display: 'Noto Sans JP', sans-serif;
+    --font-body: var(--font-noto-sans-jp), sans-serif;
+    --font-display: var(--font-noto-sans-jp), sans-serif;
 
     --space-1: 0.25rem;
     --space-2: 0.5rem;

@@ -8,7 +8,7 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig([
     {
-        ignores: ['dist/**'],
+        ignores: ['.next/**', 'dist/**'],
     },
     pluginReact.configs.flat.recommended,
     js.configs.recommended,

@@ -1,7 +1,7 @@
 import { AccentValue, type AccentValueType, type Word } from '../word/accentTypes';
 import { buildWordAnnotationModel, getLineBreakCount, rubyScale } from '../word/annotationLayout';
 
-import markdownExportStyles from './markdownExport.css?raw';
+import markdownExportStyles from './markdownExportStyles';
 
 const accentName = ['none', 'flat', 'drop'] as const;
 

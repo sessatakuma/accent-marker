@@ -1,5 +1,5 @@
-import { ClientOnly } from './client';
+import App from '../../App';
 
 export default function Page() {
-    return <ClientOnly />;
+    return <App />;
 }

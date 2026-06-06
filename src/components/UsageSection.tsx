@@ -1,15 +1,10 @@
 import {
     ArrowDownToLine,
-    ArrowLeftRight,
-    ArrowUpDown,
     Clipboard,
     CodeXml,
     Copy,
     Dices,
     Image as ImageIcon,
-    Moon,
-    PencilLine,
-    WandSparkles,
 } from 'lucide-react';
 
 import './UsageSection.css';
@@ -31,10 +26,6 @@ export default function UsageSection() {
                 <div className='usage-guide' aria-label={t.usageHeading}>
                     <article className='usage-guide-card'>
                         <div className='usage-guide-preview usage-guide-preview-start' aria-hidden='true'>
-                            <p className='usage-guide-meta'>
-                                <WandSparkles size={16} />
-                                <span>{t.usageStepStartHint}</span>
-                            </p>
                             <div className='input-panel usage-guide-preview-panel'>
                                 <div className='input-section'>
                                     <div className='input-area usage-guide-input-area'>
@@ -62,10 +53,6 @@ export default function UsageSection() {
                     </article>
                     <article className='usage-guide-card'>
                         <div className='usage-guide-preview usage-guide-preview-furigana' aria-hidden='true'>
-                            <p className='usage-guide-meta'>
-                                <PencilLine size={16} />
-                                <span>{t.usageStepFuriganaHint}</span>
-                            </p>
                             <div className='result-panel usage-guide-preview-panel'>
                                 <div className='result-container-inner usage-guide-preview-result-shell'>
                                     <div className='result-content usage-guide-preview-result-content'>
@@ -93,9 +80,6 @@ export default function UsageSection() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='usage-guide-arrow-row'>
-                                <ArrowLeftRight size={18} />
-                            </div>
                         </div>
                         <div className='usage-guide-copy'>
                             <h3>{t.usageStepFuriganaTitle}</h3>
@@ -104,12 +88,8 @@ export default function UsageSection() {
                     </article>
                     <article className='usage-guide-card'>
                         <div className='usage-guide-preview usage-guide-preview-accent' aria-hidden='true'>
-                            <p className='usage-guide-meta'>
-                                <ArrowUpDown size={16} />
-                                <span>{t.usageStepAccentHint}</span>
-                            </p>
                             <div className='result-panel usage-guide-preview-panel'>
-                                <div className='result-container-inner dark-result usage-guide-preview-result-shell'>
+                                <div className='result-container-inner usage-guide-preview-result-shell'>
                                     <div className='result-content usage-guide-preview-result-content'>
                                         <div className='result-area usage-guide-result-area'>
                                             <div className='word-reading-row usage-guide-reading-row'>
@@ -136,9 +116,6 @@ export default function UsageSection() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='usage-guide-arrow-column'>
-                                <ArrowUpDown size={18} />
-                            </div>
                         </div>
                         <div className='usage-guide-copy'>
                             <h3>{t.usageStepAccentTitle}</h3>
@@ -147,15 +124,11 @@ export default function UsageSection() {
                     </article>
                     <article className='usage-guide-card'>
                         <div className='usage-guide-preview usage-guide-preview-share' aria-hidden='true'>
-                            <p className='usage-guide-meta'>
-                                <ArrowDownToLine size={16} />
-                                <span>{t.usageStepShareHint}</span>
-                            </p>
                             <div className='result-panel usage-guide-preview-panel'>
-                                <div className='result-container-inner dark-result usage-guide-preview-result-shell'>
+                                <div className='result-container-inner usage-guide-preview-result-shell'>
                                     <div className='result-content usage-guide-preview-share-spacer'></div>
                                     <div className='result-actions'>
-                                    <div className='action-group-left'>
+                                        <div className='action-group-left'>
                                             <label className='accent-toggle'>
                                                 <span className='accent-toggle-label'>{t.accentToggle}</span>
                                                 <span className='switch'>
@@ -163,8 +136,8 @@ export default function UsageSection() {
                                                     <span className='slider'></span>
                                                 </span>
                                             </label>
-                                    </div>
-                                    <div className='action-group-right'>
+                                        </div>
+                                        <div className='action-group-right'>
                                             <div className='copy-action-container'>
                                                 <button className='action-button' type='button' tabIndex={-1}>
                                                     <Copy size={18} />
@@ -187,13 +160,6 @@ export default function UsageSection() {
                                                         >
                                                             <ImageIcon size={16} />
                                                             <span>{t.exportImage}</span>
-                                                        </button>
-                                                        <button
-                                                            type='button'
-                                                            className='theme-pill-button theme-pill-button-single'
-                                                            tabIndex={-1}
-                                                        >
-                                                            <Moon size={18} />
                                                         </button>
                                                     </div>
                                                     <div className='menu-divider'></div>

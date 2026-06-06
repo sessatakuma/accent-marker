@@ -59,16 +59,6 @@
     gap: var(--space-3);
 }
 
-.usage-guide-meta {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    color: var(--color-text-secondary);
-    font-size: 0.875rem;
-    font-weight: 600;
-    line-height: 1.5;
-}
-
 .usage-guide-input-area {
     min-height: calc(var(--editor-panel-min-height) - var(--editor-action-control-size) - var(--space-5));
     overflow: hidden;
@@ -122,12 +112,6 @@
     min-height: 48px;
 }
 
-.usage-guide-arrow-row,
-.usage-guide-arrow-column {
-    display: inline-flex;
-    color: var(--color-accent-green);
-}
-
 .usage-guide-copy {
     display: grid;
     gap: var(--space-2);
@@ -140,6 +124,10 @@
 
 .usage-guide-copy p {
     color: var(--color-text-secondary);
+}
+
+.usage-guide-preview .save-menu-dropdown {
+    min-width: 144px;
 }
 
 .usage-guide-preview-panel button,
@@ -155,7 +143,22 @@
     }
 
     .usage-guide {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+    }
+
+    .usage-guide-card {
+        grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+        align-items: center;
+        gap: var(--space-6);
+    }
+
+    .usage-guide-card:nth-child(even) .usage-guide-preview {
+        order: 2;
+    }
+
+    .usage-guide-card:nth-child(even) .usage-guide-copy {
+        order: 1;
     }
 }
 

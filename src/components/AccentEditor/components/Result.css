@@ -12,9 +12,9 @@
 }
 
 .result-container-inner.dark-result {
-    --accent-color: color-mix(in srgb, var(--color-accent-red) 72%, white);
-    --kana-edit-hover-bg: color-mix(in srgb, var(--color-accent-red) 14%, transparent);
-    --kana-edit-focus-bg: color-mix(in srgb, var(--color-accent-red) 20%, transparent);
+    --accent-color: color-mix(in srgb, var(--color-accent-green) 72%, white);
+    --kana-edit-hover-bg: color-mix(in srgb, var(--color-accent-green) 14%, transparent);
+    --kana-edit-focus-bg: color-mix(in srgb, var(--color-accent-green) 20%, transparent);
     background-color: var(--color-bg-dark-panel);
 }
 

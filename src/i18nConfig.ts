@@ -48,8 +48,16 @@ export interface TranslationSet {
     pasteFromClipboard: string;
     usageEyebrow: string;
     usageHeading: string;
-    usageImageTip: string;
     usageIntro: string;
+    usageStepAccentBody: string;
+    usageStepAccentHint: string;
+    usageStepAccentTitle: string;
+    usageStepFuriganaBody: string;
+    usageStepFuriganaHint: string;
+    usageStepFuriganaTitle: string;
+    usageStepStartBody: string;
+    usageStepStartHint: string;
+    usageStepStartTitle: string;
     usageStepOne: string;
     usageStepThree: string;
     usageStepTwo: string;
@@ -111,10 +119,20 @@ export const translations: Record<Locale, TranslationSet> = {
             `Switch image theme to ${isDarkResult ? 'light' : 'dark'}`,
         usageEyebrow: 'Usage',
         usageHeading: 'Use Accent Marker for reading, editing, and export',
-        usageImageTip:
-            'After exporting an image, compress it before sharing or uploading with',
         usageIntro:
             'Accent Marker analyzes Japanese text, adds furigana and pitch-accent markings, and lets you refine the result before saving it for study notes or pronunciation practice.',
+        usageStepAccentBody:
+            'Click an accent line to switch the pitch pattern, or place the caret at the end of a furigana cell and use Up or Down to cycle the accent.',
+        usageStepAccentHint: 'Click line or Up/Down',
+        usageStepAccentTitle: 'Adjust accent',
+        usageStepFuriganaBody:
+            'Click the furigana text to edit it directly. Use Left and Right to jump across reading cells while keeping your hands on the keyboard.',
+        usageStepFuriganaHint: 'Type kana, then Left/Right',
+        usageStepFuriganaTitle: 'Edit furigana',
+        usageStepStartBody:
+            'Paste Japanese text or insert a sample sentence to generate the first reading and accent pass.',
+        usageStepStartHint: 'Paste or sample',
+        usageStepStartTitle: 'Start analysis',
         usageStepOne: 'Paste Japanese text or insert a sample sentence to start a new analysis.',
         usageStepThree:
             'Export the result as text, HTML, or an image depending on how you want to study or share it.',
@@ -173,10 +191,20 @@ export const translations: Record<Locale, TranslationSet> = {
             `画像テーマを${isDarkResult ? 'ライト' : 'ダーク'}に切り替え`,
         usageEyebrow: '使い方',
         usageHeading: '読解・調整・書き出しを一つの画面で進める',
-        usageImageTip:
-            '画像を書き出したあとに共有しやすいサイズへ圧縮したい場合は、',
         usageIntro:
             'Accent Marker は日本語テキストにふりがなとピッチアクセントを付け、確認しながら修正し、そのまま学習用に書き出せるツールです。',
+        usageStepAccentBody:
+            'アクセント線をクリックすると音調を切り替えられます。ふりがなの末尾にカーソルを置いた状態なら、上下キーでも切り替えできます。',
+        usageStepAccentHint: '線をクリック / 上下キー',
+        usageStepAccentTitle: 'アクセントを直す',
+        usageStepFuriganaBody:
+            'ふりがな部分をクリックしてそのまま編集できます。左右キーを使うと、読みの区切りをまたいで次のセルへ移動できます。',
+        usageStepFuriganaHint: 'かなを入力 / 左右キー',
+        usageStepFuriganaTitle: 'ふりがなを直す',
+        usageStepStartBody:
+            '日本語テキストを貼り付けるか、サンプル文を入れると最初の読みとアクセントが生成されます。',
+        usageStepStartHint: '貼り付け / サンプル',
+        usageStepStartTitle: '解析を始める',
         usageStepOne: '日本語テキストを貼り付けるか、サンプル文を入れて解析を始めます。',
         usageStepThree:
             '学習メモや共有方法に合わせて、テキスト・HTML・画像のいずれかで書き出します。',
@@ -235,9 +263,20 @@ export const translations: Record<Locale, TranslationSet> = {
             `將圖片主題切換為${isDarkResult ? '淺色' : '深色'}`,
         usageEyebrow: '使用方式',
         usageHeading: '在同一個工作區完成分析、校對與匯出',
-        usageImageTip: '如果匯出圖片後還想再壓縮檔案大小，可以用',
         usageIntro:
             'Accent Marker 會替日語文字補上振假名與音高音調標記，之後你可以直接校對內容，再匯出成適合複習或分享的格式。',
+        usageStepAccentBody:
+            '點一下音調線即可切換音型。若游標停在振假名格的尾端，也可以用上下方向鍵循環切換音調。',
+        usageStepAccentHint: '點線 / 上下方向鍵',
+        usageStepAccentTitle: '調整音調',
+        usageStepFuriganaBody:
+            '直接點振假名文字就能編輯。用左右方向鍵可在不同讀音格之間移動，校對時比較順手。',
+        usageStepFuriganaHint: '輸入假名 / 左右方向鍵',
+        usageStepFuriganaTitle: '修改振假名',
+        usageStepStartBody:
+            '貼上日語文字或插入範例句，先產生第一輪的讀音與音調分析。',
+        usageStepStartHint: '貼上 / 範例句',
+        usageStepStartTitle: '開始分析',
         usageStepOne: '貼上日語文字，或先插入範例句開始新的分析。',
         usageStepThree: '依照用途匯出成文字、HTML 或圖片，方便整理筆記或分享。',
         usageStepTwo: '檢查產生的讀音與音調，必要時直接在結果面板中修正細節。',

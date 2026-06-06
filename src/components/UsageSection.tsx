@@ -12,7 +12,6 @@ export default function UsageSection() {
             <div className='usage-section-inner'>
                 <div className='usage-section-grid'>
                     <div className='usage-section-copy'>
-                        <p className='usage-section-eyebrow'>{t.usageEyebrow}</p>
                         <h2 id='usage-heading'>{t.usageHeading}</h2>
                         <p>{t.usageIntro}</p>
                     </div>

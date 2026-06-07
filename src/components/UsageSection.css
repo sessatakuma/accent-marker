@@ -351,7 +351,7 @@
         align-self: center;
     }
 
-    .usage-pitch-mark .kana-shell[data-accent-visible='true'] {
+    .usage-pitch-mark .kana-shell {
         transform: translateY(calc(-1 * var(--space-2)));
     }
 

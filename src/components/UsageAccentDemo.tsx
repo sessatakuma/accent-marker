@@ -4,7 +4,8 @@ import Kana from './AccentEditor/components/Kana';
 import { type AccentValueType } from './AccentEditor/core/word/accentTypes';
 import './UsageAccentDemo.css';
 
-const DEMO_KANA = ['あ', 'く', 'せ', 'ん', 'と'] as const;
+const DEMO_READING = ['は', 'し'] as const;
+const DEMO_SURFACE = '箸';
 
 type CursorState = 'hidden' | 'entering' | 'hover' | 'click' | 'result' | 'moving' | 'exiting';
 
@@ -15,66 +16,25 @@ interface AnimationPhase {
     delay: number;
 }
 
-const INITIAL_ACCENTS: AccentValueType[] = [1, 1, 1, 1, 2];
-
-const DEMO_CLICKS: [number, AccentValueType[]][] = [
-    [4, [1, 1, 1, 1, 0]],
-    [3, [1, 1, 1, 2, 0]],
-    [3, [1, 1, 1, 0, 0]],
-    [2, [1, 1, 2, 0, 0]],
-    [2, [1, 1, 0, 0, 0]],
-    [1, [1, 2, 0, 0, 0]],
-    [1, [1, 0, 0, 0, 0]],
-    [0, [2, 0, 0, 0, 0]],
-];
+const INITIAL_ACCENTS: AccentValueType[] = [1, 2];
+const MIDDLE_ACCENTS: AccentValueType[] = [2, 2];
+const FINAL_ACCENTS: AccentValueType[] = [2, 0];
 
 const DEMO_PHASES = buildDemoPhases();
 
 function buildDemoPhases(): AnimationPhase[] {
-    const phases: AnimationPhase[] = [
-        { accents: [...INITIAL_ACCENTS], cursor: 'hidden', cursorTarget: -1, delay: 1500 },
-        { accents: [...INITIAL_ACCENTS], cursor: 'entering', cursorTarget: 4, delay: 600 },
+    return [
+        { accents: [...INITIAL_ACCENTS], cursor: 'hidden', cursorTarget: -1, delay: 1200 },
+        { accents: [...INITIAL_ACCENTS], cursor: 'entering', cursorTarget: 0, delay: 450 },
+        { accents: [...INITIAL_ACCENTS], cursor: 'hover', cursorTarget: 0, delay: 350 },
+        { accents: [...MIDDLE_ACCENTS], cursor: 'click', cursorTarget: 0, delay: 220 },
+        { accents: [...MIDDLE_ACCENTS], cursor: 'result', cursorTarget: 0, delay: 420 },
+        { accents: [...MIDDLE_ACCENTS], cursor: 'moving', cursorTarget: 1, delay: 300 },
+        { accents: [...MIDDLE_ACCENTS], cursor: 'hover', cursorTarget: 1, delay: 320 },
+        { accents: [...FINAL_ACCENTS], cursor: 'click', cursorTarget: 1, delay: 220 },
+        { accents: [...FINAL_ACCENTS], cursor: 'result', cursorTarget: 1, delay: 0 },
+        { accents: [...FINAL_ACCENTS], cursor: 'exiting', cursorTarget: 1, delay: 2000 },
     ];
-
-    let previousTarget = 4;
-    let previousAccents = [...INITIAL_ACCENTS];
-
-    for (let index = 0; index < DEMO_CLICKS.length; index += 1) {
-        const [target, accents] = DEMO_CLICKS[index];
-        const movedToNewTarget = target !== previousTarget;
-
-        if (movedToNewTarget) {
-            phases.push({
-                accents: [...previousAccents],
-                cursor: 'moving',
-                cursorTarget: target,
-                delay: 300,
-            });
-            phases.push({
-                accents: [...previousAccents],
-                cursor: 'hover',
-                cursorTarget: target,
-                delay: 350,
-            });
-        }
-
-        phases.push({ accents: [...accents], cursor: 'click', cursorTarget: target, delay: 250 });
-
-        const isLastPhase = index === DEMO_CLICKS.length - 1;
-        phases.push({
-            accents: [...accents],
-            cursor: 'result',
-            cursorTarget: target,
-            delay: isLastPhase ? 800 : movedToNewTarget ? 450 : 350,
-        });
-
-        previousTarget = target;
-        previousAccents = [...accents];
-    }
-
-    phases.push({ accents: [2, 0, 0, 0, 0], cursor: 'exiting', cursorTarget: 0, delay: 600 });
-
-    return phases;
 }
 
 function CursorPointer() {
@@ -116,7 +76,7 @@ function useReducedMotionPreference(): boolean {
 
 function useCursorOffset(
     wordRef: React.RefObject<HTMLDivElement | null>,
-    cellRefs: React.RefObject<(HTMLDivElement | null)[]>,
+    cellRefs: React.RefObject<(HTMLSpanElement | null)[]>,
     cursorTarget: number,
     cursorState: CursorState,
 ): number {
@@ -149,7 +109,7 @@ function useCursorOffset(
 
 export default function UsageAccentDemo() {
     const wordRef = useRef<HTMLDivElement>(null);
-    const cellRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const cellRefs = useRef<(HTMLSpanElement | null)[]>([]);
     const [phaseIndex, setPhaseIndex] = useState(0);
     const prefersReducedMotion = useReducedMotionPreference();
     const phase = DEMO_PHASES[phaseIndex];
@@ -193,27 +153,36 @@ export default function UsageAccentDemo() {
                         <CursorPointer />
                     </div>
                 )}
-                {DEMO_KANA.map((kana, index) => (
-                    <div
-                        key={index}
-                        ref={node => {
-                            cellRefs.current[index] = node;
-                        }}
-                        className='usage-accent-kana-cell'
-                        data-cursor-target={
-                            index === cursorTarget && cursorState !== 'hidden' ? '' : undefined
-                        }
-                    >
-                        <Kana
-                            accent={currentAccents[index]}
-                            accentPhaseActive
-                            accentVisible
-                            interactive={false}
-                            text={kana}
-                            textVisible
-                        />
-                    </div>
-                ))}
+                <span className='usage-demo-word-stack' aria-hidden='true'>
+                    <span className='usage-demo-reading-row'>
+                        {DEMO_READING.map((kana, index) => (
+                            <span
+                                key={index}
+                                ref={node => {
+                                    cellRefs.current[index] = node;
+                                }}
+                                className='usage-accent-kana-cell usage-demo-reading-cell'
+                                data-cursor-target={
+                                    index === cursorTarget && cursorState !== 'hidden'
+                                        ? ''
+                                        : undefined
+                                }
+                            >
+                                <Kana
+                                    accent={currentAccents[index]}
+                                    accentPhaseActive
+                                    accentVisible
+                                    interactive={false}
+                                    text={kana}
+                                    textVisible
+                                />
+                            </span>
+                        ))}
+                    </span>
+                    <span className='usage-demo-base-row' aria-hidden='true'>
+                        <span className='usage-demo-base-cell'>{DEMO_SURFACE}</span>
+                    </span>
+                </span>
             </div>
         </div>
     );

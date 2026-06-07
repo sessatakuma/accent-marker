@@ -14,14 +14,11 @@
     --kana-accent-hitbox-height: 0.5rem;
 
     position: relative;
-    display: flex;
-    gap: 0;
+    display: inline-flex;
     align-items: flex-start;
     justify-content: center;
     padding-top: var(--space-4);
     color: var(--color-text-primary);
-    font-size: var(--usage-accent-font-size);
-    font-weight: 400;
     line-height: 1;
 }
 
@@ -53,6 +50,39 @@
     display: inline-flex;
     padding: 0 0 var(--space-1);
     border-radius: var(--radius-md);
+}
+
+.usage-demo-word-stack {
+    display: inline-grid;
+    grid-template-rows: auto auto;
+    justify-items: center;
+}
+
+.usage-demo-reading-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-size: calc(var(--usage-accent-font-size) * 0.76);
+    font-weight: 400;
+    line-height: 1;
+}
+
+.usage-demo-reading-cell {
+    min-width: 1em;
+    justify-content: center;
+}
+
+.usage-demo-base-row {
+    display: flex;
+    justify-content: center;
+    margin-top: calc(var(--space-1) + 0.05em);
+}
+
+.usage-demo-base-cell {
+    font-size: calc(var(--usage-accent-font-size) * 1.14);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.02em;
 }
 
 .usage-accent-kana-cell .kana-shell {
@@ -112,7 +142,7 @@
 
 @keyframes usage-cursor-slide-in {
     from {
-        transform: translateX(calc(var(--cursor-x, 0) + 250px));
+        transform: translateX(calc(var(--cursor-x, 0) - 250px));
         opacity: 0;
     }
 
@@ -129,7 +159,7 @@
     }
 
     to {
-        transform: translateX(calc(var(--cursor-x, 0) - 400px));
+        transform: translateX(calc(var(--cursor-x, 0) + 400px));
         opacity: 0;
     }
 }

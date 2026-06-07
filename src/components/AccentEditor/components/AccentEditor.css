@@ -265,10 +265,6 @@
         grid-template-columns: 1fr 1fr;
     }
 
-    .result-panel-stack {
-        grid-column: 1 / -1;
-    }
-
     .input-panel-stack,
     .result-panel-stack {
         padding-block: var(--result-panel-callout-space);

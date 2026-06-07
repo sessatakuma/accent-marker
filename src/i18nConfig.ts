@@ -358,7 +358,7 @@ export const translations: Record<Locale, TranslationSet> = {
         usagePitchFlatTitle: '高音不下降',
         usagePitchHeading: '為什麼需要音調線',
         usagePitchIntro:
-            '日語音調不僅影響發音自然度，更會影響詞彙的含義。\n掌握音調，讓你不再詢問店員「不好意思，店裡有橋嗎？」',
+            '除了自然度，音調更會影響詞彙的含義。掌握正確音調，讓你不再詢問店員「不好意思，店裡有橋嗎？」',
         usagePitchNoneBody:
             '像 の、で、は 這類助詞，本身不帶高音標記，會接續前詞音高。',
         usagePitchNoneTitle: '低音/接續前音',

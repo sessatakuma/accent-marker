@@ -126,17 +126,17 @@ export default function UsageSection() {
     return (
         <section ref={sectionRef} className='usage-section' aria-labelledby='usage-heading'>
             <div className='usage-section-inner'>
-                <div className='usage-section-grid usage-reveal-target'>
-                    <div className='usage-section-copy'>
-                        <h2 id='usage-heading'>{renderUsageHeading(t.usageHeading)}</h2>
-                    </div>
-                </div>
                 <div
                     className='usage-pitch-primer usage-reveal-target'
                     aria-label={t.usagePitchHeading}
                 >
-                    <div className='usage-pitch-copy'>
-                        <p>{t.usagePitchIntro}</p>
+                    <div className='usage-pitch-intro'>
+                        <div className='usage-section-copy'>
+                            <h2 id='usage-heading'>{renderUsageHeading(t.usageHeading)}</h2>
+                        </div>
+                        <div className='usage-pitch-copy'>
+                            <p>{t.usagePitchIntro}</p>
+                        </div>
                     </div>
                     <div className='usage-pitch-states'>
                         <article className='usage-pitch-state'>

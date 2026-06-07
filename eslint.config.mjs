@@ -8,7 +8,7 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig([
     {
-        ignores: ['.next/**', 'dist/**'],
+        ignores: ['.next/**', '.vercel/**', 'dist/**'],
     },
     pluginReact.configs.flat.recommended,
     js.configs.recommended,

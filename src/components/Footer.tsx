@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Mail } from 'lucide-react';
+import { Facebook, Instagram } from 'lucide-react';
 
 import './Footer.css';
 
@@ -45,6 +45,7 @@ function GithubIcon({ size = 24 }: { size?: number }) {
 
 export default function Footer() {
     const { t } = useI18n();
+    const emailAddress = 'contact@sessatakuma.dev';
     const socialLinks = [
         {
             icon: <Instagram size={24} />,
@@ -60,11 +61,6 @@ export default function Footer() {
             icon: <Facebook size={24} />,
             label: t.footerFacebookLabel,
             pending: true,
-        },
-        {
-            href: 'mailto:contact@sessatakuma.dev',
-            icon: <Mail size={24} />,
-            label: t.footerMailLabel,
         },
         {
             href: 'https://github.com/sessatakuma',
@@ -96,43 +92,49 @@ export default function Footer() {
                             aria-hidden='true'
                         />
                     </a>
-                    <section className='site-footer-about' aria-label={t.faviconAltBrand}>
-                        <p>{t.footerWhatBody}</p>
-                    </section>
+                    <nav className='site-footer-social' aria-label={t.footerSocialHeading}>
+                        <div className='site-footer-social-links'>
+                            {socialLinks.map(link =>
+                                link.pending ? (
+                                    <button
+                                        key={link.label}
+                                        className='site-footer-social-link'
+                                        type='button'
+                                        aria-label={link.label}
+                                        onClick={showPendingAccountDialog}
+                                    >
+                                        {link.icon}
+                                    </button>
+                                ) : (
+                                    <a
+                                        key={link.label}
+                                        className='site-footer-social-link'
+                                        href={link.href}
+                                        aria-label={link.label}
+                                    >
+                                        {link.icon}
+                                    </a>
+                                ),
+                            )}
+                        </div>
+                        <a
+                            className='site-footer-email-link'
+                            href={`mailto:${emailAddress}`}
+                            aria-label={`${t.footerMailLabel}: ${emailAddress}`}
+                        >
+                            {emailAddress}
+                        </a>
+                    </nav>
                 </div>
 
-                <nav className='site-footer-social' aria-labelledby='footer-social-heading'>
-                    <h2 id='footer-social-heading'>{t.footerSocialHeading}</h2>
-                    <div className='site-footer-social-links'>
-                        {socialLinks.map(link =>
-                            link.pending ? (
-                                <button
-                                    key={link.label}
-                                    className='site-footer-social-link'
-                                    type='button'
-                                    aria-label={link.label}
-                                    onClick={showPendingAccountDialog}
-                                >
-                                    {link.icon}
-                                </button>
-                            ) : (
-                                <a
-                                    key={link.label}
-                                    className='site-footer-social-link'
-                                    href={link.href}
-                                    aria-label={link.label}
-                                >
-                                    {link.icon}
-                                </a>
-                            ),
-                        )}
-                    </div>
-                </nav>
-
-                <p className='site-footer-wordmark' aria-label='Sessatakuma'>
-                    Sessatakuma
-                </p>
+                <section className='site-footer-about' aria-label={t.faviconAltBrand}>
+                    <p>{t.footerWhatBody}</p>
+                </section>
             </div>
+            <p className='site-footer-wordmark' aria-label='Sessatakuma'>
+                <span>Sessa</span>
+                <span>takuma</span>
+            </p>
         </footer>
     );
 }

@@ -131,7 +131,7 @@ export const translations: Record<Locale, TranslationSet> = {
         toggleImageTheme: isDarkResult =>
             `Switch image theme to ${isDarkResult ? 'light' : 'dark'}`,
         usageEyebrow: 'Usage',
-        usageHeading: 'Use Accent Marker for reading, editing, and export',
+        usageHeading: 'Make Japanese pronunciation natural and clear',
         usageIntro:
             'Accent Marker turns Japanese text into pronunciation-ready study material with furigana, pitch accent, edits, and export.',
         usagePitchFallBody:
@@ -222,7 +222,7 @@ export const translations: Record<Locale, TranslationSet> = {
         toggleImageTheme: isDarkResult =>
             `画像テーマを${isDarkResult ? 'ライト' : 'ダーク'}に切り替え`,
         usageEyebrow: '使い方',
-        usageHeading: '読解・調整・書き出しを一つの画面で進める',
+        usageHeading: '日本語の発音を自然に、意味を明確に',
         usageIntro:
             'Accent Marker は日本語テキストに、ふりがな・ピッチアクセント・修正・書き出しをまとめます。',
         usagePitchFallBody:
@@ -313,34 +313,33 @@ export const translations: Record<Locale, TranslationSet> = {
         toggleImageTheme: isDarkResult =>
             `將圖片主題切換為${isDarkResult ? '淺色' : '深色'}`,
         usageEyebrow: '使用方式',
-        usageHeading: '在同一個工作區完成分析、校對與匯出',
+        usageHeading: '讓日語發音更自然、意思更清楚',
         usageIntro:
             'Accent Marker 將日語文字整理成可複習、可校對、可分享的發音素材。',
-        usagePitchFallBody:
-            '垂直落點代表 downstep；後面的音與助詞會接著維持低音。',
+        usagePitchFallBody: '後段詞語或接續的助詞會轉為低音。',
         usagePitchFallTitle: '高音後下降',
         usagePitchFlatBody:
             '水平線範圍維持高音，詞內沒有下降。',
         usagePitchFlatTitle: '高音不下降',
         usagePitchHeading: '為什麼需要音調線',
         usagePitchIntro:
-            '日語音調看高低音與 downstep。標出來，發音更自然，也更能分清相近詞。',
+            '日語音調不僅影響發音自然度，更會影響詞彙的含義。掌握音調，讓你不再詢問店員「不好意思，店裡有橋嗎？」',
         usagePitchNoneBody:
             '像 の、で、は 這類助詞，本身不帶高音標記，會接續前詞音高。',
-        usagePitchNoneTitle: '接續前音',
+        usagePitchNoneTitle: '低音/接續前音',
         usageStepAccentBody:
             '點一下音調線即可切換音型。若游標停在振假名格的尾端，也可以用上下方向鍵循環切換音調。',
         usageStepAccentHint: '點線 / 上下方向鍵',
         usageStepAccentTitle: '調整音調',
         usageStepEditBody:
-            '修正振假名、切換讀音格，並直接調整音調線。',
+            '點擊振假名或音調以進行編輯，音調會在三種模式循環切換、支援上下方向鍵。',
         usageStepEditTitle: '校對讀音與音調',
         usageStepFuriganaBody:
             '直接點振假名文字就能編輯。用左右方向鍵可在不同讀音格之間移動，方便逐格校對。',
         usageStepFuriganaHint: '輸入假名 / 左右方向鍵',
         usageStepFuriganaTitle: '修改振假名',
         usageStepShareBody:
-            '文字適合筆記，圖片適合分享，HTML 可保留振假名與音調標記。',
+            '文字適合筆記或備忘稿，圖片適合分享或製作文件，HTML 可以 Markdown 等形式進一步運用。',
         usageStepShareHint: '複製 / 圖片 / HTML',
         usageStepShareTitle: '依用途儲存',
         usageStepStartBody:

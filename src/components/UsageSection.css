@@ -120,6 +120,11 @@
     justify-content: center;
     width: 100%;
     min-height: 208px;
+    padding: var(--space-6);
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-secondary);
+    box-shadow: none;
 }
 
 .usage-action-showcase {
@@ -154,15 +159,16 @@
 .usage-accent-word {
     --usage-accent-font-size: 3rem;
     --usage-accent-line-width: calc(100% - var(--usage-accent-font-size) * 0.35);
-    --usage-accent-line-top: 0.2em;
-    --usage-accent-drop-height: 0.78em;
+    --usage-accent-line-thickness: calc(var(--accent-width) * 2);
+    --usage-accent-line-top: 0;
+    --usage-accent-drop-height: 0.88em;
 
     position: relative;
     display: flex;
     gap: var(--space-3);
     align-items: flex-start;
     justify-content: center;
-    padding-top: var(--space-5);
+    padding-top: var(--space-6);
     color: var(--color-text-primary);
     font-size: var(--usage-accent-font-size);
     line-height: 1;
@@ -173,7 +179,7 @@
     top: var(--usage-accent-line-top);
     left: 0;
     width: var(--usage-accent-line-width);
-    border-top: var(--accent-width) solid var(--accent-color);
+    border-top: var(--usage-accent-line-thickness) solid var(--accent-color);
 }
 
 .usage-accent-drop {
@@ -181,7 +187,7 @@
     top: var(--usage-accent-line-top);
     left: var(--usage-accent-line-width);
     height: var(--usage-accent-drop-height);
-    border-left: var(--accent-width) solid var(--accent-color);
+    border-left: var(--usage-accent-line-thickness) solid var(--accent-color);
 }
 
 .usage-accent-kana {
@@ -225,7 +231,7 @@
         grid-template-columns: 1fr;
         grid-template-rows: 64px 2.6em auto;
         align-items: start;
-        row-gap: var(--space-3);
+        row-gap: var(--space-1);
     }
 
     .usage-pitch-state p {
@@ -246,6 +252,7 @@
         grid-template-columns: minmax(560px, 1.1fr) minmax(360px, 0.9fr);
         align-items: center;
         gap: calc(var(--space-7) * 2);
+        padding-inline: calc((var(--space-7) * 2) + var(--space-6));
         min-height: 344px;
     }
 

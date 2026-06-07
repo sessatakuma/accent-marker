@@ -264,7 +264,7 @@
 .furigana-group::before {
     content: '';
     position: absolute;
-    top: -0.125rem;
+    top: calc(var(--kana-accent-lane-height) + var(--kana-accent-gap) - 0.125rem);
     right: -0.125rem;
     bottom: -0.0625rem;
     left: -0.125rem;

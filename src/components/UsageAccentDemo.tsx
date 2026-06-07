@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 
 import Kana from './AccentEditor/components/Kana';
 import { type AccentValueType } from './AccentEditor/core/word/accentTypes';
+import './UsageAccentDemo.css';
 
 const DEMO_KANA = ['あ', 'く', 'せ', 'ん', 'と'] as const;
 

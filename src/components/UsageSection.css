@@ -273,6 +273,10 @@
         gap: calc(var(--space-7) + var(--space-6));
     }
 
+    .usage-pitch-intro {
+        padding-top: var(--space-5);
+    }
+
     .usage-pitch-states {
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: calc(var(--space-7) + var(--space-4));

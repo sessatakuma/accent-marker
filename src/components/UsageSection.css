@@ -1,4 +1,9 @@
 .usage-section {
+    --usage-font-size-heading: 1.75rem;
+    --usage-font-size-title: 1.125rem;
+    --usage-font-size-body: 1rem;
+    --usage-font-size-showcase: 3rem;
+
     padding: calc(var(--space-7) + var(--space-4)) 0;
     border-top: 1px solid var(--color-border);
 }
@@ -17,16 +22,20 @@
 
 .usage-section-copy {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-2);
 }
 
 .usage-section h2 {
-    font-size: 1.75rem;
+    font-size: var(--usage-font-size-heading);
+    font-weight: 700;
     line-height: 1.2;
+    color: var(--color-text-primary);
 }
 
 .usage-section p,
 .usage-section li {
+    font-size: var(--usage-font-size-body);
+    font-weight: 400;
     color: var(--color-text-secondary);
     line-height: 1.75;
 }
@@ -50,8 +59,12 @@
 }
 
 .usage-pitch-copy h3,
+.usage-guide-copy h3,
 .usage-pitch-state h4 {
+    font-size: var(--usage-font-size-title);
+    font-weight: 700;
     line-height: 1.3;
+    color: var(--color-text-primary);
 }
 
 .usage-pitch-state h4 {
@@ -85,9 +98,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
+    width: 64px;
     height: 64px;
-    font-size: 1.5rem;
+    font-size: var(--usage-font-size-showcase);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--color-text-primary);
 }
 
 .usage-pitch-mark .kana-shell {
@@ -157,7 +173,7 @@
 }
 
 .usage-accent-word {
-    --usage-accent-font-size: 3rem;
+    --usage-accent-font-size: var(--usage-font-size-showcase);
     --usage-accent-line-width: calc(100% - var(--usage-accent-font-size) * 0.35);
     --usage-accent-line-thickness: calc(var(--accent-width) * 2);
     --usage-accent-line-top: 0;
@@ -171,6 +187,7 @@
     padding-top: var(--space-6);
     color: var(--color-text-primary);
     font-size: var(--usage-accent-font-size);
+    font-weight: 400;
     line-height: 1;
 }
 
@@ -196,13 +213,8 @@
 
 .usage-guide-copy {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-2);
     align-content: center;
-}
-
-.usage-guide-copy h3 {
-    font-size: 1.125rem;
-    line-height: 1.3;
 }
 
 .usage-guide-copy p {
@@ -229,9 +241,9 @@
 
     .usage-pitch-state {
         grid-template-columns: 1fr;
-        grid-template-rows: 64px 2.6em auto;
+        grid-template-rows: 64px auto auto;
         align-items: start;
-        row-gap: var(--space-1);
+        row-gap: var(--space-2);
     }
 
     .usage-pitch-state p {
@@ -294,5 +306,9 @@
 
     .usage-accent-word {
         --usage-accent-font-size: 2.25rem;
+    }
+
+    .usage-pitch-mark {
+        font-size: 2.25rem;
     }
 }

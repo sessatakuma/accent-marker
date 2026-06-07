@@ -1,6 +1,6 @@
 .site-footer {
     overflow: hidden;
-    padding: calc(var(--space-7) * 2) 0 var(--space-6);
+    padding: calc(var(--space-7) * 2) 0 0;
     background: var(--color-accent-green);
     color: var(--color-text-inverted);
 }
@@ -11,6 +11,7 @@
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
+    margin-bottom: calc(var(--space-7) + var(--space-6));
     padding-inline: var(--space-6);
 }
 
@@ -94,22 +95,18 @@
 }
 
 .site-footer-wordmark {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    padding-inline: var(--space-6);
+    width: 100%;
+    margin: 0;
+    padding: 0;
     color: var(--color-text-inverted);
-    font-size: clamp(3.5rem, 13vw, 12rem);
+    font-size: clamp(4rem, 16vw, 14rem);
     font-weight: 700;
-    line-height: 0.82;
+    line-height: 0.78;
     white-space: nowrap;
 }
 
 @media (min-width: 768px) {
     .site-footer-inner {
-        padding-inline: var(--space-7);
-    }
-
-    .site-footer-wordmark {
         padding-inline: var(--space-7);
     }
 
@@ -124,7 +121,4 @@
         padding-inline: calc((var(--space-7) * 2) + var(--space-6));
     }
 
-    .site-footer-wordmark {
-        padding-inline: calc((var(--space-7) * 2) + var(--space-6));
-    }
 }

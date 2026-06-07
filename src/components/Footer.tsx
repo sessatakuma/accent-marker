@@ -128,11 +128,10 @@ export default function Footer() {
                         )}
                     </div>
                 </nav>
-
-                <p className='site-footer-wordmark' aria-label='Sessatakuma'>
-                    Sessatakuma
-                </p>
             </div>
+            <p className='site-footer-wordmark' aria-label='Sessatakuma'>
+                Sessatakuma
+            </p>
         </footer>
     );
 }

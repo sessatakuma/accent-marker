@@ -1,5 +1,5 @@
 .usage-section {
-    padding: var(--space-7) var(--space-6);
+    padding: calc(var(--space-7) + var(--space-4)) 0;
     border-top: 1px solid var(--color-border);
 }
 
@@ -7,6 +7,7 @@
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
+    padding: 0 var(--space-6);
 }
 
 .usage-section-grid {
@@ -37,9 +38,9 @@
 
 .usage-pitch-primer {
     display: grid;
-    gap: var(--space-5);
-    margin-top: var(--space-7);
-    padding: var(--space-6) 0;
+    gap: var(--space-6);
+    margin-top: calc(var(--space-7) + var(--space-4));
+    padding: calc(var(--space-7) + var(--space-4)) 0;
     border-block: 1px solid var(--color-border);
 }
 
@@ -54,9 +55,7 @@
 }
 
 .usage-pitch-state h4 {
-    min-height: 2.6em;
-    display: flex;
-    align-items: flex-end;
+    min-height: 0;
 }
 
 .usage-pitch-copy p {
@@ -66,7 +65,7 @@
 
 .usage-pitch-states {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-6);
 }
 
 .usage-pitch-state {
@@ -87,7 +86,7 @@
     align-items: center;
     justify-content: center;
     width: 48px;
-    height: 48px;
+    height: 64px;
     font-size: 1.5rem;
 }
 
@@ -98,13 +97,13 @@
 .usage-guide {
     display: grid;
     gap: 0;
-    margin-top: var(--space-7);
+    margin-top: calc(var(--space-7) + var(--space-4));
 }
 
 .usage-guide-card {
     display: grid;
     gap: var(--space-4);
-    padding: var(--space-7) 0;
+    padding: calc(var(--space-7) + var(--space-4)) 0;
     border: 0;
     border-radius: 0;
     background: transparent;
@@ -120,7 +119,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 192px;
+    min-height: 208px;
 }
 
 .usage-action-showcase {
@@ -213,16 +212,20 @@
     .usage-pitch-primer {
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
         align-items: start;
-        gap: var(--space-8);
+        gap: calc(var(--space-7) + var(--space-6));
     }
 
     .usage-pitch-states {
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: var(--space-5);
+        gap: calc(var(--space-7) + var(--space-4));
+        align-items: start;
     }
 
     .usage-pitch-state {
         grid-template-columns: 1fr;
+        grid-template-rows: 64px 2.6em auto;
+        align-items: start;
+        row-gap: var(--space-3);
     }
 
     .usage-pitch-state p {
@@ -231,6 +234,8 @@
 
     .usage-pitch-mark {
         grid-row: auto;
+        align-items: flex-start;
+        justify-content: flex-start;
     }
 
     .usage-guide {
@@ -240,8 +245,8 @@
     .usage-guide-card {
         grid-template-columns: minmax(560px, 1.1fr) minmax(360px, 0.9fr);
         align-items: center;
-        gap: var(--space-10);
-        min-height: 320px;
+        gap: calc(var(--space-7) * 2);
+        min-height: 344px;
     }
 
     .usage-guide-card:nth-child(even) .usage-guide-preview {
@@ -255,11 +260,15 @@
 
 @media (max-width: 768px) {
     .usage-section {
-        padding: var(--space-6) var(--space-4);
+        padding: var(--space-7) var(--space-4);
+    }
+
+    .usage-section-inner {
+        padding: 0;
     }
 
     .usage-guide-card {
-        padding: var(--space-6) 0;
+        padding: var(--space-7) 0;
     }
 
     .usage-action-showcase {

@@ -133,36 +133,36 @@ export const translations: Record<Locale, TranslationSet> = {
         usageEyebrow: 'Usage',
         usageHeading: 'Use Accent Marker for reading, editing, and export',
         usageIntro:
-            'Accent Marker turns raw Japanese into pronunciation-ready study material: reading, pitch accent, quick corrections, and export all stay in one workspace.',
+            'Accent Marker turns Japanese text into pronunciation-ready study material with furigana, pitch accent, edits, and export.',
         usagePitchFallBody:
-            'A vertical drop marks the downstep. After that point, following morae and particles continue low, which is where natural pronunciation and meaning contrasts often become clear.',
+            'A vertical drop marks downstep; following sounds and particles stay low.',
         usagePitchFallTitle: 'High, then fall',
         usagePitchFlatBody:
-            'A horizontal line means the pitch stays high through the marked span, with no fall inside the word.',
+            'The marked span stays high, with no fall inside the word.',
         usagePitchFlatTitle: 'High, no fall',
         usagePitchHeading: 'Why the accent line matters',
         usagePitchIntro:
-            'Tokyo-style Japanese pitch accent is not stress. It tracks high and low pitch, and downstep is what helps speech sound natural and keeps similar words from blurring together.',
+            'Japanese pitch accent tracks high, low, and downstep. Seeing it helps pronunciation sound natural and keeps similar words distinct.',
         usagePitchNoneBody:
-            'No line means this unit is not carrying the high accent mark itself. Particles such as の, で, and は follow the pitch left by the previous word.',
+            'Particles like の, で, and は follow the previous word instead of carrying their own high mark.',
         usagePitchNoneTitle: 'Following unit',
         usageStepAccentBody:
             'Click an accent line to switch the pitch pattern, or place the caret at the end of a furigana cell and use Up or Down to cycle the accent.',
         usageStepAccentHint: 'Click line or Up/Down',
         usageStepAccentTitle: 'Adjust accent',
         usageStepEditBody:
-            'Click furigana to correct the reading, use Left and Right to move between cells, or click the accent line and use Up or Down to cycle pitch patterns.',
+            'Correct furigana, move between reading cells, and switch pitch patterns in place.',
         usageStepEditTitle: 'Edit readings and accent',
         usageStepFuriganaBody:
             'Click the furigana text to edit it directly. Use Left and Right to jump across reading cells while keeping your hands on the keyboard.',
         usageStepFuriganaHint: 'Type kana, then Left/Right',
         usageStepFuriganaTitle: 'Edit furigana',
         usageStepShareBody:
-            'Copy text for quick notes, export an image for sharing, or save HTML when you want the furigana and accent markup preserved.',
+            'Copy text for notes, export images for sharing, or save HTML to preserve markup.',
         usageStepShareHint: 'Copy, image, or HTML',
         usageStepShareTitle: 'Save in the right format',
         usageStepStartBody:
-            'Type Japanese directly, paste from the clipboard, or insert a random sample to generate the first reading and accent pass.',
+            'Enter Japanese or insert a sample to start reading and accent analysis.',
         usageStepStartHint: 'Paste or sample',
         usageStepStartTitle: 'Start analysis',
         usageStepOne: 'Paste Japanese text or insert a sample sentence to start a new analysis.',
@@ -224,36 +224,36 @@ export const translations: Record<Locale, TranslationSet> = {
         usageEyebrow: '使い方',
         usageHeading: '読解・調整・書き出しを一つの画面で進める',
         usageIntro:
-            'Accent Marker は日本語テキストを、読み・ピッチアクセント・修正・書き出しまで一つの画面で扱える学習素材に変えます。',
+            'Accent Marker は日本語テキストに、ふりがな・ピッチアクセント・修正・書き出しをまとめます。',
         usagePitchFallBody:
-            '縦線はダウンステップを表します。その後のモーラや助詞は低く続き、自然さや意味の違いが出やすい部分です。',
+            '縦線はダウンステップを表し、その後の音や助詞は低く続きます。',
         usagePitchFallTitle: '高く、あとで下がる',
         usagePitchFlatBody:
-            '横線だけなら、その範囲は高いまま続き、語の中では下がりません。',
+            '横線の範囲は高いまま続き、語の中では下がりません。',
         usagePitchFlatTitle: '高いまま下がらない',
         usagePitchHeading: 'アクセント線を見る理由',
         usagePitchIntro:
-            '東京式アクセントは英語の強勢ではなく、高低とダウンステップで聞こえ方が変わります。ここを見えるようにすると、より自然に発音し、似た語の違いも伝えやすくなります。',
+            '日本語アクセントは高低とダウンステップで聞こえ方が変わります。見える化すると、より自然に発音できます。',
         usagePitchNoneBody:
-            '線がない部分は、その単位自体に高いアクセント線を付けません。の・で・は などの助詞は前の語の高さに続きます。',
+            'の・で・は などの助詞は、自分ではなく前の語の高さに続きます。',
         usagePitchNoneTitle: '前に続く単位',
         usageStepAccentBody:
             'アクセント線をクリックすると音調を切り替えられます。ふりがなの末尾にカーソルを置いた状態なら、上下キーでも切り替えできます。',
         usageStepAccentHint: '線をクリック / 上下キー',
         usageStepAccentTitle: 'アクセントを直す',
         usageStepEditBody:
-            'ふりがなをクリックして読みを修正し、左右キーでセルを移動できます。アクセント線はクリック、または上下キーで切り替えできます。',
+            'ふりがなを直し、読みセルを移動し、アクセント線をその場で切り替えます。',
         usageStepEditTitle: '読みとアクセントを直す',
         usageStepFuriganaBody:
             'ふりがな部分をクリックしてそのまま編集できます。左右キーを使うと、読みの区切りをまたいで次のセルへ移動できます。',
         usageStepFuriganaHint: 'かなを入力 / 左右キー',
         usageStepFuriganaTitle: 'ふりがなを直す',
         usageStepShareBody:
-            'テキストは手早いメモに、画像は共有に、HTML はふりがなとアクセントを保った保存に向いています。',
+            'テキストはメモ、画像は共有、HTML はふりがなとアクセントの保存に向いています。',
         usageStepShareHint: 'コピー / 画像 / HTML',
         usageStepShareTitle: '用途に合わせて保存',
         usageStepStartBody:
-            '日本語を直接入力、クリップボードから貼り付け、またはサンプル文を入れると最初の読みとアクセントが生成されます。',
+            '日本語を入力、またはサンプル文を入れて読みとアクセントを解析します。',
         usageStepStartHint: '貼り付け / サンプル',
         usageStepStartTitle: '解析を始める',
         usageStepOne: '日本語テキストを貼り付けるか、サンプル文を入れて解析を始めます。',
@@ -315,36 +315,36 @@ export const translations: Record<Locale, TranslationSet> = {
         usageEyebrow: '使用方式',
         usageHeading: '在同一個工作區完成分析、校對與匯出',
         usageIntro:
-            'Accent Marker 把日語文字變成可複習、可校對、可分享的發音素材：振假名、音高音調、修正與匯出都在同一個工作區完成。',
+            'Accent Marker 將日語文字整理成可複習、可校對、可分享的發音素材。',
         usagePitchFallBody:
-            '出現垂直落點時，代表這裡有 downstep；後面的音與助詞會接著維持低音。這常是發音是否自然、意思是否清楚的差別。',
+            '垂直落點代表 downstep；後面的音與助詞會接著維持低音。',
         usagePitchFallTitle: '高音後下降',
         usagePitchFlatBody:
-            '只有水平線時，表示標記範圍維持高音，詞內沒有下降。',
+            '水平線範圍維持高音，詞內沒有下降。',
         usagePitchFlatTitle: '高音不下降',
         usagePitchHeading: '為什麼需要音調線',
         usagePitchIntro:
-            '東京式日語音調不是英文那種重音，而是看高低音與是否出現 downstep。把它標出來，才能更自然地發音，也更容易傳達相近詞之間的差別。',
+            '日語音調看高低音與 downstep。標出來，發音更自然，也更能分清相近詞。',
         usagePitchNoneBody:
-            '沒有線不只是隱藏標記，而是這個單位本身不帶高音標記。像 の、で、は 這類助詞會接續前一個詞的音高。',
+            '像 の、で、は 這類助詞，本身不帶高音標記，會接續前詞音高。',
         usagePitchNoneTitle: '接續前音',
         usageStepAccentBody:
             '點一下音調線即可切換音型。若游標停在振假名格的尾端，也可以用上下方向鍵循環切換音調。',
         usageStepAccentHint: '點線 / 上下方向鍵',
         usageStepAccentTitle: '調整音調',
         usageStepEditBody:
-            '點振假名即可修正讀音，用左右方向鍵切換讀音格；點音調線或用上下方向鍵循環切換音型。',
+            '修正振假名、切換讀音格，並直接調整音調線。',
         usageStepEditTitle: '校對讀音與音調',
         usageStepFuriganaBody:
             '直接點振假名文字就能編輯。用左右方向鍵可在不同讀音格之間移動，方便逐格校對。',
         usageStepFuriganaHint: '輸入假名 / 左右方向鍵',
         usageStepFuriganaTitle: '修改振假名',
         usageStepShareBody:
-            '複製文字適合快速整理筆記，圖片適合分享，HTML 則能保留振假名與音調標記。',
+            '文字適合筆記，圖片適合分享，HTML 可保留振假名與音調標記。',
         usageStepShareHint: '複製 / 圖片 / HTML',
         usageStepShareTitle: '依用途儲存',
         usageStepStartBody:
-            '可以直接輸入日語、從剪貼簿貼上，或插入隨機範文，先產生第一輪讀音與音調分析。',
+            '輸入日語或插入隨機範文，開始進行讀音與音調分析。',
         usageStepStartHint: '貼上 / 隨機範文',
         usageStepStartTitle: '開始分析',
         usageStepOne: '貼上日語文字，或先插入隨機範文開始新的分析。',

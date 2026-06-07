@@ -231,7 +231,7 @@
 @keyframes usage-section-reveal {
     from {
         opacity: 0;
-        transform: translateY(var(--space-4));
+        transform: translateY(var(--space-5));
     }
 
     to {
@@ -241,14 +241,17 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    @supports (animation-timeline: view()) {
-        .usage-section-grid,
-        .usage-pitch-primer,
-        .usage-guide-card {
-            animation: usage-section-reveal linear both;
-            animation-range: entry 0% cover 24%;
-            animation-timeline: view();
-        }
+    .usage-section[data-reveal-ready='true'] .usage-reveal-target {
+        opacity: 0;
+        transform: translateY(var(--space-5));
+        will-change: opacity, transform;
+    }
+
+    .usage-section[data-reveal-ready='true'] .usage-reveal-target.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+        animation: usage-section-reveal 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+        will-change: auto;
     }
 }
 

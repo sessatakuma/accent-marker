@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import {
     Clipboard,
     CodeXml,
@@ -28,17 +30,89 @@ function renderUsageHeading(heading: string) {
 
 export default function UsageSection() {
     const { t } = useI18n();
+    const sectionRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const section = sectionRef.current;
+
+        if (!section) {
+            return;
+        }
+
+        const targets = Array.from(section.querySelectorAll<HTMLElement>('.usage-reveal-target'));
+
+        if (targets.length === 0) {
+            return;
+        }
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+            targets.forEach(target => target.classList.add('is-visible'));
+            return;
+        }
+
+        section.dataset.revealReady = 'true';
+
+        const revealTarget = (target: Element) => {
+            target.classList.add('is-visible');
+            observer.unobserve(target);
+        };
+
+        const revealReachedTargets = () => {
+            targets.forEach(target => {
+                if (target.classList.contains('is-visible')) {
+                    return;
+                }
+
+                if (target.getBoundingClientRect().top < window.innerHeight * 0.9) {
+                    revealTarget(target);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    const hasReachedViewport = entry.isIntersecting || entry.boundingClientRect.top < window.innerHeight;
+
+                    if (!hasReachedViewport) {
+                        return;
+                    }
+
+                    revealTarget(entry.target);
+                });
+            },
+            {
+                rootMargin: '0px 0px -10% 0px',
+                threshold: 0.15,
+            },
+        );
+
+        targets.forEach(target => observer.observe(target));
+        window.addEventListener('scroll', revealReachedTargets, { passive: true });
+        window.addEventListener('resize', revealReachedTargets);
+        window.requestAnimationFrame(revealReachedTargets);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('scroll', revealReachedTargets);
+            window.removeEventListener('resize', revealReachedTargets);
+            delete section.dataset.revealReady;
+        };
+    }, []);
 
     return (
-        <section className='usage-section' aria-labelledby='usage-heading'>
+        <section ref={sectionRef} className='usage-section' aria-labelledby='usage-heading'>
             <div className='usage-section-inner'>
-                <div className='usage-section-grid'>
+                <div className='usage-section-grid usage-reveal-target'>
                     <div className='usage-section-copy'>
                         <h2 id='usage-heading'>{renderUsageHeading(t.usageHeading)}</h2>
                         <p>{t.usageIntro}</p>
                     </div>
                 </div>
-                <div className='usage-pitch-primer' aria-labelledby='usage-pitch-heading'>
+                <div
+                    className='usage-pitch-primer usage-reveal-target'
+                    aria-labelledby='usage-pitch-heading'
+                >
                     <div className='usage-pitch-copy'>
                         <h3 id='usage-pitch-heading'>{t.usagePitchHeading}</h3>
                         <p>{t.usagePitchIntro}</p>
@@ -98,7 +172,7 @@ export default function UsageSection() {
                     </div>
                 </div>
                 <div className='usage-guide' aria-label={t.usageHeading}>
-                    <article className='usage-guide-card'>
+                    <article className='usage-guide-card usage-reveal-target'>
                         <div className='usage-guide-preview usage-guide-preview-start' aria-hidden='true'>
                             <div className='usage-action-showcase'>
                                 <span className='usage-action-icon'>
@@ -117,7 +191,7 @@ export default function UsageSection() {
                             <p>{t.usageStepStartBody}</p>
                         </div>
                     </article>
-                    <article className='usage-guide-card'>
+                    <article className='usage-guide-card usage-reveal-target'>
                         <div className='usage-guide-preview usage-guide-preview-edit' aria-hidden='true'>
                             <div className='usage-edit-showcase'>
                                 <div className='usage-accent-word'>
@@ -136,7 +210,7 @@ export default function UsageSection() {
                             <p>{t.usageStepEditBody}</p>
                         </div>
                     </article>
-                    <article className='usage-guide-card'>
+                    <article className='usage-guide-card usage-reveal-target'>
                         <div className='usage-guide-preview usage-guide-preview-share' aria-hidden='true'>
                             <div className='usage-action-showcase'>
                                 <span className='usage-action-icon'>

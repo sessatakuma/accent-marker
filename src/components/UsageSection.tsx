@@ -1,9 +1,9 @@
 import {
-    ArrowDownToLine,
     Clipboard,
     CodeXml,
     Copy,
     Dices,
+    Keyboard,
     Image as ImageIcon,
 } from 'lucide-react';
 
@@ -34,7 +34,7 @@ export default function UsageSection() {
                                 <span className='kana-shell' data-accent='none'>
                                     <span className='kana-accent-lane'></span>
                                     <span className='kana-text' data-text-visible='true'>
-                                        あ
+                                        は
                                     </span>
                                 </span>
                             </div>
@@ -85,24 +85,16 @@ export default function UsageSection() {
                 <div className='usage-guide' aria-label={t.usageHeading}>
                     <article className='usage-guide-card'>
                         <div className='usage-guide-preview usage-guide-preview-start' aria-hidden='true'>
-                            <div className='input-panel usage-guide-preview-panel'>
-                                <div className='input-section'>
-                                    <div className='input-area usage-guide-input-area'>
-                                        <span className='usage-guide-line usage-guide-line-strong' />
-                                        <span className='usage-guide-line' />
-                                        <span className='usage-guide-line usage-guide-line-short' />
-                                    </div>
-                                    <div className='input-actions'>
-                                        <button className='paste-button usage-guide-preview-button' type='button' tabIndex={-1}>
-                                            <Clipboard size={18} />
-                                        </button>
-                                        <button className='generate-button usage-guide-preview-button' type='button' tabIndex={-1}>
-                                            <span className='generate-button-icon'>
-                                                <Dices size={18} />
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
+                            <div className='usage-action-showcase'>
+                                <span className='usage-action-icon'>
+                                    <Keyboard size={40} />
+                                </span>
+                                <span className='usage-action-icon'>
+                                    <Clipboard size={40} />
+                                </span>
+                                <span className='usage-action-icon'>
+                                    <Dices size={40} />
+                                </span>
                             </div>
                         </div>
                         <div className='usage-guide-copy'>
@@ -112,51 +104,15 @@ export default function UsageSection() {
                     </article>
                     <article className='usage-guide-card'>
                         <div className='usage-guide-preview usage-guide-preview-edit' aria-hidden='true'>
-                            <div className='result-panel usage-guide-preview-panel'>
-                                <div className='result-container-inner usage-guide-preview-result-shell'>
-                                    <div className='result-content usage-guide-preview-result-content'>
-                                        <div className='result-area usage-guide-result-area'>
-                                            <div className='word-reading-row usage-guide-reading-row'>
-                                                {['ふ', 'り', 'が', 'な'].map(kana => (
-                                                    <span key={kana} className='word-reading-cell usage-guide-reading-cell'>
-                                                        <span
-                                                            className='kana-shell'
-                                                            data-accent='flat'
-                                                            data-accent-phase-active='true'
-                                                            data-accent-visible='true'
-                                                        >
-                                                            <span className='kana-accent-lane'>
-                                                                <span className='kana-accent-line'></span>
-                                                            </span>
-                                                            <span className='kana-text' data-text-visible='true'>
-                                                                {kana}
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                ))}
-                                            </div>
-                                            <div className='word-reading-row usage-guide-reading-row usage-guide-accent-row'>
-                                                {['あ', 'く', 'せ', 'ん', 'と'].map((kana, index) => (
-                                                    <span key={kana} className='word-reading-cell usage-guide-reading-cell'>
-                                                        <span
-                                                            className='kana-shell'
-                                                            data-accent={index === 4 ? 'drop' : 'flat'}
-                                                            data-accent-phase-active='true'
-                                                            data-accent-visible='true'
-                                                        >
-                                                            <span className='kana-accent-lane'>
-                                                                <span className='kana-accent-line'></span>
-                                                                {index === 4 ? <span className='kana-accent-drop'></span> : null}
-                                                            </span>
-                                                            <span className='kana-text' data-text-visible='true'>
-                                                                {kana}
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div className='usage-edit-showcase'>
+                                <div className='usage-accent-word'>
+                                    <span className='usage-accent-line'></span>
+                                    <span className='usage-accent-drop'></span>
+                                    <span className='usage-accent-kana'>あ</span>
+                                    <span className='usage-accent-kana'>く</span>
+                                    <span className='usage-accent-kana'>せ</span>
+                                    <span className='usage-accent-kana'>ん</span>
+                                    <span className='usage-accent-kana'>と</span>
                                 </div>
                             </div>
                         </div>
@@ -167,54 +123,16 @@ export default function UsageSection() {
                     </article>
                     <article className='usage-guide-card'>
                         <div className='usage-guide-preview usage-guide-preview-share' aria-hidden='true'>
-                            <div className='result-panel usage-guide-preview-panel'>
-                                <div className='result-container-inner usage-guide-preview-result-shell'>
-                                    <div className='result-content usage-guide-preview-share-spacer'></div>
-                                    <div className='result-actions'>
-                                        <div className='action-group-left'>
-                                            <label className='accent-toggle'>
-                                                <span className='accent-toggle-label'>{t.accentToggle}</span>
-                                                <span className='switch'>
-                                                    <input type='checkbox' checked readOnly />
-                                                    <span className='slider'></span>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        <div className='action-group-right'>
-                                            <div className='copy-action-container'>
-                                                <button className='action-button' type='button' tabIndex={-1}>
-                                                    <Copy size={18} />
-                                                </button>
-                                            </div>
-                                            <div className='save-menu-container'>
-                                                <button
-                                                    className='action-button save-menu-trigger active'
-                                                    type='button'
-                                                    tabIndex={-1}
-                                                >
-                                                <ArrowDownToLine size={18} />
-                                                </button>
-                                                <div className='save-menu-dropdown'>
-                                                    <div className='menu-inline-row'>
-                                                        <button
-                                                            className='menu-item menu-item-inline'
-                                                            type='button'
-                                                            tabIndex={-1}
-                                                        >
-                                                            <ImageIcon size={16} />
-                                                            <span>{t.exportImage}</span>
-                                                        </button>
-                                                    </div>
-                                                    <div className='menu-divider'></div>
-                                                    <button className='menu-item' type='button' tabIndex={-1}>
-                                                        <CodeXml size={16} />
-                                                        <span>{t.exportHtml}</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className='usage-action-showcase'>
+                                <span className='usage-action-icon'>
+                                    <Copy size={40} />
+                                </span>
+                                <span className='usage-action-icon'>
+                                    <ImageIcon size={40} />
+                                </span>
+                                <span className='usage-action-icon'>
+                                    <CodeXml size={40} />
+                                </span>
                             </div>
                         </div>
                         <div className='usage-guide-copy'>

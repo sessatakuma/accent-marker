@@ -53,6 +53,12 @@
     line-height: 1.3;
 }
 
+.usage-pitch-state h4 {
+    min-height: 2.6em;
+    display: flex;
+    align-items: flex-end;
+}
+
 .usage-pitch-copy p {
     max-width: 56rem;
     text-wrap: pretty;
@@ -85,6 +91,10 @@
     font-size: 1.5rem;
 }
 
+.usage-pitch-mark .kana-shell {
+    width: 1.25em;
+}
+
 .usage-guide {
     display: grid;
     gap: 0;
@@ -106,132 +116,77 @@
 }
 
 .usage-guide-preview {
-    display: grid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 192px;
+}
+
+.usage-action-showcase {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-6);
+    width: min(100%, 520px);
+}
+
+.usage-action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 112px;
+    height: 112px;
+    color: var(--color-text-primary);
+}
+
+.usage-action-icon svg {
+    width: 56px;
+    height: 56px;
+}
+
+.usage-edit-showcase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(100%, 560px);
+    min-height: 192px;
+}
+
+.usage-accent-word {
+    --usage-accent-font-size: 3rem;
+    --usage-accent-line-width: calc(100% - var(--usage-accent-font-size) * 0.35);
+    --usage-accent-line-top: 0.2em;
+    --usage-accent-drop-height: 0.78em;
+
+    position: relative;
+    display: flex;
     gap: var(--space-3);
-}
-
-.usage-guide-input-area {
-    display: grid;
-    align-content: start;
-    gap: var(--space-2);
-    min-height: calc(var(--editor-panel-min-height) - var(--editor-action-control-size) - var(--space-5));
-    overflow: hidden;
-}
-
-.usage-guide-preview-panel {
-    min-height: 0;
-    width: 100%;
-    max-width: 720px;
-    aspect-ratio: 16 / 5;
-    overflow: hidden;
-}
-
-.usage-guide-line {
-    height: 12px;
-    border-radius: 999px;
-    background-color: color-mix(in srgb, var(--color-text-secondary) 18%, transparent);
-}
-
-.usage-guide-line-strong {
-    width: 72%;
-    background-color: color-mix(in srgb, var(--color-accent-green) 36%, white);
-}
-
-.usage-guide-line-short {
-    width: 48%;
-}
-
-.usage-guide-result-area {
-    padding: 0;
-    font-size: 1.875rem;
-    line-height: 1.5;
-}
-
-.usage-guide-reading-row {
-    display: flex;
-    gap: var(--space-2);
-    align-items: start;
-}
-
-.usage-guide-reading-cell {
-    min-width: 0;
-}
-
-.usage-guide-preview-result-shell {
-    min-height: 0;
-    padding: var(--space-5);
-}
-
-.usage-guide-preview-result-content {
-    min-height: 100%;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-}
-
-.usage-guide-preview-share-spacer {
-    min-height: calc(100% - 72px);
-}
-
-.usage-guide-preview-start .input-section,
-.usage-guide-preview-share .result-container-inner {
-    min-height: 100%;
-}
-
-.usage-guide-preview-start .input-area {
-    font-size: 1.25rem;
-}
-
-.usage-guide-preview-start .usage-guide-line-strong {
-    width: 80%;
-}
-
-.usage-guide-preview-start .input-actions {
-    padding-bottom: var(--space-4);
-}
-
-.usage-guide-preview-edit .usage-guide-preview-result-content {
+    align-items: flex-start;
     justify-content: center;
+    padding-top: var(--space-5);
+    color: var(--color-text-primary);
+    font-size: var(--usage-accent-font-size);
+    line-height: 1;
 }
 
-.usage-guide-preview-edit .usage-guide-result-area {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
+.usage-accent-line {
+    position: absolute;
+    top: var(--usage-accent-line-top);
+    left: 0;
+    width: var(--usage-accent-line-width);
+    border-top: var(--accent-width) solid var(--accent-color);
 }
 
-.usage-guide-preview-edit .usage-guide-reading-row {
-    width: fit-content;
+.usage-accent-drop {
+    position: absolute;
+    top: var(--usage-accent-line-top);
+    left: var(--usage-accent-line-width);
+    height: var(--usage-accent-drop-height);
+    border-left: var(--accent-width) solid var(--accent-color);
 }
 
-.usage-guide-preview-edit .usage-guide-preview-panel {
-    aspect-ratio: 16 / 6;
-}
-
-.usage-guide-preview-edit .usage-guide-preview-result-shell {
-    padding-inline: var(--space-6);
-}
-
-.usage-guide-preview-edit .result-panel {
-    overflow: hidden;
-}
-
-.usage-guide-accent-row {
-    font-size: 0.84em;
-}
-
-.usage-guide-preview-share .result-actions {
-    margin-top: 0;
-    padding-top: var(--space-4);
-}
-
-.usage-guide-preview-share .usage-guide-preview-panel {
-    aspect-ratio: 16 / 5.25;
-    overflow: visible;
+.usage-accent-kana {
+    display: inline-flex;
 }
 
 .usage-guide-copy {
@@ -247,27 +202,6 @@
 
 .usage-guide-copy p {
     color: var(--color-text-secondary);
-}
-
-.usage-guide-preview .save-menu-dropdown {
-    min-width: 144px;
-}
-
-.usage-guide-preview-share .save-menu-container {
-    position: relative;
-}
-
-.usage-guide-preview-share .save-menu-dropdown {
-    top: auto;
-    right: calc(100% + var(--space-2));
-    bottom: 0;
-    margin-bottom: 0;
-}
-
-.usage-guide-preview-panel button,
-.usage-guide-preview-panel input,
-.usage-guide-preview-panel label {
-    pointer-events: none;
 }
 
 @media (min-width: 1024px) {
@@ -310,14 +244,6 @@
         min-height: 320px;
     }
 
-    .usage-guide-card:nth-child(odd) .usage-guide-preview-panel {
-        justify-self: start;
-    }
-
-    .usage-guide-card:nth-child(even) .usage-guide-preview-panel {
-        justify-self: end;
-    }
-
     .usage-guide-card:nth-child(even) .usage-guide-preview {
         order: 2;
     }
@@ -336,16 +262,21 @@
         padding: var(--space-6) 0;
     }
 
-    .usage-guide-preview-panel {
-        aspect-ratio: 16 / 8;
-        max-width: 100%;
+    .usage-action-showcase {
+        gap: var(--space-4);
     }
 
-    .usage-guide-result-area {
-        font-size: 1.5rem;
+    .usage-action-icon {
+        width: 80px;
+        height: 80px;
     }
 
-    .usage-guide-preview-edit .usage-guide-result-area {
-        font-size: 2rem;
+    .usage-action-icon svg {
+        width: 40px;
+        height: 40px;
+    }
+
+    .usage-accent-word {
+        --usage-accent-font-size: 2.25rem;
     }
 }

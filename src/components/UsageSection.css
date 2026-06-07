@@ -36,6 +36,14 @@
     display: inline;
 }
 
+.usage-heading-primary {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-accent-green);
+    text-decoration-thickness: var(--space-1);
+    text-underline-offset: var(--space-1);
+}
+
 .usage-section p,
 .usage-section li {
     font-size: var(--usage-font-size-body);

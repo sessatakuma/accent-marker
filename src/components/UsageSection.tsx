@@ -13,6 +13,25 @@ import './UsageSection.css';
 
 import { useI18n } from '../i18n';
 
+function renderHeadingSegment(segment: string) {
+    const emphasisMatch = /(更自然|更清楚)/.exec(segment);
+
+    if (!emphasisMatch) {
+        return segment;
+    }
+
+    const [emphasis] = emphasisMatch;
+    const emphasisIndex = emphasisMatch.index;
+
+    return (
+        <>
+            {segment.slice(0, emphasisIndex)}
+            <span className='usage-heading-primary'>{emphasis}</span>
+            {segment.slice(emphasisIndex + emphasis.length)}
+        </>
+    );
+}
+
 function renderUsageHeading(heading: string) {
     const splitIndex = heading.indexOf('、');
 
@@ -22,8 +41,12 @@ function renderUsageHeading(heading: string) {
 
     return (
         <>
-            <span className='usage-heading-segment'>{heading.slice(0, splitIndex + 1)}</span>
-            <span className='usage-heading-segment'>{heading.slice(splitIndex + 1)}</span>
+            <span className='usage-heading-segment'>
+                {renderHeadingSegment(heading.slice(0, splitIndex + 1))}
+            </span>
+            <span className='usage-heading-segment'>
+                {renderHeadingSegment(heading.slice(splitIndex + 1))}
+            </span>
         </>
     );
 }

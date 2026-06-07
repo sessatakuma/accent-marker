@@ -180,7 +180,7 @@
 
 .usage-accent-word {
     --usage-accent-font-size: var(--usage-font-size-showcase);
-    --usage-accent-line-width: calc(100% - var(--usage-accent-font-size) * 0.35);
+    --usage-accent-line-width: calc(100% + var(--space-2));
     --usage-accent-line-thickness: calc(var(--accent-width) * 2);
     --usage-accent-line-top: 0;
     --usage-accent-drop-height: 0.88em;

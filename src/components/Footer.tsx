@@ -96,38 +96,38 @@ export default function Footer() {
                             aria-hidden='true'
                         />
                     </a>
-                    <section className='site-footer-about' aria-label={t.faviconAltBrand}>
-                        <p>{t.footerWhatBody}</p>
-                    </section>
+                    <nav className='site-footer-social' aria-labelledby='footer-social-heading'>
+                        <h2 id='footer-social-heading'>{t.footerSocialHeading}</h2>
+                        <div className='site-footer-social-links'>
+                            {socialLinks.map(link =>
+                                link.pending ? (
+                                    <button
+                                        key={link.label}
+                                        className='site-footer-social-link'
+                                        type='button'
+                                        aria-label={link.label}
+                                        onClick={showPendingAccountDialog}
+                                    >
+                                        {link.icon}
+                                    </button>
+                                ) : (
+                                    <a
+                                        key={link.label}
+                                        className='site-footer-social-link'
+                                        href={link.href}
+                                        aria-label={link.label}
+                                    >
+                                        {link.icon}
+                                    </a>
+                                ),
+                            )}
+                        </div>
+                    </nav>
                 </div>
 
-                <nav className='site-footer-social' aria-labelledby='footer-social-heading'>
-                    <h2 id='footer-social-heading'>{t.footerSocialHeading}</h2>
-                    <div className='site-footer-social-links'>
-                        {socialLinks.map(link =>
-                            link.pending ? (
-                                <button
-                                    key={link.label}
-                                    className='site-footer-social-link'
-                                    type='button'
-                                    aria-label={link.label}
-                                    onClick={showPendingAccountDialog}
-                                >
-                                    {link.icon}
-                                </button>
-                            ) : (
-                                <a
-                                    key={link.label}
-                                    className='site-footer-social-link'
-                                    href={link.href}
-                                    aria-label={link.label}
-                                >
-                                    {link.icon}
-                                </a>
-                            ),
-                        )}
-                    </div>
-                </nav>
+                <section className='site-footer-about' aria-label={t.faviconAltBrand}>
+                    <p>{t.footerWhatBody}</p>
+                </section>
             </div>
             <p className='site-footer-wordmark' aria-label='Sessatakuma'>
                 Sessatakuma

@@ -74,15 +74,15 @@
     width: var(--space-7);
     height: var(--space-7);
     color: var(--color-text-inverted);
-    border: 1px solid color-mix(in srgb, var(--color-text-inverted) 36%, transparent);
+    border: 0;
     border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--color-text-inverted) 10%, transparent);
+    background: transparent;
     font: inherit;
 }
 
 .site-footer-social-link:hover {
     opacity: 1;
-    background: color-mix(in srgb, var(--color-text-inverted) 18%, transparent);
+    background: color-mix(in srgb, var(--color-text-inverted) 12%, transparent);
 }
 
 .site-footer-social-link:focus-visible {

@@ -53,6 +53,7 @@
 
     --duration-interaction-fast: 200ms;
     --duration-overlay-dot-wave: 900ms;
+    --stroke-width-thin: 0.125rem;
 }
 
 * {

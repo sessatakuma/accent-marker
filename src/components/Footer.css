@@ -1,6 +1,6 @@
 .site-footer {
     overflow: hidden;
-    padding: calc(var(--space-7) * 2) 0 0;
+    padding: var(--space-7) 0 0;
     background: var(--color-accent-green);
     color: var(--color-text-inverted);
 }
@@ -50,14 +50,18 @@
 }
 
 .site-footer-social {
+    --footer-social-glyph-offset: calc((var(--space-7) - var(--space-5)) / 2);
+
     display: grid;
-    gap: var(--space-4);
+    gap: 0;
 }
 
 .site-footer-social-links {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: var(--space-3);
+    line-height: 0;
 }
 
 .site-footer-social-link {
@@ -86,7 +90,8 @@
 .site-footer-email-link {
     justify-self: end;
     width: fit-content;
-    max-width: 100%;
+    max-width: calc(100% - var(--footer-social-glyph-offset));
+    margin-inline-end: var(--footer-social-glyph-offset);
     color: var(--color-text-inverted);
     font-size: 1rem;
     font-weight: 400;
@@ -95,8 +100,8 @@
     text-align: right;
     background-image: linear-gradient(currentColor, currentColor);
     background-repeat: no-repeat;
-    background-position: 0 100%;
-    background-size: 0 var(--space-1);
+    background-position: 100% 100%;
+    background-size: 0 var(--stroke-width-thin);
     transition:
         background-size var(--duration-interaction-fast) ease,
         opacity var(--duration-interaction-fast) ease;
@@ -104,7 +109,7 @@
 
 .site-footer-email-link:hover {
     font-weight: 400;
-    background-size: 100% var(--space-1);
+    background-size: 100% var(--stroke-width-thin);
 }
 
 .site-footer-email-link:focus-visible {

@@ -323,7 +323,7 @@ export const translations: Record<Locale, TranslationSet> = {
         usagePitchFlatTitle: '高音不下降',
         usagePitchHeading: '為什麼需要音調線',
         usagePitchIntro:
-            '日語音調不僅影響發音自然度，更會影響詞彙的含義。掌握音調，讓你不再詢問店員「不好意思，店裡有橋嗎？」',
+            '日語音調不僅影響發音自然度，更會影響詞彙的含義。\n掌握音調，讓你不再詢問店員「不好意思，店裡有橋嗎？」',
         usagePitchNoneBody:
             '像 の、で、は 這類助詞，本身不帶高音標記，會接續前詞音高。',
         usagePitchNoneTitle: '低音/接續前音',
@@ -332,18 +332,18 @@ export const translations: Record<Locale, TranslationSet> = {
         usageStepAccentHint: '點線 / 上下方向鍵',
         usageStepAccentTitle: '調整音調',
         usageStepEditBody:
-            '點擊振假名或音調以進行編輯，音調會在三種模式循環切換、支援上下方向鍵。',
-        usageStepEditTitle: '校對讀音與音調',
+            '點擊振假名或音調以編輯，音調會在三種模式循環切換、支援上下方向鍵。',
+        usageStepEditTitle: '確認讀音與音調',
         usageStepFuriganaBody:
             '直接點振假名文字就能編輯。用左右方向鍵可在不同讀音格之間移動，方便逐格校對。',
         usageStepFuriganaHint: '輸入假名 / 左右方向鍵',
         usageStepFuriganaTitle: '修改振假名',
         usageStepShareBody:
-            '文字適合筆記或備忘稿，圖片適合分享或製作文件，HTML 可以 Markdown 等形式進一步運用。',
+            '文字適合筆記或備忘稿，圖片適合分享或製作文件，HTML 輸出可以 Markdown 等形式進一步運用。',
         usageStepShareHint: '複製 / 圖片 / HTML',
         usageStepShareTitle: '依用途儲存',
         usageStepStartBody:
-            '輸入日語或插入隨機範文，開始進行讀音與音調分析。',
+            '輸入詞句、貼上文章或插入隨機範文，系統會開始進行讀音與音調分析。',
         usageStepStartHint: '貼上 / 隨機範文',
         usageStepStartTitle: '開始分析',
         usageStepOne: '貼上日語文字，或先插入隨機範文開始新的分析。',

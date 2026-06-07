@@ -129,15 +129,13 @@ export default function UsageSection() {
                 <div className='usage-section-grid usage-reveal-target'>
                     <div className='usage-section-copy'>
                         <h2 id='usage-heading'>{renderUsageHeading(t.usageHeading)}</h2>
-                        <p>{t.usageIntro}</p>
                     </div>
                 </div>
                 <div
                     className='usage-pitch-primer usage-reveal-target'
-                    aria-labelledby='usage-pitch-heading'
+                    aria-label={t.usagePitchHeading}
                 >
                     <div className='usage-pitch-copy'>
-                        <h3 id='usage-pitch-heading'>{t.usagePitchHeading}</h3>
                         <p>{t.usagePitchIntro}</p>
                     </div>
                     <div className='usage-pitch-states'>

@@ -52,11 +52,6 @@
     line-height: 1.75;
 }
 
-.usage-section-copy p {
-    max-width: 56rem;
-    text-wrap: pretty;
-}
-
 .usage-pitch-primer {
     display: grid;
     gap: var(--space-6);

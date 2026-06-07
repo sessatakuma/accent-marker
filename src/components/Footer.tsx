@@ -96,8 +96,7 @@ export default function Footer() {
                             aria-hidden='true'
                         />
                     </a>
-                    <nav className='site-footer-social' aria-labelledby='footer-social-heading'>
-                        <h2 id='footer-social-heading'>{t.footerSocialHeading}</h2>
+                    <nav className='site-footer-social' aria-label={t.footerSocialHeading}>
                         <div className='site-footer-social-links'>
                             {socialLinks.map(link =>
                                 link.pending ? (

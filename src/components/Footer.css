@@ -54,13 +54,6 @@
     gap: var(--space-4);
 }
 
-.site-footer-social h2 {
-    color: var(--color-text-inverted);
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.25;
-}
-
 .site-footer-social-links {
     display: flex;
     flex-wrap: wrap;
@@ -147,8 +140,17 @@
 @media (max-width: 767px) {
     .site-footer-top {
         display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
         gap: var(--space-7);
         align-items: start;
+    }
+
+    .site-footer-social {
+        justify-self: end;
+    }
+
+    .site-footer-social-links {
+        justify-content: flex-end;
     }
 
     .site-footer-wordmark {

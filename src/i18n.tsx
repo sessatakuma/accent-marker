@@ -17,7 +17,7 @@ interface I18nContextValue {
     t: TranslationSet;
 }
 
-const STORAGE_KEY = 'accent-marker-locale';
+const STORAGE_KEY = 'akuma-locale';
 
 const I18nContext = createContext<I18nContextValue | null>(null);
 

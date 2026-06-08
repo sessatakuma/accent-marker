@@ -1,5 +1,5 @@
 const markdownExportStyles = `
-.accent-marker {
+.akuma {
     --accent-color: #cc3344;
     --accent-width: 2px;
     --kana-ruby-font-scale: 0.6;
@@ -20,32 +20,32 @@ const markdownExportStyles = `
     color: #1f2937;
 }
 
-.accent-marker .word-stack,
-.accent-marker .word-group {
+.akuma .word-stack,
+.akuma .word-group {
     display: inline-grid;
     grid-template-rows: var(--result-reading-track-height) auto;
     vertical-align: top;
     justify-items: stretch;
 }
 
-.accent-marker .word-inline-cluster {
+.akuma .word-inline-cluster {
     display: inline-flex;
     align-items: flex-start;
     vertical-align: top;
 }
 
-.accent-marker .word-group-kana {
+.akuma .word-group-kana {
     align-items: stretch;
 }
 
-.accent-marker .word-reading-row,
-.accent-marker .word-base-row {
+.akuma .word-reading-row,
+.akuma .word-base-row {
     display: flex;
     width: 100%;
     justify-content: flex-start;
 }
 
-.accent-marker .word-reading-row {
+.akuma .word-reading-row {
     min-height: var(--result-reading-track-height);
     font-size: var(--result-ruby-font-size);
     line-height: var(--result-ruby-line-height);
@@ -54,42 +54,42 @@ const markdownExportStyles = `
     white-space: nowrap;
 }
 
-.accent-marker .word-reading-row-empty {
+.akuma .word-reading-row-empty {
     color: transparent;
 }
 
-.accent-marker .word-base-row {
+.akuma .word-base-row {
     line-height: 1;
     white-space: nowrap;
 }
 
-.accent-marker .word-reading-cell,
-.accent-marker .word-base-cell {
+.akuma .word-reading-cell,
+.akuma .word-base-cell {
     display: inline-flex;
     justify-content: center;
     align-items: flex-end;
     flex: none;
 }
 
-.accent-marker .word-base-cell[style] {
+.akuma .word-base-cell[style] {
     width: 100%;
 }
 
-.accent-marker .word-base-cell-plain {
+.akuma .word-base-cell-plain {
     justify-content: flex-start;
 }
 
-.accent-marker .furigana-group {
+.akuma .furigana-group {
     display: flex;
     width: 100%;
     white-space: nowrap;
 }
 
-.accent-marker .word-reading-cell {
+.akuma .word-reading-cell {
     text-align: center;
 }
 
-.accent-marker .word-reading-cell > .kana-shell {
+.akuma .word-reading-cell > .kana-shell {
     min-width: 0;
     width: 100%;
     display: inline-grid;
@@ -98,36 +98,36 @@ const markdownExportStyles = `
     row-gap: var(--result-kana-shell-gap);
 }
 
-.accent-marker .word-reading-cell > .kana-shell > .kana-text,
-.accent-marker .word-reading-cell > .kana-shell > .kana-accent-lane {
+.akuma .word-reading-cell > .kana-shell > .kana-text,
+.akuma .word-reading-cell > .kana-shell > .kana-accent-lane {
     display: block;
     width: 100%;
 }
 
-.accent-marker .kana-shell {
+.akuma .kana-shell {
     position: relative;
     align-items: start;
 }
 
-.accent-marker .kana-accent-lane {
+.akuma .kana-accent-lane {
     position: relative;
     height: var(--kana-accent-lane-height);
     opacity: 0;
     visibility: hidden;
 }
 
-.accent-marker .kana-text {
+.akuma .kana-text {
     text-align: center;
     white-space: nowrap;
 }
 
-.accent-marker .kana-shell[data-accent-phase-active='true'][data-accent-visible='true'] > .kana-accent-lane {
+.akuma .kana-shell[data-accent-phase-active='true'][data-accent-visible='true'] > .kana-accent-lane {
     opacity: 1;
     visibility: visible;
 }
 
-.accent-marker .kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='flat'] > .kana-accent-lane::before,
-.accent-marker .kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='drop'] > .kana-accent-lane::before {
+.akuma .kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='flat'] > .kana-accent-lane::before,
+.akuma .kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='drop'] > .kana-accent-lane::before {
     content: '';
     position: absolute;
     inset-inline: 0;
@@ -135,7 +135,7 @@ const markdownExportStyles = `
     border-top: var(--accent-width) solid var(--accent-color);
 }
 
-.accent-marker .kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='drop'] > .kana-accent-lane::after {
+.akuma .kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='drop'] > .kana-accent-lane::after {
     content: '';
     position: absolute;
     right: 0;

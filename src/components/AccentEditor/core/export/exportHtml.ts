@@ -164,7 +164,7 @@ export function buildHtmlExport(words: Word[], showAccent: boolean, options: Htm
         '</head>',
         '<body>',
         '  <main>',
-        `    <article class="accent-marker" aria-label="${escapeHtml(options.ariaLabel)}">`,
+        `    <article class="akuma" aria-label="${escapeHtml(options.ariaLabel)}">`,
         content,
         '    </article>',
         '  </main>',

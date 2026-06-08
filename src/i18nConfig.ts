@@ -1,7 +1,7 @@
 export type Locale = 'en' | 'ja' | 'zh';
 
 export interface TranslationSet {
-    accentMarkerLabel: string;
+    brandLabel: string;
     accentResultLabel: string;
     accentToggle: string;
     temporaryIssuesBody: string;
@@ -88,7 +88,7 @@ export const DEFAULT_LOCALE: Locale = 'en';
 
 export const translations: Record<Locale, TranslationSet> = {
     en: {
-        accentMarkerLabel: 'Accent Marker',
+        brandLabel: 'AkuMa',
         accentResultLabel: 'Pitch accent analysis result',
         accentToggle: 'Accent',
         temporaryIssuesBody:
@@ -121,9 +121,9 @@ export const translations: Record<Locale, TranslationSet> = {
             'Sessatakuma is developing tools for Japanese learning and planning a Japanese speaking practice community. By sharing the complete practice system our team members built in the past, along with tools designed for that system, we want to help learners make speaking practice more efficient and steadily build the confidence to speak Japanese.',
         faviconAltBrand: 'Sessatakuma',
         furiganaInputWarning: 'Only kana can be entered for furigana',
-        heading: 'Accent Marker | Japanese Pitch Accent & Furigana Tool',
+        heading: 'AkuMa | Japanese Pitch Accent & Furigana Tool',
         htmlExportAriaLabel: 'Accent-marked text export',
-        htmlExportTitle: 'Accent Marker Export',
+        htmlExportTitle: 'AkuMa Export',
         inputAriaLabel: 'Japanese text to analyze',
         inputDescription:
             'Analysis results appear in the panel on the right. While editing, you can change pitch accent and edit furigana directly.',
@@ -144,13 +144,13 @@ export const translations: Record<Locale, TranslationSet> = {
         statusAnalyzing: 'Analyzing',
         statusUpdated: count => `Analysis updated. Displaying ${count} words.`,
         switchAccent: 'Toggle accent',
-        title: 'Accent Marker | Japanese Pitch Accent & Furigana Tool',
+        title: 'AkuMa | Japanese Pitch Accent & Furigana Tool',
         toggleImageTheme: isDarkResult =>
             `Switch image theme to ${isDarkResult ? 'light' : 'dark'}`,
         usageEyebrow: 'Usage',
         usageHeading: 'Make Japanese pronunciation natural and clear',
         usageIntro:
-            'Accent Marker turns Japanese text into pronunciation material you can review, check, and share.',
+            'AkuMa turns Japanese text into pronunciation material you can review, check, and share.',
         usagePitchFallBody:
             'Following words or attached particles shift to low pitch.',
         usagePitchFallTitle: 'High, then fall',
@@ -189,7 +189,7 @@ export const translations: Record<Locale, TranslationSet> = {
             'Review the generated reading, then click furigana or accent lines to correct details directly in the result panel.',
     },
     ja: {
-        accentMarkerLabel: 'アクセントマーカー',
+        brandLabel: 'AkuMa',
         accentResultLabel: 'アクセント解析結果',
         accentToggle: 'アクセント',
         temporaryIssuesBody:
@@ -221,9 +221,9 @@ export const translations: Record<Locale, TranslationSet> = {
             'Sessatakuma は日本語学習に関するツールを開発しながら、日本語の会話練習コミュニティの立ち上げを計画しています。チームメンバーが以前に築いた練習体系と、そのために開発した各種ツールを提供することで、学習者が会話練習の効率を高め、日本語を話す自信を着実に積み重ねられるよう支援します。',
         faviconAltBrand: 'Sessatakuma',
         furiganaInputWarning: 'ふりがなにはかなのみ入力できます',
-        heading: '日本語アクセントマーカー',
+        heading: 'AkuMa | 日本語アクセント・ふりがなツール',
         htmlExportAriaLabel: 'アクセント付きテキスト書き出し',
-        htmlExportTitle: 'Accent Marker Export',
+        htmlExportTitle: 'AkuMa Export',
         inputAriaLabel: '解析する日本語テキスト',
         inputDescription:
             '解析結果は右側の結果領域に表示されます。編集中はアクセントを切り替えたり、ふりがなを直接修正できます。',
@@ -244,13 +244,13 @@ export const translations: Record<Locale, TranslationSet> = {
         statusAnalyzing: '分析中',
         statusUpdated: count => `解析結果を更新しました。${count}件の語を表示しています。`,
         switchAccent: 'アクセントを切り替え',
-        title: 'Accent Marker | Japanese Pitch Accent & Furigana Tool',
+        title: 'AkuMa | Japanese Pitch Accent & Furigana Tool',
         toggleImageTheme: isDarkResult =>
             `画像テーマを${isDarkResult ? 'ライト' : 'ダーク'}に切り替え`,
         usageEyebrow: '使い方',
         usageHeading: '日本語の発音を自然に、意味を明確に',
         usageIntro:
-            'Accent Marker は日本語テキストを、復習・確認・共有しやすい発音素材に整えます。',
+            'AkuMa は日本語テキストを、復習・確認・共有しやすい発音素材に整えます。',
         usagePitchFallBody:
             '後ろに続く語や助詞は低くなります。',
         usagePitchFallTitle: '高く、あとで下がる',
@@ -289,7 +289,7 @@ export const translations: Record<Locale, TranslationSet> = {
             '生成された読みとアクセントを確認し、必要な箇所は結果パネル上で直接修正します。',
     },
     zh: {
-        accentMarkerLabel: 'Accent Marker',
+        brandLabel: 'AkuMa',
         accentResultLabel: '音調分析結果',
         accentToggle: '音調',
         temporaryIssuesBody:
@@ -321,9 +321,9 @@ export const translations: Record<Locale, TranslationSet> = {
             'Sessatakuma 正在開發日語學習相關工具，也正計劃創立一個日文口說練習社群，透過提供團隊成員過去建立的完整練習體系與為其開發出的各式工具，幫助學習者提升口說練習效率、有效累積開口說日語的信心。',
         faviconAltBrand: 'Sessatakuma',
         furiganaInputWarning: '振假名只能輸入假名',
-        heading: 'Accent Marker | 日語音調與振假名工具',
+        heading: 'AkuMa | 日語音調與振假名工具',
         htmlExportAriaLabel: '音調標註文字匯出',
-        htmlExportTitle: 'Accent Marker Export',
+        htmlExportTitle: 'AkuMa Export',
         inputAriaLabel: '要分析的日語文字',
         inputDescription:
             '分析結果會顯示在右側結果區域。編輯時可以切換音調，也可以直接修改振假名。',
@@ -344,13 +344,13 @@ export const translations: Record<Locale, TranslationSet> = {
         statusAnalyzing: '分析中',
         statusUpdated: count => `分析結果已更新，目前顯示 ${count} 個詞語。`,
         switchAccent: '切換音調',
-        title: 'Accent Marker | Japanese Pitch Accent & Furigana Tool',
+        title: 'AkuMa | Japanese Pitch Accent & Furigana Tool',
         toggleImageTheme: isDarkResult =>
             `將圖片主題切換為${isDarkResult ? '淺色' : '深色'}`,
         usageEyebrow: '使用方式',
         usageHeading: '讓日語發音更自然、意思更清楚',
         usageIntro:
-            'Accent Marker 將日語文字整理成可複習、可校對、可分享的發音素材。',
+            'AkuMa 將日語文字整理成可複習、可校對、可分享的發音素材。',
         usagePitchFallBody: '後段詞語或接續的助詞會轉為低音。',
         usagePitchFallTitle: '高音後下降',
         usagePitchFlatBody:

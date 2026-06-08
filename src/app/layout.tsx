@@ -16,7 +16,7 @@ import '../index.css';
 
 const description =
     'Paste Japanese text to add furigana and pitch-accent markings automatically, then edit and export the result.';
-const title = 'Accent Marker | Japanese Pitch Accent & Furigana Tool';
+const title = 'AkuMa | Japanese Pitch Accent & Furigana Tool';
 
 const notoSansJp = Noto_Sans_JP({
     display: 'swap',
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
     metadataBase: new URL(SITE_URL),
     title,
     description,
-    applicationName: 'Accent Marker',
+    applicationName: 'AkuMa',
     appleWebApp: {
-        title: 'Accent Marker',
+        title: 'AkuMa',
     },
     alternates: {
         canonical: '/',
@@ -56,11 +56,11 @@ export const metadata: Metadata = {
         images: [
             {
                 url: '/images/logo.png',
-                alt: 'Accent Marker logo for the Japanese pitch accent and furigana tool',
+                alt: 'AkuMa logo for the Japanese pitch accent and furigana tool',
             },
         ],
         locale: 'en_US',
-        siteName: 'Accent Marker',
+        siteName: 'AkuMa',
         type: 'website',
         url: SITE_URL,
     },
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
         images: [
             {
                 url: '/images/logo.png',
-                alt: 'Accent Marker logo for the Japanese pitch accent and furigana tool',
+                alt: 'AkuMa logo for the Japanese pitch accent and furigana tool',
             },
         ],
         site: '@sessatakuma',

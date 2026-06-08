@@ -6,8 +6,8 @@ import {
     type Locale,
 } from '../i18nConfig';
 
-export const SITE_URL = 'https://accent-marker.sessatakuma.dev/';
-export const LOCALE_HEADER = 'x-accent-marker-locale';
+export const SITE_URL = 'https://akuma.sessatakuma.dev/';
+export const LOCALE_HEADER = 'x-akuma-locale';
 
 export function resolveLocaleFromSearchParams(
     searchParams: Record<string, string | string[] | undefined>,
@@ -53,7 +53,7 @@ export function buildStructuredData(locale: Locale) {
     return {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        name: 'Accent Marker',
+        name: 'AkuMa',
         url: new URL(metadata.canonical, SITE_URL).toString(),
         applicationCategory: 'EducationalApplication',
         operatingSystem: 'Any',

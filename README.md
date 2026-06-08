@@ -1,8 +1,8 @@
-# Accent Marker
+# AkuMa
 
 A web tool for automatic Japanese furigana and accent markings to plain text, to help Japanese learners to improve their speaking and reading skills.
 
-<img src="docs/images/demo.png" alt="Accent Marker demo" />
+<img src="docs/images/demo.png" alt="AkuMa demo" />
 
 ## What It Does
 

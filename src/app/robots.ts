@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             userAgent: '*',
         },
-        sitemap: 'https://accent-marker.sessatakuma.dev/sitemap.xml',
+        sitemap: 'https://akuma.sessatakuma.dev/sitemap.xml',
     };
 }

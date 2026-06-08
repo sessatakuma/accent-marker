@@ -1,17 +1,12 @@
 import { useEffect, useRef } from 'react';
 
-import {
-    Clipboard,
-    CodeXml,
-    Copy,
-    Dices,
-    Keyboard,
-    Image as ImageIcon,
-} from 'lucide-react';
-
-import './UsageSection.css';
+import { Clipboard, CodeXml, Copy, Dices, Keyboard, Image as ImageIcon } from 'lucide-react';
 
 import { useI18n } from '../i18n';
+
+import UsageAccentDemo from './UsageAccentDemo';
+
+import './UsageSection.css';
 
 function renderHeadingSegment(segment: string) {
     const emphasisMatch = /(更自然|更清楚)/.exec(segment);
@@ -68,7 +63,10 @@ export default function UsageSection() {
             return;
         }
 
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+        if (
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+            !('IntersectionObserver' in window)
+        ) {
             targets.forEach(target => target.classList.add('is-visible'));
             return;
         }
@@ -95,7 +93,8 @@ export default function UsageSection() {
         const observer = new IntersectionObserver(
             entries => {
                 entries.forEach(entry => {
-                    const hasReachedViewport = entry.isIntersecting || entry.boundingClientRect.top < window.innerHeight;
+                    const hasReachedViewport =
+                        entry.isIntersecting || entry.boundingClientRect.top < window.innerHeight;
 
                     if (!hasReachedViewport) {
                         return;
@@ -194,7 +193,10 @@ export default function UsageSection() {
                 </div>
                 <div id='usage-guide' className='usage-guide' aria-label={t.usageHeading}>
                     <article className='usage-guide-card usage-reveal-target'>
-                        <div className='usage-guide-preview usage-guide-preview-start' aria-hidden='true'>
+                        <div
+                            className='usage-guide-preview usage-guide-preview-start'
+                            aria-hidden='true'
+                        >
                             <div className='usage-action-showcase'>
                                 <span className='usage-action-icon'>
                                     <Keyboard size={40} />
@@ -213,18 +215,11 @@ export default function UsageSection() {
                         </div>
                     </article>
                     <article className='usage-guide-card usage-reveal-target'>
-                        <div className='usage-guide-preview usage-guide-preview-edit' aria-hidden='true'>
-                            <div className='usage-edit-showcase'>
-                                <div className='usage-accent-word'>
-                                    <span className='usage-accent-line'></span>
-                                    <span className='usage-accent-drop'></span>
-                                    <span className='usage-accent-kana'>あ</span>
-                                    <span className='usage-accent-kana'>く</span>
-                                    <span className='usage-accent-kana'>せ</span>
-                                    <span className='usage-accent-kana'>ん</span>
-                                    <span className='usage-accent-kana'>と</span>
-                                </div>
-                            </div>
+                        <div
+                            className='usage-guide-preview usage-guide-preview-edit'
+                            aria-hidden='true'
+                        >
+                            <UsageAccentDemo />
                         </div>
                         <div className='usage-guide-copy'>
                             <h3>{t.usageStepEditTitle}</h3>
@@ -232,7 +227,10 @@ export default function UsageSection() {
                         </div>
                     </article>
                     <article className='usage-guide-card usage-reveal-target'>
-                        <div className='usage-guide-preview usage-guide-preview-share' aria-hidden='true'>
+                        <div
+                            className='usage-guide-preview usage-guide-preview-share'
+                            aria-hidden='true'
+                        >
                             <div className='usage-action-showcase'>
                                 <span className='usage-action-icon'>
                                     <Copy size={40} />

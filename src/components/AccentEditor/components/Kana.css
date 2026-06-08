@@ -111,9 +111,15 @@ ruby > rt {
     background-color: var(--kana-edit-focus-bg);
 }
 
-.kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='flat'] > .kana-accent-lane > .kana-accent-line,
-.kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='drop'] > .kana-accent-lane > .kana-accent-line,
-.kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='drop'] > .kana-accent-lane > .kana-accent-drop {
+.kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='flat']
+    > .kana-accent-lane
+    > .kana-accent-line,
+.kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='drop']
+    > .kana-accent-lane
+    > .kana-accent-line,
+.kana-shell[data-accent-phase-active='true'][data-accent-visible='true'][data-accent='drop']
+    > .kana-accent-lane
+    > .kana-accent-drop {
     opacity: 1;
     visibility: visible;
 }

@@ -9,7 +9,7 @@ export default function Nav() {
 
     return (
         <header className='nav'>
-            <div className='nav-brand' aria-label={t.faviconAltBrand}>
+            <div className='nav-brand' aria-label={t.brandLabel}>
                 <a className='nav-title' href='#main-content'>
                     <img
                         className='logo'
@@ -21,7 +21,7 @@ export default function Nav() {
                         alt=''
                         aria-hidden='true'
                     />
-                    <span className='title'>{t.faviconAltBrand}</span>
+                    <span className='title'>{t.brandLabel}</span>
                 </a>
             </div>
             <a

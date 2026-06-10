@@ -68,6 +68,17 @@ export default function ResultActions({
             </div>
 
             <div className='action-group-right' aria-label={t.saveAndCopy}>
+                <button
+                    className='action-button'
+                    onClick={onRequestRestoreAll}
+                    title={t.restoreAllEdits}
+                    aria-label={t.restoreAllEdits}
+                    type='button'
+                    disabled={!canRestore}
+                >
+                    <RotateCcw size={18} />
+                </button>
+
                 <div className='copy-action-container'>
                     {copyFeedback && (
                         <div
@@ -88,17 +99,6 @@ export default function ResultActions({
                         <Copy size={18} />
                     </button>
                 </div>
-
-                <button
-                    className='action-button'
-                    onClick={onRequestRestoreAll}
-                    title={t.restoreAllEdits}
-                    aria-label={t.restoreAllEdits}
-                    type='button'
-                    disabled={!canRestore}
-                >
-                    <RotateCcw size={18} />
-                </button>
 
                 <div className='save-menu-container'>
                     <button

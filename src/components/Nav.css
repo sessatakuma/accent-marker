@@ -3,7 +3,7 @@
     height: var(--nav-height);
     display: flex;
     align-items: center;
-    padding: 0 2rem;
+    padding: 0 var(--space-8);
     background-color: var(--color-accent-green);
     border-bottom: 1px solid var(--color-border);
     position: sticky;
@@ -20,7 +20,7 @@
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-2);
     transition: opacity 0.2s;
 }
 
@@ -42,20 +42,25 @@
 }
 
 .nav-guide-button {
-    --nav-guide-button-size: calc(var(--space-6) + var(--space-2));
-
-    width: var(--nav-guide-button-size);
-    height: var(--nav-guide-button-size);
+    min-height: calc(var(--space-6) + var(--space-2));
     margin-left: auto;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-3);
     flex-shrink: 0;
     border-radius: var(--radius-md);
     color: var(--color-text-inverted);
     transition:
         background-color var(--duration-interaction-fast) ease,
         opacity var(--duration-interaction-fast) ease;
+}
+
+.nav-guide-button-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
 }
 
 .nav-guide-button:hover {
@@ -66,4 +71,10 @@
 .nav-guide-button:focus-visible {
     outline: var(--stroke-width-thin) solid var(--color-text-inverted);
     outline-offset: var(--space-1);
+}
+
+@media (max-width: 767px) {
+    .nav {
+        padding: 0 var(--space-4);
+    }
 }

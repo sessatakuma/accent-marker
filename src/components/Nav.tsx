@@ -1,6 +1,6 @@
 import './Nav.css';
 
-import { CircleQuestionMark } from 'lucide-react';
+import { BookOpenText } from 'lucide-react';
 
 import { useI18n } from '../i18n';
 
@@ -30,7 +30,8 @@ export default function Nav() {
                 title={t.usageEyebrow}
                 aria-label={`${t.usageEyebrow}: ${t.usageHeading}`}
             >
-                <CircleQuestionMark size={20} aria-hidden='true' />
+                <BookOpenText size={20} aria-hidden='true' />
+                <span className='nav-guide-button-label'>{t.usageEyebrow}</span>
             </a>
         </header>
     );

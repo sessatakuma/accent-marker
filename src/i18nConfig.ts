@@ -55,6 +55,7 @@ export interface TranslationSet {
     toggleImageTheme: (isDarkResult: boolean) => string;
     pasteFromClipboard: string;
     usageEyebrow: string;
+    usageGuideButton: string;
     usageHeading: string;
     usageIntro: string;
     usagePitchFallBody: string;
@@ -148,6 +149,7 @@ export const translations: Record<Locale, TranslationSet> = {
         toggleImageTheme: isDarkResult =>
             `Switch image theme to ${isDarkResult ? 'light' : 'dark'}`,
         usageEyebrow: 'Usage',
+        usageGuideButton: 'Guide',
         usageHeading: 'Make Japanese pronunciation natural and clear',
         usageIntro:
             'AkuMa turns Japanese text into pronunciation material you can review, check, and share.',
@@ -248,6 +250,7 @@ export const translations: Record<Locale, TranslationSet> = {
         toggleImageTheme: isDarkResult =>
             `画像テーマを${isDarkResult ? 'ライト' : 'ダーク'}に切り替え`,
         usageEyebrow: '使い方',
+        usageGuideButton: '使い方',
         usageHeading: '日本語の発音を自然に、意味を明確に',
         usageIntro:
             'AkuMa は日本語テキストを、復習・確認・共有しやすい発音素材に整えます。',
@@ -348,6 +351,7 @@ export const translations: Record<Locale, TranslationSet> = {
         toggleImageTheme: isDarkResult =>
             `將圖片主題切換為${isDarkResult ? '淺色' : '深色'}`,
         usageEyebrow: '使用方式',
+        usageGuideButton: '使用說明',
         usageHeading: '讓日語發音更自然、意思更清楚',
         usageIntro:
             'AkuMa 將日語文字整理成可複習、可校對、可分享的發音素材。',

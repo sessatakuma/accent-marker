@@ -31,7 +31,7 @@ export default function Nav() {
                 aria-label={`${t.usageEyebrow}: ${t.usageHeading}`}
             >
                 <BookOpenText size={20} aria-hidden='true' />
-                <span className='nav-guide-button-label'>{t.usageEyebrow}</span>
+                <span className='nav-guide-button-label'>{t.usageGuideButton}</span>
             </a>
         </header>
     );

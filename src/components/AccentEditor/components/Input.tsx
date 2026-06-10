@@ -100,6 +100,7 @@ export default function Input({ paragraph, setParagraph, isLoading }: InputProps
                     <span className='generate-button-icon' aria-hidden='true'>
                         <Dices size={20} />
                     </span>
+                    <span className='generate-button-label'>{t.randomSampleButtonLabel}</span>
                 </button>
             </div>
         </div>

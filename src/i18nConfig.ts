@@ -42,6 +42,7 @@ export interface TranslationSet {
     inputTools: string;
     pageDescription: string;
     randomSample: string;
+    randomSampleButtonLabel: string;
     result: string;
     resultActions: string;
     resultHint: string;
@@ -136,6 +137,7 @@ export const translations: Record<Locale, TranslationSet> = {
             'Paste Japanese text to add furigana and pitch-accent markings automatically, then edit and export the result.',
         pasteFromClipboard: 'Paste from clipboard',
         randomSample: 'Insert random sample',
+        randomSampleButtonLabel: 'Insert sample',
         result: 'Result',
         resultActions: 'Result actions',
         resultHint: 'Analysis complete. Click furigana or accent marks to edit',
@@ -237,6 +239,7 @@ export const translations: Record<Locale, TranslationSet> = {
             '日本語テキストにふりがなとピッチアクセントを自動で付与し、編集して書き出せる学習ツールです。',
         pasteFromClipboard: 'クリップボードから貼り付け',
         randomSample: 'ランダム例文を挿入',
+        randomSampleButtonLabel: '例文を挿入',
         result: '結果',
         resultActions: '結果の操作',
         resultHint: '分析完了。ふりがな・アクセントをクリックして編集',
@@ -338,6 +341,7 @@ export const translations: Record<Locale, TranslationSet> = {
             '貼上日語文字，自動加入振假名與音高音調標記，之後還可編輯並匯出結果。',
         pasteFromClipboard: '從剪貼簿貼上',
         randomSample: '插入隨機範文',
+        randomSampleButtonLabel: '插入範文',
         result: '結果',
         resultActions: '結果操作',
         resultHint: '分析完成，點擊振假名或音調可進行編輯',

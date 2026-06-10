@@ -59,8 +59,8 @@
 
 .generate-button,
 .paste-button {
-    width: var(--editor-action-control-size);
     height: var(--editor-action-control-size);
+    min-width: var(--editor-action-control-size);
     background-color: var(--color-bg-secondary);
     border: none;
     border-radius: var(--radius-md);
@@ -68,9 +68,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: var(--space-2);
     flex-shrink: 0;
     transition: all 0.2s ease;
     cursor: pointer;
+}
+
+.generate-button {
+    padding: 0 var(--space-3);
+}
+
+.paste-button {
+    padding: 0;
+}
+
+.generate-button-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
 }
 
 .generate-button-icon {
